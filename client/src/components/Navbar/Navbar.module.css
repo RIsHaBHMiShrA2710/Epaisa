@@ -1,30 +1,57 @@
-/* Navbar.module.css */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  background-color: #fff;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  height: 56px;
+  margin-bottom: 120px;
+  background-color: var(--mantine-color-body);
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
 .inner {
+  height: 56px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .link {
-  color: #000;
+  display: block;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: var(--mantine-radius-sm);
   text-decoration: none;
-  padding: 8px;
-  font-size: 16px;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+}
+.brandLogo {
+  height: 45px; /* Adjust as per design */
+  padding-left: 20px;
+  width: auto;
+
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  margin-right: 20px; /* Add spacing between logo and nav links */
+  text-decoration: none;
 }
 
 .link:hover {
-  color: #1e90ff;
+  background-color: var(--mantine-color-gray-3);
 }
 
-.linkLabel {
-  margin-right: 8px;
+[data-active] {
+  background-color: var(--mantine-color-blue-filled);
+  color: var(--mantine-color-white);
+}
+
+.group {
+  display: flex;
+  padding: 0px 8px;
+  justify-self: flex-end;
+  gap: 1rem;
+}
+
+.burger {
+  display: none;
 }
