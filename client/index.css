@@ -1,11 +1,28 @@
 :root {
-    --mantine-color-body: #1a1b1e; 
-    --mantine-color-gray-3: #373a40; 
-    --mantine-color-gray-7: #c1c2c5; 
-    --mantine-color-dark-0: #fff;
-    --mantine-color-blue-filled: #228be6; 
-    --mantine-color-white: #ffffff;
-    --mantine-radius-sm: 4px;
-    --mantine-font-size-sm: 14px;
-  }
-  
+  --mantine-color-body: #1a1b1e;
+  --mantine-color-gray-3: #373a40;
+  --mantine-color-gray-7: #c1c2c5;
+  --mantine-color-dark-0: #fff;
+  --mantine-color-blue-filled: #228be6;
+  --mantine-color-white: #ffffff;
+  --mantine-radius-sm: 4px;
+  --mantine-font-size-sm: 14px;
+}
+[data-scroll-container] {
+  overflow: hidden; /* Required for Locomotive Scroll */
+}
+
+.section {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full-screen sections */
+  scroll-snap-align: start;
+}
+
+.section h1 {
+  font-size: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}

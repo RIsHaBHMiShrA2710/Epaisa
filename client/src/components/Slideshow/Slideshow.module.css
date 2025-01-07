@@ -1,0 +1,58 @@
+.slideshowContainer {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden;
+    background: #000; /* Just a fallback background color */
+  }
+  
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    /* If you want a sliding effect instead of fading, you could do transform: translateX(...) transitions */
+  }
+  
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures full coverage without squishing */
+  }
+  
+  /* Show the active slide */
+  .active {
+    opacity: 1;
+    z-index: 1;
+  }
+  
+  /* Optional nav buttons (Prev/Next) */
+  .navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 2;
+    color: #333;
+    transition: background 0.3s ease;
+  }
+  
+  .navButton:hover {
+    background: rgba(255, 255, 255, 0.7);
+  }
+  
+  .navButton:first-of-type {
+    left: 10px; /* Position for "Prev" */
+  }
+  
+  .navButton:last-of-type {
+    right: 10px; /* Position for "Next" */
+  }
+  

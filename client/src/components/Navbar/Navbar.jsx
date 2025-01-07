@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Burger, Container, Group } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Container, Group } from '@mantine/core';
 import classes from './Navbar.module.css';
 
 const links = [
@@ -11,18 +10,18 @@ const links = [
 ];
 
 const Navbar = () => {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, setOpened] = useState(false);
   const [active, setActive] = useState(links[0].link);
 
   const items = links.map((link) => (
     <a
       key={link.label}
       href={link.link}
-      className={classes.link}
-      data-active={active === link.link || undefined}
+      className={`${classes.link} ${active === link.link ? classes.active : ''}`}
       onClick={(event) => {
         event.preventDefault();
         setActive(link.link);
+        setOpened(false); // Close the menu when a link is clicked
       }}
     >
       {link.label}
@@ -30,7 +29,7 @@ const Navbar = () => {
   ));
 
   return (
-    <header className={classes.header}>
+    <header className={`${classes.header} ${opened ? classes.open : ''}`}>
       <Container size="lg" className={classes.inner}>
         <a href="/" className={classes.logoLink}>
           <img
@@ -39,17 +38,20 @@ const Navbar = () => {
             alt="Epaisa Logo"
           />
         </a>
-        <Group gap={5} className={classes.group}>
-          {items}
-        </Group>
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          className={classes.burger}
-          size="sm"
-          aria-label="Toggle navigation menu"
-        />
+        {/* Desktop Links */}
+        <Group className={classes.group}>{items}</Group>
+        {/* Burger Icon */}
+        <div
+          className={`${classes.burger} ${opened ? classes.burgerOpen : ''}`}
+          onClick={() => setOpened((prev) => !prev)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </Container>
+      {/* Mobile Links */}
+      {opened && <div className={classes.mobileMenu}>{items}</div>}
     </header>
   );
 };

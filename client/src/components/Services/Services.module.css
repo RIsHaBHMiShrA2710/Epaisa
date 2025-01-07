@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.servicesContainer {
+  min-height: 100vh;
+  font-family: poppins;
+  text-align: center;
+  padding: 5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.servicesHeadingLabel {
+  color: #000000;
+  font-size: 1.125rem;
+  max-width: 32rem;
+  margin: 0 auto 0.5rem;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+}
+
+.servicesArrowIcon {
+  color: #4F46E5;
+  margin-left: 0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.servicesMainTitle {
+  color: black;
+  font-size: 2.25rem;
+  font-weight: 600;
+  max-width: 48rem;
+  margin: 0 auto 4rem;
+  line-height: 1.25;
+}
+
+.servicesGrid {
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: #1F2937;
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.card::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  transition: 0.6s;
+  z-index: 0;
+  background-color: #4f46e5;
+  top: 0;
+  left: 0;
+}
+
+.card:hover {
+  box-shadow: 0.063rem 0.063rem 1.25rem 0.375rem rgb(0 0 0 / 53%);
+  scale: 1.05;
+}
+
+.card:nth-child(1)::before {
+  bottom: 0;
+  right: 0;
+  clip-path: circle(calc(6.25rem + 7.5vw) at 100% 100%);
+}
+
+.card:nth-child(2)::before {
+  bottom: 0;
+  left: 0;
+  clip-path: circle(calc(6.25rem + 7.5vw) at 0% 100%);
+}
+
+.card:nth-child(3)::before {
+  top: 0;
+  right: 0;
+  clip-path: circle(calc(6.25rem + 7.5vw) at 100% 0%);
+}
+
+.card:nth-child(4)::before {
+  top: 0;
+  left: 0;
+  clip-path: circle(calc(6.25rem + 7.5vw) at 0% 0%);
+}
+
+.cardContentRight {
+  position: relative;
+  z-index: 1;
+}
+
+.cardContentLeft {
+  position: relative;
+  z-index: 1;
+}
+
+.cardTitle {
+  font-family: popings;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: capitalize;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.cardDescription {
+  color: #9CA3AF;
+  transition: 0.8s;
+}
+
+.card:hover::before {
+  clip-path: circle(110vw at 100% 100%);
+}
+
+.card:hover .cardDescription {
+  color: #ffffff;
+}
+
+@media screen and (min-width: 640px) {
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .servicesMainTitle {
+    font-size: 3rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .servicesContainer {
+    padding: 5rem 0;
+  }
+
+  .cardContentRight {
+    padding-right: 13rem;
+  }
+
+  .cardContentLeft {
+    padding-left: 12rem;
+  }
+
+  .cardTitle {
+    font-size: 1.875rem;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .servicesMainTitle {
+    font-size: 3.75rem;
+  }
+}
+
+@media screen and (min-width: 62.5rem) {
+  .circle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+}
+
+.card:nth-child(1) .circle {
+  background: url("https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    no-repeat 50% 50% / cover;
+  bottom: 0;
+  right: 0;
+  clip-path: circle(calc(6.25rem + 7.5vw) at 100% 100%);
+}
+
+.card:nth-child(2) .circle {
+  background: url("https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    no-repeat 50% 50% / cover;
+  bottom: 0;
+  left: 0;
+  clip-path: circle(calc(6.25rem + 7.5vw) at 0% 100%);
+}
+
+.card:nth-child(3) .circle {
+  background: url("https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    no-repeat 50% 50% / cover;
+  top: 0;
+  right: 0;
+  clip-path: circle(calc(6.25rem + 7.5vw) at 100% 0%);
+}
+
+.card:nth-child(4) .circle {
+  background: url("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    no-repeat 50% 50% / cover;
+  top: 0;
+  left: 0;
+  clip-path: circle(calc(6.25rem + 7.5vw) at 0% 0%);
+}
