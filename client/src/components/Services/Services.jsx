@@ -9,9 +9,9 @@ const Services = () => {
         <IconArrowRight className={styles.servicesArrowIcon} />
       </span>
       
-      {/* <h1 className={styles.servicesMainTitle}>
-        Services Built Specifically for your Business
-      </h1> */}
+      <h5 className={styles.servicesMainTitle}>
+        Services Offered 
+      </h5>
       
       <div className={styles.servicesGrid}>
         <div className={styles.card}>

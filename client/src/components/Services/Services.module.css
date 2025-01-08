@@ -21,7 +21,7 @@
 }
 
 .servicesArrowIcon {
-  color: #4F46E5;
+  color: #836FFF;
   margin-left: 0.75rem;
   width: 1.5rem;
   height: 1.5rem;
@@ -59,7 +59,7 @@
   height: 100%;
   transition: 0.6s;
   z-index: 0;
-  background-color: #4f46e5;
+  background-color: #836FFF;
   top: 0;
   left: 0;
 }
@@ -104,17 +104,16 @@
 }
 
 .cardTitle {
-  font-family: popings;
+  font-family: poppins;
   font-optical-sizing: auto;
   font-weight: 400;
-  font-style: normal;
-  text-transform: capitalize;
   color: #ffffff;
   margin-bottom: 1rem;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .cardDescription {
+  font-family: poppins;
   color: #9CA3AF;
   transition: 0.8s;
 }

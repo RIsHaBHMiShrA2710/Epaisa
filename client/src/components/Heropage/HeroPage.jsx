@@ -30,19 +30,10 @@ const HeroPage = () => (
             </ThemeIcon>
 
           }
+          
           className={classes.contentList}
         >
-          <List.Item className={classes.flexItem}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-            }}>
+          <List.Item className={classes.contentListItem}>
             <b>TypeScript based</b> – build type-safe applications, all components and hooks export
             types
           </List.Item>

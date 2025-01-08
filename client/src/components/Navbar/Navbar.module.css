@@ -5,6 +5,8 @@
   background-color: var(--mantine-color-body);
   border-bottom: 1px solid var(--mantine-color-gray-3);
   overflow: hidden; 
+  position: relative;
+  z-index: 2;
   transition: height 0.3s ease; 
 }
 
@@ -43,12 +45,12 @@
 }
 
 .link:hover {
-  background-color: aquamarine;
+  background-color: #15F5BA;
   color: black;
 }
 
 .active {
-  background-color: rgb(21, 0, 255);
+  background-color: #836FFF;
   color: var(--mantine-color-white);
 }
 
