@@ -1,0 +1,154 @@
+.teamArea {
+  padding: 60px 0;
+  background: #ffffff;
+}
+
+.siteHeading {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.siteHeading h2 {
+  font-weight: 700;
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.span {
+  color: #0077ff;
+}
+
+.teamItems {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 992px) {
+  .teamItems {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.singleItem {
+  margin-bottom: 30px;
+}
+
+.item {
+  position: relative;
+  z-index: 1;
+}
+
+.thumb {
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.imgFluid {
+  width: 100%;
+  height: auto;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transform: translateY(100%);
+  transition: all 0.35s ease-in-out;
+  padding: 20px;
+}
+
+.thumb:hover .overlay {
+  transform: translateY(0);
+}
+
+.overlay h4 {
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.overlay p {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.social ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.social ul li a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.social ul li a:hover {
+  background: #0077ff;
+}
+
+.info {
+  padding: 30px;
+  position: relative;
+  text-align: center;
+  border-radius: 5px;
+  background: #ffffff;
+  margin-top: -30px;
+  transition: all 0.35s ease-in-out;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+}
+
+.info .message {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.info .message a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: #0077ff;
+  border-radius: 50%;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.info .message a:hover {
+  background: #005acc;
+}
+
+.info h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.info span {
+  color: #666666;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+}
