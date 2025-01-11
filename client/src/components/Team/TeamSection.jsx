@@ -1,28 +1,37 @@
-import { useState, useEffect } from 'react';
-import { Container, Title, Text, Group, Box, Image } from '@mantine/core';
-import { Carousel } from '@mantine/carousel';
+import { useState, useEffect, useRef } from 'react';
+import { Container, Title, Text, Box, Image } from '@mantine/core';
+import { Carousel } from '@mantine/carousel'; 
+import '@mantine/carousel/styles.css';
+
 import { useMediaQuery } from '@mantine/hooks';
-import { IconBrandTwitter, IconBrandPinterest, IconBrandInstagram, IconBrandVimeo, IconMail } from '@tabler/icons-react';
+import Autoplay from 'embla-carousel-autoplay';
+import {
+  IconBrandTwitter,
+  IconBrandPinterest,
+  IconBrandInstagram,
+  IconBrandVimeo,
+  IconMail,
+} from '@tabler/icons-react';
 import classes from './TeamSection.module.css';
 
 const teamMembers = [
   {
-    name: 'Lorem Ipsum',
+    name: 'Alice',
     role: 'Project Manager',
     image: 'https://i.ibb.co/JC4skS0/team-animate.jpg',
-    description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    description: 'Expert in coordination and management',
   },
   {
-    name: 'Lorem Ipsum',
+    name: 'Bob',
     role: 'App Developer',
     image: 'https://i.ibb.co/JC4skS0/team-animate.jpg',
-    description: 'kING.',
+    description: 'Building mobile and web apps',
   },
   {
-    name: 'Lorem Ipsum',
+    name: 'Charlie',
     role: 'Web Designer',
     image: 'https://i.ibb.co/JC4skS0/team-animate.jpg',
-    description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    description: 'Specializes in UI/UX and responsive designs',
   },
 ];
 
@@ -31,11 +40,7 @@ const TeamMemberCard = ({ member }) => {
     <div className={classes.singleItem}>
       <div className={classes.item}>
         <div className={classes.thumb}>
-          <Image 
-            src={member.image} 
-            alt={member.name}
-            className={classes.imgFluid}
-          />
+          <Image src={member.image} alt={member.name} className={classes.imgFluid} />
           <div className={classes.overlay}>
             <h4>{member.name}</h4>
             <p>{member.description}</p>
@@ -81,6 +86,7 @@ const TeamMemberCard = ({ member }) => {
 
 export function TeamSection() {
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const autoplay = useRef(Autoplay({ delay: 3000 }));
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -90,6 +96,12 @@ export function TeamSection() {
   if (!mounted) {
     return null;
   }
+
+  const carouselSlides = teamMembers.map((member, index) => (
+    <Carousel.Slide key={index}>
+      <TeamMemberCard member={member} />
+    </Carousel.Slide>
+  ));
 
   return (
     <Box component="section" id="team" className={classes.teamArea}>
@@ -102,20 +114,29 @@ export function TeamSection() {
         </div>
 
         {isMobile ? (
-          <Carousel
-            slideSize="100%"
-            height={500}
-            align="start"
-            slideGap="md"
-            withControls
-            withIndicators
-          >
-            {teamMembers.map((member, index) => (
-              <Carousel.Slide key={index}>
-                <TeamMemberCard member={member} />
-              </Carousel.Slide>
-            ))}
-          </Carousel>
+          <Box className={classes.carouselWrapper}>
+            <Carousel
+              slideSize="100%"
+              slideGap="sm"
+              loop
+              align="center"
+              withControls
+              withIndicators
+              classNames={{
+                root: classes.carousel,
+                slide: classes.slide,
+                control: classes.carouselControl,
+                indicator: classes.carouselIndicator,
+              }}
+            >
+              {teamMembers.map((member,index) => (
+                <Carousel.Slide key={index}>
+                  <TeamMemberCard member={member} />
+                </Carousel.Slide>
+              ))}
+            </Carousel>
+
+          </Box>
         ) : (
           <div className={classes.teamItems}>
             {teamMembers.map((member, index) => (

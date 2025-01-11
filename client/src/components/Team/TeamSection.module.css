@@ -1,5 +1,7 @@
+
 .teamArea {
-  padding: 60px 0;
+  padding: 60px 60px;
+  font-family: poppins;
   background: #ffffff;
 }
 
@@ -15,7 +17,7 @@
 }
 
 .span {
-  color: #0077ff;
+  color: #15F5BA;
 }
 
 .teamItems {
@@ -30,13 +32,93 @@
   }
 }
 
+@media (max-width: 600px) {
+  .carouselWrapper {
+    padding: 0 10px; /* Add padding for a cleaner view */
+  }
+
+  .carousel {
+    width: 100%;
+  }
+
+  .slide {
+    padding: 10px 0; /* Ensure adequate spacing between slides */
+    text-align: center; /* Center-align content */
+  }
+
+  .carouselControl {
+    width: 30px;
+    height: 30px;
+  }
+
+  .carouselIndicator {
+    width: 6px;
+    height: 6px;
+  }
+
+  .carouselIndicator[data-active] {
+    width: 10px;
+    height: 10px;
+  }
+
+  .teamArea {
+    padding: 20px;
+  }
+
+  .singleItem {
+    margin: 0 auto;
+    width: 90%; /* Reduce slide width for better spacing */
+  }
+}
+
+.carouselWrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.carousel {
+  width: 100%;
+}
+
+.slide {
+  height: auto;
+  padding: 0 10px;
+}
+
+.carouselControl {
+  background-color: #15F5BA;
+  color: black;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.carouselControl:hover {
+  background-color: #0fb488;
+}
+
+.carouselIndicator {
+  width: 8px;
+  height: 8px;
+  background-color: rgba(21, 245, 186, 0.3);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.carouselIndicator[data-active] {
+  background-color: #15F5BA;
+  width: 12px;
+  height: 12px;
+}
+
 .singleItem {
   margin-bottom: 30px;
+  padding: 20px 30px;
 }
 
 .item {
   position: relative;
-  z-index: 1;
 }
 
 .thumb {
@@ -71,15 +153,9 @@
   transform: translateY(0);
 }
 
-.overlay h4 {
-  color: #ffffff;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
+.overlay h4,
 .overlay p {
-  color: #ffffff;
-  margin-bottom: 20px;
+  color: #fff;
 }
 
 .social ul {
@@ -103,7 +179,8 @@
 }
 
 .social ul li a:hover {
-  background: #0077ff;
+  background: #15F5BA;
+  color: black;
 }
 
 .info {
@@ -130,14 +207,14 @@
   justify-content: center;
   width: 60px;
   height: 60px;
-  background: #0077ff;
+  background: #15F5BA;
   border-radius: 50%;
-  color: #ffffff;
+  color: black;
   transition: all 0.3s ease;
 }
 
 .info .message a:hover {
-  background: #005acc;
+  background: #0fb488;
 }
 
 .info h4 {
