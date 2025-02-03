@@ -1,0 +1,147 @@
+/* Modal overlay (background) */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+    display: flex; /* Center modal using flexbox */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  /* Modal container */
+  .modal {
+    background-color: white;
+    width: 90%; /* Responsive width */
+    max-width: 400px; /* Set maximum width */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideIn 0.3s ease;
+    display: flex; /* Ensure children are contained */
+    flex-direction: column; /* Stack children vertically */
+    gap: 1rem; /* Add space between children */
+    z-index: 3;
+  }
+  
+  /* Close button styling */
+  .closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+  }
+  
+  .closeButton:hover {
+    color: black;
+  }
+  
+  /* Form group styling */
+  .formGroup {
+    margin-bottom: 1rem;
+    width: 100%; /* Ensure inputs fill the modal width */
+  }
+  .mainForm {
+    position: relative;
+  }
+  .formGroup label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .formHeading {
+    text-align: center;
+    font-weight: 700;
+  }
+  .formGroup input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  .formGroup input:focus {
+    border-color: #15f5ba;
+  }
+  
+  /* Modal actions (buttons) */
+  .modalActions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .switchButton {
+    background: none;
+    border: none;
+    color: #15f5ba;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .switchButton:hover {
+    text-decoration: underline;
+  }
+  
+  .submitButton {
+    padding: 0.5rem 1rem;
+    background-color: #15f5ba;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .submitButton:hover {
+    background-color: #13e0a6;
+  }
+  
+  /* Modal animation */
+  @keyframes slideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @media (max-width: 480px) {
+    .modal {
+      width: 95%; /* Increase modal width for smaller screens */
+      max-width: none; /* Remove max width constraint */
+      padding: 1.5rem; /* Reduce padding to fit smaller screens */
+    }
+  
+    .formHeading {
+      font-size: 1.2rem; /* Smaller heading size */
+    }
+  
+    .formGroup input {
+      font-size: 0.9rem; /* Smaller input font size */
+      padding: 0.4rem; /* Reduce padding inside inputs */
+    }
+  
+    .submitButton {
+      font-size: 0.9rem; /* Adjust button text size */
+      padding: 0.4rem 0.8rem; /* Smaller button padding */
+    }
+  
+    .switchButton {
+      font-size: 0.85rem; /* Reduce font size */
+    }
+  }

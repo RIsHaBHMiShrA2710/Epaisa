@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AuthButton from '../Auth/AuthButton';
 import { Container, Group } from '@mantine/core';
 import classes from './Navbar.module.css';
 
@@ -10,9 +11,10 @@ const links = [
 ];
 
 const Navbar = () => {
-  const [opened, setOpened] = useState(false);
-  const [active, setActive] = useState(links[0].link);
+  const [opened, setOpened] = useState(false); // Controls mobile menu visibility
+  const [active, setActive] = useState(links[0].link); // Tracks the active link
 
+  // Generate navigation links
   const items = links.map((link) => (
     <a
       key={link.label}
@@ -20,8 +22,8 @@ const Navbar = () => {
       className={`${classes.link} ${active === link.link ? classes.active : ''}`}
       onClick={(event) => {
         event.preventDefault();
-        setActive(link.link);
-        setOpened(false); // Close the menu when a link is clicked
+        setActive(link.link); // Update active link
+        setOpened(false); // Close the menu on click
       }}
     >
       {link.label}
@@ -31,6 +33,7 @@ const Navbar = () => {
   return (
     <header className={`${classes.header} ${opened ? classes.open : ''}`}>
       <Container size="lg" className={classes.inner}>
+        {/* Logo */}
         <a href="/" className={classes.logoLink}>
           <img
             src="https://imgur.com/weEZnmD.jpg"
@@ -38,9 +41,14 @@ const Navbar = () => {
             alt="Epaisa Logo"
           />
         </a>
+
         {/* Desktop Links */}
         <Group className={classes.group}>{items}</Group>
-        {/* Burger Icon */}
+
+        {/* Login/Register Button */}
+        <AuthButton />
+
+        {/* Burger Icon for Mobile Menu */}
         <div
           className={`${classes.burger} ${opened ? classes.burgerOpen : ''}`}
           onClick={() => setOpened((prev) => !prev)}
@@ -50,6 +58,7 @@ const Navbar = () => {
           <span></span>
         </div>
       </Container>
+
       {/* Mobile Links */}
       {opened && <div className={classes.mobileMenu}>{items}</div>}
     </header>

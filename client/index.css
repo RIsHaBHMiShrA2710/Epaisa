@@ -10,6 +10,7 @@
   --mantine-color-white: #ffffff;
   --mantine-radius-sm: 4px;
   --mantine-font-size-sm: 14px;
+  font-family: poppins;
 }
 [data-scroll-container] {
   overflow: hidden; /* Required for Locomotive Scroll */
