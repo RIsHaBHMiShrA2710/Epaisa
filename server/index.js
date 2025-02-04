@@ -1,17 +1,31 @@
 const express = require('express');
-const pool = require('./config/db');
+const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
+require('dotenv').config();
+require('./middleware/GoogleAuth');
+const authRoutes = require('./routes/authRoutes'); // Include all auth routes
+
 const app = express();
 
-const PORT = 8080;
-
+// Middleware
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'default_secret', 
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get('/', (req, res) => {
-    res.send("API is working");
-});
+// Routes
+app.use('/api/auth', authRoutes);
 
-
+// Start server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log("Connected to Port 8080");
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-

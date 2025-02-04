@@ -1,10 +1,11 @@
-
+/* Team section area */
 .teamArea {
-  padding: 60px 60px;
-  font-family: poppins;
+  padding: 60px 30px; /* Reduced padding for smaller screens */
+  font-family: 'Poppins', sans-serif;
   background: #ffffff;
 }
 
+/* Heading styles */
 .siteHeading {
   margin-bottom: 40px;
   text-align: center;
@@ -12,14 +13,19 @@
 
 .siteHeading h2 {
   font-weight: 700;
-  font-size: 40px;
+  font-size: 2.5rem; /* Adjust font size */
   margin-bottom: 15px;
 }
 
-.span {
-  color: #15F5BA;
+.siteHeading p {
+  font-size: 1rem; /* Smaller text for mobile */
 }
 
+.span {
+  color: #15f5ba;
+}
+
+/* Team grid items */
 .teamItems {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -28,53 +34,20 @@
 
 @media (max-width: 992px) {
   .teamItems {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
   }
 }
 
 @media (max-width: 600px) {
-  .carouselWrapper {
-    padding: 0 10px; /* Add padding for a cleaner view */
-  }
-
-  .carousel {
-    width: 100%;
-  }
-
-  .slide {
-    padding: 10px 0; /* Ensure adequate spacing between slides */
-    text-align: center; /* Center-align content */
-  }
-
-  .carouselControl {
-    width: 30px;
-    height: 30px;
-  }
-
-  .carouselIndicator {
-    width: 6px;
-    height: 6px;
-  }
-
-  .carouselIndicator[data-active] {
-    width: 10px;
-    height: 10px;
-  }
-
-  .teamArea {
-    padding: 20px;
-  }
-
-  .singleItem {
-    margin: 0 auto;
-    width: 90%; /* Reduce slide width for better spacing */
+  .teamItems {
+    grid-template-columns: 1fr; /* Single column for mobile */
+    gap: 20px; /* Adjust gap for mobile screens */
   }
 }
 
+/* Carousel wrapper styles for mobile */
 .carouselWrapper {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
+  padding: 0 10px; /* Padding for cleaner edges */
 }
 
 .carousel {
@@ -83,11 +56,12 @@
 
 .slide {
   height: auto;
-  padding: 0 10px;
+  padding: 10px 0;
+  text-align: center;
 }
 
 .carouselControl {
-  background-color: #15F5BA;
+  background-color: #15f5ba;
   color: black;
   border-radius: 50%;
   width: 40px;
@@ -107,20 +81,22 @@
 }
 
 .carouselIndicator[data-active] {
-  background-color: #15F5BA;
+  background-color: #15f5ba;
   width: 12px;
   height: 12px;
 }
 
+/* Team member card styles */
 .singleItem {
   margin-bottom: 30px;
-  padding: 20px 30px;
+  padding: 20px 20px;
 }
 
 .item {
   position: relative;
 }
 
+/* Image container */
 .thumb {
   position: relative;
   overflow: hidden;
@@ -132,6 +108,7 @@
   height: auto;
 }
 
+/* Overlay styles for hover */
 .overlay {
   position: absolute;
   top: 0;
@@ -156,14 +133,17 @@
 .overlay h4,
 .overlay p {
   color: #fff;
+  margin: 0;
 }
 
+/* Social icons */
 .social ul {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   gap: 15px;
+  justify-content: center;
 }
 
 .social ul li a {
@@ -179,12 +159,13 @@
 }
 
 .social ul li a:hover {
-  background: #15F5BA;
+  background: #15f5ba;
   color: black;
 }
 
+/* Team member info styles */
 .info {
-  padding: 30px;
+  padding: 20px;
   position: relative;
   text-align: center;
   border-radius: 5px;
@@ -207,7 +188,7 @@
   justify-content: center;
   width: 60px;
   height: 60px;
-  background: #15F5BA;
+  background: #15f5ba;
   border-radius: 50%;
   color: black;
   transition: all 0.3s ease;
@@ -218,7 +199,7 @@
 }
 
 .info h4 {
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 5px;
 }
@@ -226,6 +207,6 @@
 .info span {
   color: #666666;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 0.9rem;
   font-weight: 500;
 }

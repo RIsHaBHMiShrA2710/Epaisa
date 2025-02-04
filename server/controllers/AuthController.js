@@ -1,6 +1,6 @@
 // authController.js
 const bcrypt = require('bcrypt');
-const pool = require('../db');
+const pool = require('../config/db');
 
 async function findUserByEmail(email) {
   const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
@@ -50,3 +50,14 @@ exports.login = async (req, res) => {
     return res.status(500).json({ error: 'Server error' });
   }
 };
+
+exports.logout = async (req, res) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err); // Handle error
+    }
+    res.clearCookie('connect.sid'); // Clear the session cookie
+    res.status(200).json({ message: 'Logged out successfully' });
+  });
+};
+

@@ -291,9 +291,11 @@ textarea.input {
 /* Ensure grid layout is stacked on smaller screens */
 @media (max-width: 850px) {
   .form {
-    grid-template-columns: 1fr; /* Switch to single column */
+    grid-template-columns: 1fr;
   }
-
+  .contactForm{
+    height: 500px;
+  }
   .contactInfo:before {
     bottom: initial;
     top: -75px;
@@ -303,10 +305,6 @@ textarea.input {
 }
 
 @media (max-width: 480px) {
-
-  .contactInfo:before {
-    height: 500px;
-  }
 
   .square,
   .bigCircle {
