@@ -4,35 +4,42 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    // Load user data from local storage when the component initializes
-    const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5000/api/auth',
-    withCredentials: true,
-  });
-
-  // Save user data to local storage whenever it changes
   useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('user');
-    }
-  }, [user]);
+    const fetchUser = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:5000/api/auth/me', {
+          withCredentials: true, // Include session cookies
+        });
+        setUser(data);
+        localStorage.setItem('user', JSON.stringify(data));
+      } catch (err) {
+        if (err.response?.status === 401) {
+          // 401 means user is not logged in
+          console.warn('User is not logged in'); // Log only a warning, not an error
+        } else {
+          console.error('Failed to fetch user:', err);
+        }
+        setUser(null);
+        localStorage.removeItem('user');
+      }
+    };
+  
+    fetchUser();
+  }, []);
+  
+  
 
-  // Login function
   const login = async (email, password) => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axiosInstance.post('/login', { email, password });
-      setUser(data.user); // Save user data to state
+      const { data } = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      setUser(data.user);
+      localStorage.setItem('user', JSON.stringify(data.user)); // Store user in localStorage
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to log in');
     } finally {
@@ -40,17 +47,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Register function
   const register = async (name, email, password) => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axiosInstance.post('/register', {
-        name,
-        email,
-        password,
-      });
-      setUser(data.user); // Save user data to state
+      const { data } = await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
+      setUser(data.user);
+      localStorage.setItem('user', JSON.stringify(data.user));
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to register');
     } finally {
@@ -58,24 +61,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout function
+  const googleSignIn = () => {
+    window.location.href = 'http://localhost:5000/api/auth/google'; // Redirect to Google login
+  };
+
   const logout = async () => {
     try {
-      // Call the logout API endpoint
-      await axiosInstance.post('/logout');
-      setUser(null); // Clear user data in the context
-      localStorage.removeItem('user'); // Clear user data from local storage
+      await axios.post('http://localhost:5000/api/auth/logout', {}, { withCredentials: true });
+      setUser(null);
+      localStorage.removeItem('user');
     } catch (err) {
       console.error('Failed to log out:', err);
     }
   };
-  
-
-  // Google Sign-In
-  const googleSignIn = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google'; // Redirect to Google OAuth
-  };
-
   return (
     <AuthContext.Provider
       value={{

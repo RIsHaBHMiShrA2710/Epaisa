@@ -32,32 +32,41 @@ exports.register = async (req, res) => {
     return res.status(500).json({ error: 'Server error' });
   }
 };
-
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+
   try {
-    const user = await findUserByEmail(email);
+    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = rows[0];
+
     if (!user) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      return res.status(400).json({ message: 'User not found' });
     }
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+
+    // Ensure the user is an email/password user, not a Google user
+    if (user.auth_provider === 'google') {
+      return res.status(400).json({ message: 'This email is registered with Google. Use Google Sign-In.' });
     }
-    return res.status(200).json({ message: 'Login successful', user });
+
+    // Verify password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    res.json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email } });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   }
 };
-
-exports.logout = async (req, res) => {
-  req.logout(function (err) {
+exports.logout = (req, res) => {
+  req.logout((err) => {
     if (err) {
-      return next(err); // Handle error
+      return res.status(500).json({ message: 'Failed to log out' });
     }
-    res.clearCookie('connect.sid'); // Clear the session cookie
-    res.status(200).json({ message: 'Logged out successfully' });
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid'); // Remove session cookie from browser
+      res.status(200).json({ message: 'Logged out successfully' });
+    });
   });
 };
-

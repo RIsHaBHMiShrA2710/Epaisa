@@ -23,7 +23,7 @@ const AuthButton = () => {
   return (
     <>
       {user ? (
-        // Logout Button
+        // Show Logout Button when the user is logged in (Google or Email/Password)
         <button className={styles.authButton} onClick={logout} disabled={loading}>
           {loading ? 'Logging Out...' : 'Logout'}
         </button>
@@ -89,11 +89,7 @@ const AuthButton = () => {
                     >
                       {isRegister ? 'Switch to Login' : 'Switch to Register'}
                     </button>
-                    <button
-                      type="submit"
-                      className={styles.submitButton}
-                      disabled={loading}
-                    >
+                    <button type="submit" className={styles.submitButton} disabled={loading}>
                       {loading ? 'Loading...' : isRegister ? 'Register' : 'Login'}
                     </button>
                   </div>
