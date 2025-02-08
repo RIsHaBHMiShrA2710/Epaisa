@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const googleSignIn = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google'; // Redirect to Google login
+    window.location.href = 'http://localhost:5000/api/auth/google'; 
   };
 
   const logout = async () => {
