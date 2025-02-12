@@ -3,7 +3,7 @@ import { Button, Container, Flex, Group, Image, List, Text, ThemeIcon, Title } f
 import classes from "./HeroPage.module.css";
 
 const HeroPage = () => (
-  <Container size="md">
+  <Container size="md" className={classes.hero_container}>
     <div className={classes.inner}>
       <img src="https://imgur.com/hnpdsis.jpg" alt='Accounting' className={classes.backgroundImage }></img>
       <div className={classes.content}>

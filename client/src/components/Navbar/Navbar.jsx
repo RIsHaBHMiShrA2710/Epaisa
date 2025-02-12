@@ -4,10 +4,8 @@ import { Container, Group } from '@mantine/core';
 import classes from './Navbar.module.css';
 
 const links = [
-  { link: '/about', label: 'Features' },
-  { link: '/pricing', label: 'Pricing' },
-  { link: '/learn', label: 'Learn' },
-  { link: '/community', label: 'Community' },
+  { link: '/', label: 'Home' },
+  { link: '/blog', label: 'Blogs' },
 ];
 
 const Navbar = () => {
