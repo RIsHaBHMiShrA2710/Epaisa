@@ -118,6 +118,15 @@
   .group {
     display: none;
   }
+  .inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .header {
+    justify-content: center;
+    align-items: center;
+  }
 
   .burger {
     display: block;
