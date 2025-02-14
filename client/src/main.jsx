@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
 import App from './App';
 import { AuthProvider } from './authContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-    >
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </MantineProvider>
+    <BrowserRouter> {/* Router should wrap everything */}
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MantineProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

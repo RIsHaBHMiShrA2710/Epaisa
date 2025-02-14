@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link, useLocation } from "react-router-dom"; // Import useLocation
 import AuthButton from '../Auth/AuthButton';
 import { Container, Group } from '@mantine/core';
 import classes from './Navbar.module.css';
@@ -9,36 +10,32 @@ const links = [
 ];
 
 const Navbar = () => {
-  const [opened, setOpened] = useState(false); // Controls mobile menu visibility
-  const [active, setActive] = useState(links[0].link); // Tracks the active link
+  const [opened, setOpened] = useState(false);
+  const location = useLocation(); // Get current route
 
-  // Generate navigation links
+  // Generate navigation links dynamically
   const items = links.map((link) => (
-    <a
+    <Link
       key={link.label}
-      href={link.link}
-      className={`${classes.link} ${active === link.link ? classes.active : ''}`}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(link.link); // Update active link
-        setOpened(false); // Close the menu on click
-      }}
+      to={link.link}
+      className={`${classes.link} ${location.pathname === link.link ? classes.active : ''}`} // Use location.pathname
+      onClick={() => setOpened(false)} // Close menu on click
     >
       {link.label}
-    </a>
+    </Link>
   ));
 
   return (
     <header className={`${classes.header} ${opened ? classes.open : ''}`}>
       <Container size="lg" className={classes.inner}>
         {/* Logo */}
-        <a href="/" className={classes.logoLink}>
+        <Link to="/" className={classes.logoLink}>
           <img
             src="https://imgur.com/weEZnmD.jpg"
             className={classes.brandLogo}
             alt="Epaisa Logo"
           />
-        </a>
+        </Link>
 
         {/* Desktop Links */}
         <Group className={classes.group}>{items}</Group>
