@@ -1,6 +1,7 @@
 // authController.js
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
+const jwt = require('jsonwebtoken');
 
 async function findUserByEmail(email) {
   const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
@@ -54,8 +55,15 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    res.json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email } });
+    const token = jwt.sign(
+      { id: user.id, name: user.name, email: user.email },
+      process.env.SESSION_SECRET,
+      { expiresIn: '1h' }
+    );
+    
+    res.json({ message: 'Login successful', token, user: { id: user.id, name: user.name, email: user.email } });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -65,7 +73,7 @@ exports.logout = (req, res) => {
       return res.status(500).json({ message: 'Failed to log out' });
     }
     req.session.destroy(() => {
-      res.clearCookie('connect.sid'); // Remove session cookie from browser
+      res.clearCookie('connect.sid'); 
       res.status(200).json({ message: 'Logged out successfully' });
     });
   });

@@ -5,7 +5,7 @@ const passport = require('passport');
 require('dotenv').config();
 require('./middleware/GoogleAuth'); // Ensure Google Auth is loaded
 const authRoutes = require('./routes/authRoutes');
-
+const articleRoutes = require('./routes/articleRoutes');
 const app = express();
 
 // ✅ Use CORS only once
@@ -29,7 +29,7 @@ app.use(passport.session());
 
 // ✅ Use authentication routes
 app.use('/api/auth', authRoutes);
-
+app.use('/api/articles', articleRoutes);
 // ✅ Server start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
