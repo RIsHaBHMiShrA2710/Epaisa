@@ -1,12 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import Homepage from "./components/Homepage";
-import BlogSection from "./components/BlogSection/BlogSection";
-
+import ArticleListPage from "./components/ArticleListPage/ArticleListPage";
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
-      <Route path="/blog" element={<BlogSection />} />
+      <Route path="/blog" element={<ArticleListPage />} />
     </Routes>
   );
 }
