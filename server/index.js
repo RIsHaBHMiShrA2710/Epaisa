@@ -7,6 +7,8 @@ require('./middleware/GoogleAuth'); // Ensure Google Auth is loaded
 const authRoutes = require('./routes/authRoutes');
 const articleRoutes = require('./routes/articleRoutes');
 const commentRoutes = require('./routes/commentRoutes');
+const voteRoutes = require('./routes/voteRoutes');
+
 
 const app = express();
 
@@ -33,7 +35,7 @@ app.use(passport.session());
 app.use('/api/auth', authRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/comments', commentRoutes);
-
+app.use('/api/votes', voteRoutes);
 // ✅ Server start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

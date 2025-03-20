@@ -111,7 +111,7 @@
   .article-card-action-item {
     display: flex;
     align-items: center;
-    width: 50px;
+    
   }
   /* Responsive */
   @media (max-width: 768px) {

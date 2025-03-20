@@ -1,23 +1,45 @@
 // ArticleCard.jsx
 import React, { useState } from 'react';
 import './ArticleCard.css'; // Import custom CSS
+import { castVote } from '../service/voteService';
+import { useAuth } from '../../authContext';
 import { IconArrowUp, IconArrowDown, IconMessage, IconShare } from '@tabler/icons-react';
 import AuthorModal from './AuthorModal';
 
 function ArticleCard({ article }) {
+  const { token, user } = useAuth();
   const [upvotes, setUpvotes] = useState(article.upvote_count || 0);
   const [downvotes, setDownvotes] = useState(article.downvote_count || 0);
   const [showModal, setShowModal] = useState(false);
 
-  const handleUpvote = () => {
-    // TODO: Call your API to increment upvote
-    setUpvotes(upvotes + 1);
+  const handleUpvote = async () => {
+    if (!user) {
+      alert('You need to log in to vote.');
+      return;
+    }
+    try {
+      const result = await castVote({ articleId: article.id, voteValue: 1, token });
+      setUpvotes(result.updatedArticle.upvote_count);
+      setDownvotes(result.updatedArticle.downvote_count);
+    } catch (error) {
+      console.error('Upvote error:', error);
+    }
   };
 
-  const handleDownvote = () => {
-    // TODO: Call your API to increment downvote
-    setDownvotes(downvotes + 1);
+  const handleDownvote = async () => {
+    if (!user) {
+      alert('You need to log in to vote.');
+      return;
+    }
+    try {
+      const result = await castVote({ articleId: article.id, voteValue: -1, token });
+      setUpvotes(result.updatedArticle.upvote_count);
+      setDownvotes(result.updatedArticle.downvote_count);
+    } catch (error) {
+      console.error('Downvote error:', error);
+    }
   };
+
 
   const openAuthorModal = () => {
     setShowModal(true);
