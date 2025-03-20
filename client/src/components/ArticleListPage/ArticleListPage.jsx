@@ -20,7 +20,12 @@ const ArticleListPage = () => {
       if (data.length < 5) {
         setHasMore(false);
       }
-      setArticles((prevArticles) => [...prevArticles, ...data]);
+      setArticles((prevArticles) => {
+        const existingIds = new Set(prevArticles.map((a) => a.id));
+        const newArticles = data.filter((article) => !existingIds.has(article.id));
+        return [...prevArticles, ...newArticles];
+      });
+        
     } catch (err) {
       console.error('Error fetching articles:', err);
     }

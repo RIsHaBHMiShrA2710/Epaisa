@@ -28,7 +28,7 @@ function ArticleCard({ article }) {
   };
 
   const thumbnailUrl = article.thumbnail_url || 'placeholder.jpg';
-  const authorAvatar = article.authorAvatar || 'avatar_placeholder.jpg';
+  const authorAvatar = article.authorAvatar || 'https://imgur.com/0tepHqb.jpg';
 
   return (
     <>
