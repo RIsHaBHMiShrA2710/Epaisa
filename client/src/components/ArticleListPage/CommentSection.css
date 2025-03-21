@@ -1,0 +1,126 @@
+/* ArticleCard.css */
+.article-card {
+  margin-bottom: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.article-content {
+  margin-bottom: 12px;
+}
+
+.article-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left {
+  /* e.g. author info */
+}
+
+.footer-right {
+  display: flex;
+  gap: 16px;
+}
+
+.action-item {
+  cursor: pointer;
+}
+
+/* CommentSection.css */
+.comment-section {
+  margin-top: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+  overflow-y: scroll;
+  max-height: 400px;
+  padding: 16px;
+}
+
+.comments-heading {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.comment-form {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  margin-bottom: 16px;
+  z-index: 1;
+}
+
+.comment-textarea {
+  min-height: 60px;
+  resize: vertical;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.comment-submit {
+  align-self: flex-end;
+  background-color: #15f5ba;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: #000;
+  cursor: pointer;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* CommentItem styles */
+.comment-item {
+  background: #fff;
+  border-radius: 4px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 8px;
+}
+
+.comment-content p {
+  margin: 4px 0;
+}
+
+.comment-actions {
+  margin-top: 8px;
+}
+
+.reply-form {
+  display: flex;
+  position: relative;
+  margin-top: 8px;
+  gap: 8px;
+  z-index: 1;
+}
+
+.reply-input {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.reply-submit {
+  background-color: #15f5ba;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.nested-replies {
+  margin-left: 16px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
