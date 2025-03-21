@@ -12,6 +12,13 @@ const ArticleListPage = () => {
     fetchArticles();
   }, [page]);
 
+  const handleUpdateCommentCount = (articleId, newCount) => {
+    setArticles(prev => 
+      prev.map(a => 
+        a.id === articleId ? { ...a, comments_count: newCount } : a
+      )
+    );
+  };
   async function fetchArticles() {
     try {
       const response = await fetch(`http://localhost:5000/api/articles?page=${page}&limit=5`);
@@ -38,7 +45,7 @@ const ArticleListPage = () => {
   return (
     <div className="article-list-container">
       {articles.map((article) => (
-        <ArticleCard key={article.id} article={article} />
+        <ArticleCard key={article.id} article={article} onUpdateCommentCount={handleUpdateCommentCount}/>
       ))}
 
       {hasMore && (
