@@ -1,5 +1,6 @@
 // ArticleCard.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ArticleCard.css'; // Import custom CSS
 import { castVote } from '../service/voteService';
 import { useAuth } from '../../AuthContext';
@@ -41,7 +42,11 @@ function ArticleCard({ article }) {
       console.error('Downvote error:', error);
     }
   };
+  const navigate = useNavigate();
 
+  const handleCardClick = () => {
+    navigate(`/blog/${article.id}`);
+  };
 
   const openAuthorModal = () => {
     setShowModal(true);
@@ -58,17 +63,18 @@ function ArticleCard({ article }) {
 
   return (
     <>
-      <div className="article-card">
+      <div className="article-card" >
         {/* Thumbnail on the left */}
         <div className="article-card-without-comment-section">
           <img
             className="article-card-image"
             src={thumbnailUrl}
             alt={article.title}
+            onClick={handleCardClick}
           />
 
           {/* Middle section with title/abstract/author */}
-          <div className="article-card-content">
+          <div className="article-card-content" onClick={handleCardClick}>
             <h2 className="article-card-header">{article.title}</h2>
             <p className="article-card-abstract">{article.abstract}</p>
 
@@ -86,14 +92,13 @@ function ArticleCard({ article }) {
 
           {/* Right side with up/down vote & counts */}
           <div className="article-card-actions">
-            <div className="article-card-action-item" onClick={handleUpvote}>
-              <IconArrowUp size={18} className="article-card-action-icon" />
-              <span className="article-card-action-count">{upvotes}</span>
-            </div>
-            <div className="article-card-action-item" onClick={handleDownvote}>
-              <IconArrowDown size={18} className="article-card-action-icon" />
-              <span className="article-card-action-count">{downvotes}</span>
-            </div>
+            <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote}>
+              ↑ {upvotes}
+            </button>
+            <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote}>
+              ↓ {downvotes}
+            </button>
+
             <div className="article-card-action-item">
               <div
                 className="action-item"

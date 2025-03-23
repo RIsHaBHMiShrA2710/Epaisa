@@ -1,0 +1,155 @@
+/* ARTICLE DETAIL CONTAINER */
+.adp-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* HEADER */
+.adp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.adp-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.adp-author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+.adp-author-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.adp-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Bolder publish date */
+.adp-publish-date {
+  font-size: 0.9rem;
+  color: #777;
+  font-weight: bold;  /* Make date bolder */
+}
+
+/* VOTE & COMMENT BUTTONS IN HEADER */
+.adp-vote-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.adp-vote-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;  /* Make text bolder */
+  transition: transform 0.2s, color 0.2s;
+}
+
+.adp-vote-btn:hover {
+  transform: scale(1.1); /* Slight size increase on hover */
+}
+
+.adp-upvote-btn {
+  color: green;
+}
+
+.adp-downvote-btn {
+  color: red;
+}
+
+.adp-comment-icon {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: blue;
+  transition: transform 0.2s;
+}
+
+.adp-comment-icon:hover {
+  transform: scale(1.1);
+}
+
+/* ARTICLE CONTENT */
+.adp-content {
+  margin-bottom: 24px;
+}
+
+.adp-title {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #333;
+  text-align: center;  /* Center the title */
+}
+
+.adp-thumbnail {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.adp-body {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* OPTIONAL FOOTER VOTE */
+.adp-footer-vote {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* COMMENT SECTION */
+.adp-comment-section {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+/* RESPONSIVE (MOBILE) */
+@media (max-width: 768px) {
+  .adp-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .adp-header-right {
+    margin-top: 8px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .adp-thumbnail {
+    max-height: 300px;
+  }
+
+  .adp-title {
+    font-size: 1.5rem;
+  }
+
+  .adp-body {
+    font-size: 1rem;
+  }
+}
