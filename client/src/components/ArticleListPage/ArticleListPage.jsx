@@ -1,20 +1,22 @@
 // ArticleListPage.jsx
 import React, { useState, useEffect } from 'react';
 import ArticleCard from './ArticleCard';
- // Optional: for overall page styling
+import { CreateArticleButton } from '../WritingArticle/CreateArticleButton';
+import { useNavigate } from 'react-router-dom';
+// Optional: for overall page styling
 
 const ArticleListPage = () => {
   const [articles, setArticles] = useState([]);
   const [page, setPage] = useState(1); // current page number
   const [hasMore, setHasMore] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchArticles();
   }, [page]);
 
   const handleUpdateCommentCount = (articleId, newCount) => {
-    setArticles(prev => 
-      prev.map(a => 
+    setArticles(prev =>
+      prev.map(a =>
         a.id === articleId ? { ...a, comments_count: newCount } : a
       )
     );
@@ -32,7 +34,7 @@ const ArticleListPage = () => {
         const newArticles = data.filter((article) => !existingIds.has(article.id));
         return [...prevArticles, ...newArticles];
       });
-        
+
     } catch (err) {
       console.error('Error fetching articles:', err);
     }
@@ -45,7 +47,7 @@ const ArticleListPage = () => {
   return (
     <div className="article-list-container">
       {articles.map((article) => (
-        <ArticleCard key={article.id} article={article} onUpdateCommentCount={handleUpdateCommentCount}/>
+        <ArticleCard key={article.id} article={article} onUpdateCommentCount={handleUpdateCommentCount} />
       ))}
 
       {hasMore && (
@@ -53,6 +55,7 @@ const ArticleListPage = () => {
           Load More
         </button>
       )}
+      <CreateArticleButton onClick={() => navigate('/create-article')} />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import CommentSection from './CommentSection';
 import { IconArrowUp, IconArrowDown, IconMessage, IconShare } from '@tabler/icons-react';
 import AuthorModal from './AuthorModal';
 
+
 function ArticleCard({ article }) {
   const { token, user } = useAuth();
   const [upvotes, setUpvotes] = useState(article.upvote_count || 0);
