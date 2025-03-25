@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 const ArticleController = require('../controllers/ArticleController');
 const authMiddleware = require('../middleware/authMiddleware'); // ensure routes are protected
-
+const upload = require('../config/multerConfig');
 // Create a new article
-router.post('/', authMiddleware, ArticleController.createArticle);
+router.post('/', authMiddleware,upload.single('thumbnail'), ArticleController.createArticle);
 // Get list of all articles
 router.get('/', ArticleController.getAllArticles);
 // Get a specific article by id

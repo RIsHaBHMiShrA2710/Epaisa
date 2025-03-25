@@ -1,12 +1,36 @@
 // controllers/ArticleController.js
 const pool = require('../config/db');
-
+const cloudinary = require('../config/cloudinaryConfig');
+const streamifier = require('streamifier');
 exports.createArticle = async (req, res) => {
   try {
-    const { title, abstract, content, thumbnail_url } = req.body;
-    // Get user from authentication (e.g., via JWT)
+    const { title, abstract, content } = req.body;
     const userId = req.user.id;
-    
+
+    let thumbnail_url = null;
+
+    // If thumbnail exists, upload to Cloudinary
+    if (req.file) {
+      const streamUpload = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: 'Epaisa-Article-Thumbnails' },
+            (error, result) => {
+              if (result) {
+                resolve(result);
+              } else {
+                reject(error);
+              }
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+
+      const result = await streamUpload();
+      thumbnail_url = result.secure_url;
+    }
+
     const query = `
       INSERT INTO articles (user_id, title, abstract, content, thumbnail_url)
       VALUES ($1, $2, $3, $4, $5)
@@ -14,6 +38,7 @@ exports.createArticle = async (req, res) => {
     `;
     const values = [userId, title, abstract, content, thumbnail_url];
     const { rows } = await pool.query(query, values);
+
     res.status(201).json(rows[0]);
   } catch (error) {
     console.error('Error creating article:', error);

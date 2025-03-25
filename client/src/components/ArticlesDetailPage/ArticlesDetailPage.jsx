@@ -5,9 +5,10 @@ import { useAuth } from '../../AuthContext';
 import { useParams } from 'react-router-dom';
 import { castVote } from '../service/voteService';
 import './ArticlesDetailsPage.css';
+import DOMPurify from 'dompurify';
 
 const ArticleDetailPage = () => {
-  const { id } = useParams(); // article id from URL
+  const { id } = useParams(); 
   const { user, token } = useAuth();
   const commentSectionRef = useRef(null);
   const [article, setArticle] = useState(null);
@@ -70,6 +71,8 @@ const ArticleDetailPage = () => {
 
   if (!article) return <div>Loading...</div>;
 
+  const sanitizedHTML = DOMPurify.sanitize(article.content);
+
   return (
     <div className="adp-container">
       <div className="adp-header">
@@ -104,9 +107,8 @@ const ArticleDetailPage = () => {
         {article.thumbnail_url && (
           <img className="adp-thumbnail" src={article.thumbnail_url} alt={article.title} />
         )}
-        <div className="adp-body">
-          {article.content}
-        </div>
+        
+        <div className="adp-body" dangerouslySetInnerHTML={{ __html: sanitizedHTML }}/>
       </div>
 
       <div className="adp-footer-vote">

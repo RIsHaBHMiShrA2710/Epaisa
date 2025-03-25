@@ -98,9 +98,8 @@
   text-align: center;  /* Center the title */
 }
 
-.adp-thumbnail {
+.adp-thumbnail, .adp-body img{
   width: 100%;
-  max-height: 400px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 16px;
@@ -141,7 +140,7 @@
     gap: 12px;
   }
 
-  .adp-thumbnail {
+  .adp-thumbnail, .adp-body img{
     max-height: 300px;
   }
 
@@ -149,7 +148,7 @@
     font-size: 1.5rem;
   }
 
-  .adp-body {
+  /* .adp-body {
     font-size: 1rem;
-  }
+  } */
 }
