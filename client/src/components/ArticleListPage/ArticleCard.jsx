@@ -60,7 +60,7 @@ function ArticleCard({ article }) {
     setShowComments((prev) => !prev);
   };
   const thumbnailUrl = article.thumbnail_url || 'placeholder.jpg';
-  const authorAvatar = article.authorAvatar || 'https://imgur.com/0tepHqb.jpg';
+  const authorAvatar = article.author_avatar || null;
 
   return (
     <>
@@ -86,7 +86,7 @@ function ArticleCard({ article }) {
                 alt="Author"
               />
               <span className="article-card-author-name">
-                {article.authorName || 'Unknown Author'}
+                {article.author_name || 'Unknown Author'}
               </span>
             </div>
           </div>

@@ -27,6 +27,7 @@ passport.use(
       try {
         const email = profile.emails?.[0]?.value || `no-email-${profile.id}@example.com`;
         const name = profile.displayName || 'Unknown User';
+        const avatar = profile.photos?.[0]?.value || null;
 
         // 1️⃣ **Check if the user already exists (by email)**
         const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
@@ -35,14 +36,14 @@ passport.use(
         if (user) {
           // ✅ User exists, update their Google ID if missing
           if (!user.google_id) {
-            await pool.query('UPDATE users SET google_id = $1 WHERE email = $2', [profile.id, email]);
+            await pool.query('UPDATE users SET google_id = $1, avatar_url = $3 WHERE email = $2', [profile.id, email, avatar]);
           }
         } else {
           // ❌ User does NOT exist, insert a new record
           const insertResult = await pool.query(
-            `INSERT INTO users (name, email, google_id, auth_provider, password)
-             VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, auth_provider`,
-            [name, email, profile.id, 'google', null]
+            `INSERT INTO users (name, email, google_id, auth_provider, password, avatar_url)
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, name, email, auth_provider`,
+            [name, email, profile.id, 'google', null, avatar]
           );
           user = insertResult.rows[0];
         }
