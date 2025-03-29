@@ -46,9 +46,10 @@ exports.createArticle = async (req, res) => {
   }
 };
 
+
 exports.getAllArticles = async (req, res) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM articles ORDER BY created_at DESC;');
+    const { rows } = await pool.query('SELECT articles.*, users.name AS author_name, users.avatar_url as author_avatar FROM articles LEFT JOIN users ON articles.user_id = users.id ORDER BY articles.created_at DESC;');
     res.json(rows);
   } catch (error) {
     console.error('Error fetching articles:', error);
@@ -59,7 +60,7 @@ exports.getAllArticles = async (req, res) => {
 exports.getArticleById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { rows } = await pool.query('SELECT * FROM articles WHERE id = $1;', [id]);
+    const { rows } = await pool.query('SELECT articles.*, users.name AS author_name, users.avatar_url as author_avatar FROM articles LEFT JOIN users ON articles.user_id = users.id WHERE articles.id = $1;', [id]);
     if (!rows.length) return res.status(404).json({ message: 'Article not found' });
     res.json(rows[0]);
   } catch (error) {

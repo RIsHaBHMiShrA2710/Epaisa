@@ -1,4 +1,3 @@
-// ArticleDetailPage.jsx
 import React, { useRef, useState, useEffect } from 'react';
 import CommentSection from '../ArticleListPage/CommentSection';
 import { useAuth } from '../../AuthContext';
@@ -19,7 +18,7 @@ const ArticleDetailPage = () => {
     async function fetchArticle() {
       try {
         const res = await fetch(`http://localhost:5000/api/articles/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }, // if needed
+          headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -79,10 +78,10 @@ const ArticleDetailPage = () => {
         <div className="adp-header-left">
           <img
             className="adp-author-avatar"
-            src={article.authorAvatar || 'avatar_placeholder.jpg'}
-            alt={article.authorName || 'Author'}
+            src={article.author_avatar || 'avatar_placeholder.jpg'}
+            alt={article.author_name || 'Author'}
           />
-          <span className="adp-author-name">{article.authorName || 'Unknown Author'}</span>
+          <span className="adp-author-name">{article.author_name || 'Unknown Author'}</span>
         </div>
         <div className="adp-header-right">
           <span className="adp-publish-date">
