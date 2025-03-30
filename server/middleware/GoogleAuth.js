@@ -27,7 +27,8 @@ passport.use(
       try {
         const email = profile.emails?.[0]?.value || `no-email-${profile.id}@example.com`;
         const name = profile.displayName || 'Unknown User';
-        const avatar = profile.photos?.[0]?.value || null;
+        const avatar = profile.photos?.[0]?.value;
+
 
         // 1️⃣ **Check if the user already exists (by email)**
         const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
