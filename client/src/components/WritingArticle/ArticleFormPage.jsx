@@ -5,6 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useAuth } from '../../AuthContext';
 import './ArticleFormPage.css';
 import { modules, formats } from './modulesConfig';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 const ArticleFormPage = () => {
   const { user, token } = useAuth();
@@ -13,9 +14,12 @@ const ArticleFormPage = () => {
   const [thumbnail, setThumbnail] = useState(null);
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
-  // Validation helper: count words (splitting on whitespace)
-  const countWords = (text) => text.trim().split(/\s+/).filter(Boolean).length;
+  // Helper: count words
+  const countWords = (text) =>
+    text.trim().split(/\s+/).filter(Boolean).length;
 
   const handleThumbnailChange = (e) => {
     setThumbnail(e.target.files[0]);
@@ -23,26 +27,30 @@ const ArticleFormPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Ensure only logged-in users can submit
     if (!user) {
       alert('You must be logged in to submit an article.');
       return;
     }
 
-    // Validate abstract (max 70 words) and content (min 200 words)
+    // Validate abstract and content
     const abstractWordCount = countWords(abstractText);
     if (abstractWordCount > 70) {
       setError(`Abstract must be 70 words or fewer. Currently ${abstractWordCount} words.`);
       return;
     }
-    const contentWordCount = countWords(content.replace(/<[^>]+>/g, '')); // remove HTML tags
+    const contentWordCount = countWords(content.replace(/<[^>]+>/g, ''));
     if (contentWordCount < 200) {
       setError(`Content must be at least 200 words. Currently ${contentWordCount} words.`);
       return;
     }
-    
+    if (!thumbnail) {
+      setError('Thumbnail is required.');
+      return;
+    }
+
     setError('');
+    setSubmitting(true);
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('abstract', abstractText);
@@ -52,23 +60,30 @@ const ArticleFormPage = () => {
     try {
       const res = await fetch('http://localhost:5000/api/articles', {
         method: 'POST',
-        
         headers: {
           'Authorization': `Bearer ${token}`
         },
         body: formData
-
       });
       if (!res.ok) {
         throw new Error('Failed to create article');
       }
       const data = await res.json();
       console.log('Article created successfully:', data);
-      // Optionally, redirect to the new article page or show success message
-      // For example: navigate(`/article/${data.id}`);
+      setSubmissionSuccess(true);
+      // Clear form fields after a brief delay
+      setTimeout(() => {
+        setTitle('');
+        setAbstractText('');
+        setThumbnail(null);
+        setContent('');
+        setSubmissionSuccess(false);
+      }, 2000);
     } catch (err) {
       console.error(err);
       setError('Error creating article. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -76,8 +91,8 @@ const ArticleFormPage = () => {
     <div className="afp-container">
       <h1 className="afp-heading">Create Article</h1>
       {error && <div className="afp-error">{error}</div>}
+      {submissionSuccess && <div className="afp-success">✓ Article created successfully!</div>}
       <form onSubmit={handleSubmit} className="afp-form">
-        {/* Title Field */}
         <div className="afp-field">
           <label htmlFor="afp-title">Title</label>
           <input
@@ -89,7 +104,6 @@ const ArticleFormPage = () => {
             placeholder="Enter the article title"
           />
         </div>
-        {/* Abstract Field */}
         <div className="afp-field">
           <label htmlFor="afp-abstract">Abstract (max 70 words)</label>
           <textarea
@@ -100,7 +114,6 @@ const ArticleFormPage = () => {
             placeholder="Enter a brief abstract..."
           />
         </div>
-        {/* Thumbnail Field */}
         <div className="afp-field">
           <label htmlFor="afp-thumbnail">Thumbnail (Image)</label>
           <input
@@ -108,10 +121,9 @@ const ArticleFormPage = () => {
             type="file"
             accept="image/*"
             onChange={handleThumbnailChange}
-           
+            required
           />
         </div>
-        {/* Content Field with Rich Text Editor */}
         <div className="afp-field">
           <label>Content (min 200 words)</label>
           <ReactQuill
@@ -122,10 +134,11 @@ const ArticleFormPage = () => {
             formats={formats}
             placeholder="Write your article here..."
             className="afp-editor"
+            tabIndex="0"
           />
         </div>
-        <button type="submit" className="afp-submit">
-          Submit Article
+        <button type="submit" className="afp-submit" disabled={submitting}>
+          {submitting ? <LoadingSpinner /> : submissionSuccess ? '✓' : 'Submit Article'}
         </button>
       </form>
     </div>

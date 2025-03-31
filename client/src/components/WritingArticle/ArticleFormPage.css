@@ -3,36 +3,47 @@
   max-width: 900px;
   margin: 3rem auto;
   padding: 2.5rem;
-  background: #fff;
+  background: linear-gradient(135deg, #ffffff, #f0f9ff);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Main heading styling */
 .afp-heading {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 700;
   color: #333;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Success message styling */
+.afp-success {
+  color: #43a047;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  font-size: 1.15rem;
+  font-weight: 600;
 }
 
 /* Error message styling */
 .afp-error {
-  color: #d32f2f;
+  color: #e53935;
   text-align: center;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.15rem;
 }
 
 /* Form styling */
 .afp-form {
+  display: flex;
   position: relative;
   z-index: 1;
-  display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 2rem;
 }
 
 /* Individual field styling */
@@ -53,16 +64,12 @@
 .afp-field textarea {
   padding: 1rem;
   font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  font-family: 'Roboto';
+  border: 1px solid #ccc;
+  border-radius: 10px;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.afp-field input[type="text"]:focus,
-.afp-field textarea:focus {
-  border-color: #15f5ba;
-  box-shadow: 0 0 8px rgba(21, 245, 186, 0.3);
+  background: #fafafa;
 }
 
 /* File input styling */
@@ -74,28 +81,49 @@
 /* React Quill editor styling */
 .afp-editor {
   height: 350px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
   overflow: hidden;
+  background: #fff;
 }
 
-/* Submit button styling */
+/* Submit button styling with fixed dimensions */
 .afp-submit {
   align-self: center;
   background-color: #15f5ba;
   color: #000;
   border: none;
   padding: 1rem 2.5rem;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1.3rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  min-width: 220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .afp-submit:hover {
   background-color: #13e0a7;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+}
+.afp-field input[type="text"]:focus,
+.afp-field textarea:focus{
+  border-color: #15f5ba;
+  box-shadow: 4px 4px 10px 4px rgba(21, 245, 186, 0.3);
+}
+/* Base styling for the Quill container */
+.afp-editor{
+  border: 1px solid #ddd;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* When any child (like the toolbar or the editor) has focus, style the entire container */
+.afp-editor:focus-within {
+  border-color: #15f5ba;
+  box-shadow: 4px 4px 10px 4px rgba(21, 245, 186, 0.3);
 }
 
 /* Responsive adjustments */
@@ -117,5 +145,6 @@
   .afp-submit {
     font-size: 1.1rem;
     padding: 1rem 2rem;
+    min-width: 180px;
   }
 }
