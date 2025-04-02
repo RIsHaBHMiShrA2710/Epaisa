@@ -9,6 +9,7 @@ const articleRoutes = require('./routes/articleRoutes');
 const commentRoutes = require('./routes/commentRoutes');
 const voteRoutes = require('./routes/voteRoutes');
 const uploadRoutes = require('./routes/imageUploadRoutes');
+const userRoutes = require('./routes/UserRoutes');
 
 
 const app = express();
@@ -38,6 +39,8 @@ app.use('/api/articles', articleRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/votes', voteRoutes);  
 app.use('/api', uploadRoutes);
+app.use('/api/users', userRoutes);
+
 // ✅ Server start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
