@@ -4,7 +4,7 @@
 .header {
   background-color: var(--mantine-color-body);
   border-bottom: 1px solid var(--mantine-color-gray-3);
-  overflow: hidden; 
+  overflow: visible; 
   position: relative;
   z-index: 2;
   transition: height 0.3s ease; 
@@ -131,4 +131,5 @@
   .burger {
     display: block;
   }
+  
 }

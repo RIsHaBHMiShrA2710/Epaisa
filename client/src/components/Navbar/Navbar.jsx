@@ -3,15 +3,19 @@ import { Link, useLocation } from "react-router-dom"; // Import useLocation
 import AuthButton from '../Auth/AuthButton';
 import { Container, Group } from '@mantine/core';
 import classes from './Navbar.module.css';
+import AvatarDropdown from '../Auth/AvatarDropdown';
+import { useAuth } from '../../authContext';
 
 const links = [
   { link: '/', label: 'Home' },
   { link: '/blog', label: 'Blogs' },
 ];
 
+
 const Navbar = () => {
   const [opened, setOpened] = useState(false);
   const location = useLocation(); // Get current route
+  const {user} = useAuth();
 
   // Generate navigation links dynamically
   const items = links.map((link) => (
@@ -41,7 +45,8 @@ const Navbar = () => {
         <Group className={classes.group}>{items}</Group>
 
         {/* Login/Register Button */}
-        <AuthButton />
+        {user ? <AvatarDropdown /> : <AuthButton />}
+
 
         {/* Burger Icon for Mobile Menu */}
         <div
