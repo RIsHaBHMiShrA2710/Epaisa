@@ -29,11 +29,11 @@ export const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
       if (!token) return;
       try {
-        const { data } = await axios.get('http://localhost:5000/api/auth/me', {
+        const { data } = await axios.get('http://localhost:5000/api/users/me/dashboard', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUser(data);
-        localStorage.setItem('user', JSON.stringify(data));
+        setUser(data.user); // only store user object
+        localStorage.setItem('user', JSON.stringify(data.user));
       } catch (err) {
         console.error('Failed to fetch user:', err);
         setUser(null);

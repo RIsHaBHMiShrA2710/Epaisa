@@ -1,0 +1,204 @@
+/* Root container */
+.ud_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1300px;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+.ud_card {
+  display: flex;
+  align-items: flex-start;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 6px rgba(21, 245, 186, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.ud_input {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.ud_cancelBtn {
+  margin: 0.5rem;
+  background: #f44336;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.ud_pwdBox {
+  margin: 1rem;
+  background-color: #fefefe;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+  
+.ud_card:hover {
+  transform: translateY(-3px);
+}
+
+.ud_card_thumb {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 2px solid #15f5ba;
+}
+
+.ud_card_info {
+  flex: 1;
+}
+
+.ud_card_info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #111;
+}
+
+.ud_card_info p {
+  margin: 0.4rem 0 0;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+/* Sidebar */
+.ud_sidebar {
+  flex: 1 1 250px;
+  flex-direction: column;
+  background: #e8f0ef;
+  justify-items: center;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.ud_avatar {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  border: 2px solid #15f5ba;
+  box-shadow:4px 4px 10px rgba(21, 245, 185, 0.314);
+}
+.ud_avatar_image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ud_name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.ud_email {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.ud_bio {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.ud_editBtn {
+  margin: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #15f5ba;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.ud_editBtn:hover {
+  background-color: #13e0a7;
+}
+
+/* Main content */
+.ud_main {
+  flex: 3 1 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ud_section {
+  background-color: #e8f0ef;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.ud_section h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+/* Article card */
+
+.ud_card:last-child {
+  border-bottom: none;
+}
+
+.ud_card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.ud_card p {
+  margin: 0.3rem 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Feedback messages */
+.ud_loading,
+.ud_error {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ud_container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .ud_main {
+    max-width: 100%;
+  }
+
+  .ud_section {
+    max-height: none;
+  }
+}
