@@ -10,7 +10,7 @@ const commentRoutes = require('./routes/commentRoutes');
 const voteRoutes = require('./routes/voteRoutes');
 const uploadRoutes = require('./routes/imageUploadRoutes');
 const userRoutes = require('./routes/UserRoutes');
-
+const UpdateUserRoutes = require('./routes/UpdateUserRoutes')
 
 const app = express();
 
@@ -40,7 +40,7 @@ app.use('/api/comments', commentRoutes);
 app.use('/api/votes', voteRoutes);  
 app.use('/api', uploadRoutes);
 app.use('/api/users', userRoutes);
-
+app.use('/api/users/update', UpdateUserRoutes);
 // ✅ Server start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

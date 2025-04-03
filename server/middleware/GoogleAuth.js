@@ -53,7 +53,7 @@ passport.use(
         
           const result = await uploadPromise;
           avatarUrl = result.secure_url;
-          console.log(avatarUrl);
+          
         }
         
 

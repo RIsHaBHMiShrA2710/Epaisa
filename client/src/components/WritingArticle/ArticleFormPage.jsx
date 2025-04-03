@@ -43,10 +43,7 @@ const ArticleFormPage = () => {
       setError(`Content must be at least 200 words. Currently ${contentWordCount} words.`);
       return;
     }
-    if (!thumbnail) {
-      setError('Thumbnail is required.');
-      return;
-    }
+    
 
     setError('');
     setSubmitting(true);
@@ -121,7 +118,7 @@ const ArticleFormPage = () => {
             type="file"
             accept="image/*"
             onChange={handleThumbnailChange}
-            required
+           
           />
         </div>
         <div className="afp-field">
