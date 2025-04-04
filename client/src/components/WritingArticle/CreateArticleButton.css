@@ -1,7 +1,7 @@
 .floating-button {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 6rem;
+    right: 20px;
     background-color: #15f5ba;
     color: #000;
     border: none;

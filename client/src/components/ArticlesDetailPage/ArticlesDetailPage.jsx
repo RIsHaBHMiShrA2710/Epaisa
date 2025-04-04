@@ -5,6 +5,9 @@ import { useParams } from 'react-router-dom';
 import { castVote } from '../service/voteService';
 import './ArticlesDetailsPage.css';
 import DOMPurify from 'dompurify';
+import Loader from '../Loader/Loader';
+
+
 
 const ArticleDetailPage = () => {
   const { id } = useParams(); 
@@ -13,6 +16,7 @@ const ArticleDetailPage = () => {
   const [article, setArticle] = useState(null);
   const [upvotes, setUpvotes] = useState(0);
   const [downvotes, setDownvotes] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchArticle() {
@@ -29,6 +33,8 @@ const ArticleDetailPage = () => {
         setDownvotes(data.downvote_count || 0);
       } catch (error) {
         console.error('Error fetching article:', error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchArticle();
@@ -68,11 +74,16 @@ const ArticleDetailPage = () => {
     }
   };
 
-  if (!article) return <div>Loading...</div>;
+  if (!article) return <div>There are no articles to see... </div>;
 
   const sanitizedHTML = DOMPurify.sanitize(article.content);
-
+  if(loading){
+    return (
+      <Loader />
+    );
+  }
   return (
+    
     <div className="adp-container">
       <div className="adp-header">
         <div className="adp-header-left">

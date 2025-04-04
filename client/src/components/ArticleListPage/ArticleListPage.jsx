@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ArticleCard from './ArticleCard';
 import { CreateArticleButton } from '../WritingArticle/CreateArticleButton';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../Loader/Loader';
 // Optional: for overall page styling
 
 const ArticleListPage = () => {
@@ -10,6 +11,8 @@ const ArticleListPage = () => {
   const [page, setPage] = useState(1); // current page number
   const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetchArticles();
   }, [page]);
@@ -37,13 +40,19 @@ const ArticleListPage = () => {
 
     } catch (err) {
       console.error('Error fetching articles:', err);
+    } finally {
+      setLoading(false);
     }
   }
 
   const loadMore = () => {
     setPage(page + 1);
   };
-
+  if(loading){
+    return (
+      <Loader />
+    );
+  }
   return (
     <div className="article-list-container">
       {articles.map((article) => (

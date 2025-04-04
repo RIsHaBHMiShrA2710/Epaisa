@@ -59,9 +59,10 @@ function ArticleCard({ article }) {
   const toggleComments = () => {
     setShowComments((prev) => !prev);
   };
-  const thumbnailUrl = article.thumbnail_url || 'placeholder.jpg';
-  const authorAvatar = article.author_avatar || null;
+  const thumbnailUrl = article.thumbnail_url?.trim() ? article.thumbnail_url : 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/800px-Placeholder_view_vector.svg.png';
 
+  const authorAvatar = article.author_avatar?.trim() ? article.author_avatar : 'https://whitedotpublishers.com/wp-content/uploads/2022/05/male-placeholder-image.jpeg';
+  console.log(thumbnailUrl);
   return (
     <>
       <div className="article-card" >
@@ -122,7 +123,6 @@ function ArticleCard({ article }) {
         )}
       </div>
 
-      {/* Author Modal */}
       {showModal && (
         <AuthorModal
           opened={showModal}
