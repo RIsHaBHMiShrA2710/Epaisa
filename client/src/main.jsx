@@ -5,6 +5,7 @@ import { MantineProvider } from '@mantine/core';
 import App from './App';
 import Navbar from './components/Navbar/Navbar';
 import { AuthProvider } from './authContext';
+import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -14,6 +15,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           
           <Navbar />
           <App />
+          <WhatsAppButton />
+
         </AuthProvider>
       </MantineProvider>
     </BrowserRouter>
