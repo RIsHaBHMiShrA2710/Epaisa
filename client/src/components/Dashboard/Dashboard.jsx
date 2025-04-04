@@ -20,6 +20,8 @@ const UserDashboard = () => {
   const [newName, setNewName] = useState('');
   const [profileLoading, setProfileLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(false);
+  const DEFAULT_THUMBNAIL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/800px-Placeholder_view_vector.svg.png';
+  const DEFAULT_AVATAR = 'https://whitedotpublishers.com/wp-content/uploads/2022/05/male-placeholder-image.jpeg';
 
 
 
@@ -117,6 +119,7 @@ const UserDashboard = () => {
       setPasswordLoading(false);
     }
   };
+  
 
   return (
 
@@ -126,7 +129,8 @@ const UserDashboard = () => {
         <div className={styles.ud_avatar}>
           <img
 
-            src={userInfo.avatar_url || '/avatar_placeholder.jpg'}
+src={userInfo.avatar_url?.trim() ? userInfo.avatar_url : DEFAULT_AVATAR}
+
             alt={userInfo.name}
             className={styles.ud_avatar_image}
           />
@@ -209,7 +213,7 @@ const UserDashboard = () => {
                 onClick={() => navigate(`/blog/${article.id}`)}
               >
                 <img
-                  src={article.thumbnail_url}
+                  src={article.thumbnail_url || DEFAULT_THUMBNAIL}
                   alt={article.title}
                   className={styles.ud_card_thumb}
                 />
@@ -235,7 +239,7 @@ const UserDashboard = () => {
                 onClick={() => navigate(`/blog/${article.id}`)}
               >
                 <img
-                  src={article.thumbnail_url}
+                  src={article.thumbnail_url || DEFAULT_THUMBNAIL}
                   alt={article.title}
                   className={styles.ud_card_thumb}
                 />
@@ -260,7 +264,7 @@ const UserDashboard = () => {
                 onClick={() => navigate(`/blog/${article.id}`)}
               >
                 <img
-                  src={article.thumbnail_url}
+                  src={article.thumbnail_url || DEFAULT_THUMBNAIL}
                   alt={article.title}
                   className={styles.ud_card_thumb}
                 />

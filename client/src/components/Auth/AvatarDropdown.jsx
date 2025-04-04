@@ -20,7 +20,7 @@ const AvatarDropdown = () => {
           }
         });
         const data = await res.json();
-        setAvatarUrl(data.user.avatar_url || '/avatar_placeholder.jpg');
+        setAvatarUrl(data.user.avatar_url || 'https://whitedotpublishers.com/wp-content/uploads/2022/05/male-placeholder-image.jpeg');
       } catch (err) {
         console.error('Failed to load avatar:', err);
       }

@@ -65,11 +65,8 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
-      setToken(data.token);
-      setUser(data.user);
-      localStorage.setItem('authToken', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
+      return await login(email, password);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to register');
     } finally {
