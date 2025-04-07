@@ -1,0 +1,26 @@
+.breadcrumbs {
+    background-color: rgba(241, 241, 241, 0.789);
+    padding: 10px;
+    border-radius: 5px;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .link {
+    color: #007acc;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .link:hover {
+    color: #005f99;
+    text-decoration: underline;
+  }
+  
+  .current {
+    color: #888;
+    font-weight: 400;
+  }
+  

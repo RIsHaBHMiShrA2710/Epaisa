@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-react": "^0.13.3",
     "@mantine/carousel": "^7.15.3",
     "@mantine/core": "^7.14.3",
     "@mantine/hooks": "^7.14.3",
@@ -18,15 +19,19 @@
     "dompurify": "^3.2.4",
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
+    "framer-motion": "^12.6.3",
     "gsap": "^3.12.5",
     "locomotive-scroll": "^4.1.4",
+    "lottie-react": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-fullpage": "^0.1.19",
+    "react-intersection-observer": "^9.16.0",
     "react-quill": "^2.0.0",
     "react-router-dom": "^7.1.5",
     "react-snap-scroll": "^0.0.5",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "react-type-animation": "^3.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

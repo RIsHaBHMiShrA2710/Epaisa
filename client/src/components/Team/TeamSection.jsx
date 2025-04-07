@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Container, Title, Text, Box, Image } from '@mantine/core';
-import { Carousel } from '@mantine/carousel'; 
+import { Carousel } from '@mantine/carousel';
 import '@mantine/carousel/styles.css';
-
 import { useMediaQuery } from '@mantine/hooks';
 import Autoplay from 'embla-carousel-autoplay';
 import {
@@ -86,22 +85,15 @@ const TeamMemberCard = ({ member }) => {
 
 export function TeamSection() {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const autoplay = useRef(Autoplay({ delay: 3000 }));
+  // Auto-slide every 2 seconds
+  const autoplay = useRef(Autoplay({ delay: 2000 }));
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
-
-  const carouselSlides = teamMembers.map((member, index) => (
-    <Carousel.Slide key={index}>
-      <TeamMemberCard member={member} />
-    </Carousel.Slide>
-  ));
+  if (!mounted) return null;
 
   return (
     <Box component="section" id="team" className={classes.teamArea}>
@@ -122,20 +114,23 @@ export function TeamSection() {
               align="center"
               withControls
               withIndicators
+              plugins={[autoplay.current]}
+              onMouseEnter={autoplay.current.stop}
+              onMouseLeave={autoplay.current.reset}
               classNames={{
                 root: classes.carousel,
                 slide: classes.slide,
                 control: classes.carouselControl,
                 indicator: classes.carouselIndicator,
+                indicators: classes.carouselIndicatorsWrapper,
               }}
             >
-              {teamMembers.map((member,index) => (
+              {teamMembers.map((member, index) => (
                 <Carousel.Slide key={index}>
                   <TeamMemberCard member={member} />
                 </Carousel.Slide>
               ))}
             </Carousel>
-
           </Box>
         ) : (
           <div className={classes.teamItems}>
