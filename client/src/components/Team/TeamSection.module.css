@@ -1,6 +1,5 @@
-/* Team section area */
+/* Overall Team Section */
 .teamArea {
-  padding: 60px 30px; /* Reduced padding for smaller screens */
   font-family: 'Poppins', sans-serif;
   background: #ffffff;
 }
@@ -13,45 +12,63 @@
 
 .siteHeading h2 {
   font-weight: 700;
-  font-size: 2.5rem; /* Adjust font size */
+  font-size: 2.5rem;
   margin-bottom: 15px;
 }
 
 .siteHeading p {
-  font-size: 1rem; /* Smaller text for mobile */
+  font-size: 1rem;
 }
 
 .span {
   color: #15f5ba;
 }
-
-/* Team grid items */
+.item {
+  position: relative;
+  padding: 30px;
+}
+/* Desktop team grid */
 .teamItems {
   display: grid;
+  padding: 20px;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
 
 @media (max-width: 992px) {
   .teamItems {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+    padding: unset;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .item {
+    padding: unset;
   }
 }
 
 @media (max-width: 600px) {
   .teamItems {
-    grid-template-columns: 1fr; /* Single column for mobile */
-    gap: 20px; /* Adjust gap for mobile screens */
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
-/* Carousel wrapper styles for mobile */
+/* Carousel wrapper for mobile */
 .carouselWrapper {
-  padding: 0 10px; /* Padding for cleaner edges */
+  padding: 0 10px;
+  position: relative;
+  /* allow space for arrows */
+  overflow: visible;
 }
 
+/* Make sure the carousel is relatively positioned and can show arrows */
 .carousel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   width: 100%;
+  overflow: visible; /* ensures the controls are visible */
 }
 
 .slide {
@@ -60,27 +77,57 @@
   text-align: center;
 }
 
+/* Remove any rule that hides an arrow if 'inactive' */
+/* .carouselControl[data-inactive] { 
+  opacity: 0; 
+  pointer-events: none; 
+} */
+
+/* Carousel control (arrow) styling */
 .carouselControl {
+  top: 50%;
+  transform: translateY(-50%);
   background-color: #15f5ba;
   color: black;
   border-radius: 50%;
   width: 40px;
   height: 40px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-.carouselControl:hover {
-  background-color: #0fb488;
+/* Position the next and previous arrows */
+.carouselControl[data-direction="next"] {
+  left: 10px; /* or 10px, adjust to taste */
 }
 
+.carouselControl[data-direction="prev"] {
+  right: 10px; /* or 10px, adjust to taste */
+}
+
+/* Carousel indicators */
 .carouselIndicator {
+  position: relative;
   width: 8px;
   height: 8px;
   background-color: rgba(21, 245, 186, 0.3);
   border-radius: 50%;
+  gap: 4px;
   transition: all 0.3s ease;
+}
+.carouselIndicatorsWrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  
 }
 
 .carouselIndicator[data-active] {
+  position: relative;
   background-color: #15f5ba;
   width: 12px;
   height: 12px;
@@ -89,12 +136,10 @@
 /* Team member card styles */
 .singleItem {
   margin-bottom: 30px;
-  padding: 20px 20px;
+  padding: 20px;
 }
 
-.item {
-  position: relative;
-}
+
 
 /* Image container */
 .thumb {
@@ -108,7 +153,7 @@
   height: auto;
 }
 
-/* Overlay styles for hover */
+/* Overlay on image hover */
 .overlay {
   position: absolute;
   top: 0;
@@ -163,7 +208,7 @@
   color: black;
 }
 
-/* Team member info styles */
+/* Team member info */
 .info {
   padding: 20px;
   position: relative;

@@ -6,7 +6,7 @@ import { castVote } from '../service/voteService';
 import './ArticlesDetailsPage.css';
 import DOMPurify from 'dompurify';
 import Loader from '../Loader/Loader';
-
+import Breadcrumbs from '../BreadCrumbs/BreadCrumbs';
 
 
 const ArticleDetailPage = () => {
@@ -74,7 +74,7 @@ const ArticleDetailPage = () => {
     }
   };
 
-  if (!article) return <div>There are no articles to see... </div>;
+  if (!article) return <div><Loader/></div>;
 
   const sanitizedHTML = DOMPurify.sanitize(article.content);
   if(loading){
@@ -111,7 +111,7 @@ const ArticleDetailPage = () => {
           </button>
         </div>
       </div>
-
+      <Breadcrumbs/>
       <div className="adp-content">
         <h1 className="adp-title">{article.title}</h1>
         {article.thumbnail_url && (

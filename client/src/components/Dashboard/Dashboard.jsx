@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './Dashboard.module.css';
 import { useAuth } from '../../AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
+import Loader from '../Loader/Loader';
 import 'react-toastify/dist/ReactToastify.css';
 
 const UserDashboard = () => {
@@ -46,8 +47,8 @@ const UserDashboard = () => {
     if (token) fetchDashboardData();
   }, [token]);
 
-
-  if (loading) return <div className={styles.ud_loading}>Loading dashboard...</div>;
+  
+  if (loading) return (<div><Loader/></div>);
   if (!dashboardData) return <div className={styles.ud_error}>Failed to load dashboard.</div>;
 
   const { user: userInfo, articles, upvotedArticles, downvotedArticles } = dashboardData;

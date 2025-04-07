@@ -4,6 +4,9 @@ import ArticleCard from './ArticleCard';
 import { CreateArticleButton } from '../WritingArticle/CreateArticleButton';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../Loader/Loader';
+import FadeInUp from '../../animations/FadeInUp';
+import StaggerContainer from '../../animations/StaggerContainer';
+import Breadcrumbs from '../BreadCrumbs/BreadCrumbs';
 // Optional: for overall page styling
 
 const ArticleListPage = () => {
@@ -54,9 +57,15 @@ const ArticleListPage = () => {
     );
   }
   return (
-    <div className="article-list-container">
+    
+     <div className="article-list-container">
+      <Breadcrumbs/>
       {articles.map((article) => (
-        <ArticleCard key={article.id} article={article} onUpdateCommentCount={handleUpdateCommentCount} />
+        
+          <FadeInUp delay={0.2}>
+          <ArticleCard key={article.id} article={article} onUpdateCommentCount={handleUpdateCommentCount} />
+          </FadeInUp>
+        
       ))}
 
       {hasMore && (
