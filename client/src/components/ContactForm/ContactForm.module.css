@@ -286,6 +286,19 @@ textarea.input {
   transform: translate(181%, 11%);
   opacity: 0.2;
 }
+.errorText {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.successText {
+  color: green;
+  font-size: 1rem;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
 
 /* Ensure grid layout is stacked on smaller screens */
 @media (max-width: 850px) {
