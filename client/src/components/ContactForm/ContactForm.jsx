@@ -1,142 +1,137 @@
 import { useState } from 'react';
-import { Container, TextInput, Textarea, Button } from '@mantine/core';
+import { Container, Button } from '@mantine/core';
 import { IconMail, IconDeviceMobile, IconMapPin } from '@tabler/icons-react';
-
 import {
-    IconBrandFacebook,
-    IconBrandTwitter,
-    IconBrandInstagram,
-    IconBrandLinkedin,
+  IconBrandFacebook, IconBrandTwitter, IconBrandInstagram, IconBrandLinkedin,
 } from '@tabler/icons-react';
 import classes from './ContactForm.module.css';
-
+import axios from 'axios';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 export function ContactForm() {
-    const [focusedInputs, setFocusedInputs] = useState({
-        name: false,
-        email: false,
-        phone: false,
-        message: false,
-    });
+  const [focusedInputs, setFocusedInputs] = useState({
+    name: false, email: false, phone: false, message: false,
+  });
+  const [formData, setFormData] = useState({
+    name: '', email: '', phone: '', message: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-    const handleFocus = (name) => {
-        setFocusedInputs(prev => ({
-            ...prev,
-            [name]: true
-        }));
-    };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' });
+  };
 
-    const handleBlur = (name, value) => {
-        setFocusedInputs(prev => ({
-            ...prev,
-            [name]: value.trim() !== ''
-        }));
-    };
+  const handleFocus = (name) => {
+    setFocusedInputs(prev => ({ ...prev, [name]: true }));
+  };
 
-    return (
-        <Container className={classes.container}>
-            <span className={classes.bigCircle}></span>
-            <div className={classes.square}></div>
-            <div className={classes.form}>
-                <div className={classes.contactInfo}>
-                    <h3 className={classes.title}>Let's get in touch</h3>
-                    <p className={classes.text}>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe
-                        dolorum adipisci recusandae praesentium dicta!
-                    </p>
+  const handleBlur = (name, value) => {
+    setFocusedInputs(prev => ({ ...prev, [name]: value.trim() !== '' }));
+  };
 
-                    <div className={classes.info}>
-                        <div className={classes.information}>
-                            <IconMapPin className={classes.icon} />
-                            <p>92 Cherry Drive Uniondale, NY 11553</p>
-                        </div>
-                        <div className={classes.information}>
-                            <IconMail className={classes.icon} />
-                            <p>lorem@ipsum.com</p>
-                        </div>
-                        <div className={classes.information}>
-                            <IconDeviceMobile className={classes.icon} />
-                            <p>123-456-789</p>
-                        </div>
+  const validate = () => {
+    const err = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-                    </div>
+    if (!formData.name.trim()) err.name = 'Name is required';
+    if (!emailRegex.test(formData.email)) err.email = 'Enter a valid email';
+    if (!/^\d{10}$/.test(formData.phone)) err.phone = 'Phone must be 10 digits';
+    if (!formData.message.trim()) err.message = 'Message is required';
 
-                    <div className={classes.socialMedia}>
-                        <p>Connect with us :</p>
-                        <div className={classes.socialIcons}>
-                            <a href="#" aria-label="Facebook">
-                                <IconBrandFacebook size={16} />
-                            </a>
-                            <a href="#" aria-label="Twitter">
-                                <IconBrandTwitter size={16} />
-                            </a>
-                            <a href="#" aria-label="Instagram">
-                                <IconBrandInstagram size={16} />
-                            </a>
-                            <a href="#" aria-label="LinkedIn">
-                                <IconBrandLinkedin size={16} />
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    return err;
+  };
 
-                <div className={classes.contactForm}>
-                    <span className={`${classes.circle} ${classes.one}`}></span>
-                    <span className={`${classes.circle} ${classes.two}`}></span>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
-                    <form onSubmit={(e) => e.preventDefault()}>
-                        <h3 className={classes.title}>Contact us</h3>
+    setLoading(true);
+    try {
+      await axios.post('http://localhost:5000/api/contact', formData);
+      setSuccess(true);
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      alert('Failed to send message');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                        <div className={`${classes.inputContainer} ${focusedInputs.name ? classes.focus : ''}`}>
-                            <input
-                                type="text"
-                                className={classes.input}
-                                onFocus={() => handleFocus('name')}
-                                onBlur={(e) => handleBlur('name', e.target.value)}
-                            />
-                            <label>Username</label>
-                            <span>Username</span>
-                        </div>
-
-                        <div className={`${classes.inputContainer} ${focusedInputs.email ? classes.focus : ''}`}>
-                            <input
-                                type="email"
-                                className={classes.input}
-                                onFocus={() => handleFocus('email')}
-                                onBlur={(e) => handleBlur('email', e.target.value)}
-                            />
-                            <label>Email</label>
-                            <span>Email</span>
-                        </div>
-
-                        <div className={`${classes.inputContainer} ${focusedInputs.phone ? classes.focus : ''}`}>
-                            <input
-                                type="tel"
-                                className={classes.input}
-                                onFocus={() => handleFocus('phone')}
-                                onBlur={(e) => handleBlur('phone', e.target.value)}
-                            />
-                            <label>Phone</label>
-                            <span>Phone</span>
-                        </div>
-
-                        <div className={`${classes.inputContainer} ${classes.textarea} ${focusedInputs.message ? classes.focus : ''}`}>
-                            <textarea
-                                className={classes.input}
-                                onFocus={() => handleFocus('message')}
-                                onBlur={(e) => handleBlur('message', e.target.value)}
-                            ></textarea>
-                            <label>Message</label>
-                            <span>Message</span>
-                        </div>
-
-                        <Button type="submit" className={classes.btn}>
-                            Send
-                        </Button>
-                    </form>
-                </div>
+  return (
+    <Container className={classes.container}>
+      {/* Contact Info Section */}
+      <div className={classes.form}>
+        <div className={classes.contactInfo}>
+          <h3 className={classes.title}>Let's get in touch</h3>
+          <p className={classes.text}>Feel free to reach out anytime.</p>
+          <div className={classes.info}>
+            <div className={classes.information}><IconMapPin /><p>Kolkata, India</p></div>
+            <div className={classes.information}><IconMail /><p>your@email.com</p></div>
+            <div className={classes.information}><IconDeviceMobile /><p>+91 9876543210</p></div>
+          </div>
+          <div className={classes.socialMedia}>
+            <p>Connect with us :</p>
+            <div className={classes.socialIcons}>
+              <a href="#"><IconBrandFacebook /></a>
+              <a href="#"><IconBrandTwitter /></a>
+              <a href="#"><IconBrandInstagram /></a>
+              <a href="#"><IconBrandLinkedin /></a>
             </div>
-        </Container>
-    );
+          </div>
+        </div>
+
+        {/* Form Section */}
+        <div className={classes.contactForm}>
+          <form onSubmit={handleSubmit}>
+            <h3 className={classes.title}>Contact us</h3>
+
+            {['name', 'email', 'phone', 'message'].map((field) => (
+              <div
+                key={field}
+                className={`${classes.inputContainer} ${field === 'message' ? classes.textarea : ''} ${focusedInputs[field] ? classes.focus : ''}`}
+              >
+                {field === 'message' ? (
+                  <textarea
+                    className={classes.input}
+                    name={field}
+                    value={formData[field]}
+                    onChange={handleChange}
+                    onFocus={() => handleFocus(field)}
+                    onBlur={(e) => handleBlur(field, e.target.value)}
+                  />
+                ) : (
+                  <input
+                    type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'}
+                    className={classes.input}
+                    name={field}
+                    value={formData[field]}
+                    onChange={handleChange}
+                    onFocus={() => handleFocus(field)}
+                    onBlur={(e) => handleBlur(field, e.target.value)}
+                   
+                  />
+                )}
+                <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+                <span>{field.charAt(0).toUpperCase() + field.slice(1)}</span>
+                {errors[field] && <small className={classes.errorText}>{errors[field]}</small>}
+              </div>
+            ))}
+
+            <Button type="submit" className={classes.btn} disabled={loading}>
+              {loading ? <LoadingSpinner/> : 'Send'}
+            </Button>
+            {success && <p className={classes.successText}>Your message was sent successfully!</p>}
+          </form>
+        </div>
+      </div>
+    </Container>
+  );
 }
 
 export default ContactForm;

@@ -10,8 +10,8 @@ const commentRoutes = require('./routes/commentRoutes');
 const voteRoutes = require('./routes/voteRoutes');
 const uploadRoutes = require('./routes/imageUploadRoutes');
 const userRoutes = require('./routes/UserRoutes');
-const UpdateUserRoutes = require('./routes/UpdateUserRoutes')
-
+const UpdateUserRoutes = require('./routes/UpdateUserRoutes');
+const ContactRoutes = require('./routes/contactRoutes');
 const app = express();
 
 // ✅ Use CORS only once
@@ -41,6 +41,7 @@ app.use('/api/votes', voteRoutes);
 app.use('/api', uploadRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/users/update', UpdateUserRoutes);
+app.use('/api/contact', ContactRoutes);
 // ✅ Server start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
