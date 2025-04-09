@@ -1,17 +1,13 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
 .header {
   background-color: var(--mantine-color-body);
   border-bottom: 1px solid var(--mantine-color-gray-3);
-  overflow: visible; 
-  position: relative;
-  z-index: 2;
-  transition: height 0.3s ease; 
-}
-
-.header.open {
-  height: auto; 
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  transition: height 0.3s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .inner {
@@ -19,7 +15,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem; 
+  padding: 0 1rem;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logoLink {
@@ -35,13 +38,14 @@
 
 .link {
   display: block;
-  font-family: poppins;
+  font-family: 'Poppins', sans-serif;
   padding: 8px 12px;
   border-radius: var(--mantine-radius-sm);
   text-decoration: none;
   color: var(--mantine-color-gray-7);
   font-size: var(--mantine-font-size-sm);
   font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .link:hover {
@@ -54,8 +58,16 @@
   color: var(--mantine-color-white);
 }
 
+.group {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Burger Icon */
 .burger {
   display: none;
+  background: none;
+  border: none;
   width: 30px;
   height: 20px;
   position: relative;
@@ -85,6 +97,7 @@
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
+/* Mobile Menu Styling */
 .mobileMenu {
   display: none;
   flex-direction: column;
@@ -96,7 +109,7 @@
 }
 
 .header.open .mobileMenu {
-  display: flex; 
+  display: flex;
 }
 
 @keyframes slideDown {
@@ -110,26 +123,14 @@
   }
 }
 
-.group {
-  display: flex;
-  gap: 1rem;
-}
 @media (max-width: 768px) {
   .group {
     display: none;
   }
-  .inner {
-    display: flex;
+  .inner, .navbar {
     justify-content: center;
-    align-items: center;
   }
-  .header {
-    justify-content: center;
-    align-items: center;
-  }
-
   .burger {
     display: block;
   }
-  
 }
