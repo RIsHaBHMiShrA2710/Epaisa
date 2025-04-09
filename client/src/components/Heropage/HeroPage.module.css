@@ -149,13 +149,13 @@
         height: 100%;
         background: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(5px);
-        z-index: 2;
+        z-index: 0;
     }   
     .content {
         padding-left:unset;
         padding: 10px;
         position: relative;
-        z-index: 3; 
+        z-index: 1; 
         text-align: center;
         color: white; 
     }

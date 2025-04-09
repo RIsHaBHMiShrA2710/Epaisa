@@ -32,7 +32,7 @@
   /* Stack children vertically */
   gap: 1rem;
   /* Add space between children */
-  z-index: 3;
+  z-index: 9999;
 }
 
 /* Close button styling */
@@ -167,6 +167,7 @@
     max-width: none;
     /* Remove max width constraint */
     padding: 1.5rem;
+    z-index: 1000;
     /* Reduce padding to fit smaller screens */
   }
 
