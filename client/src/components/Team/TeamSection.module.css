@@ -154,6 +154,7 @@
 }
 
 /* Overlay on image hover */
+/* Existing overlay default state (always hidden) */
 .overlay {
   position: absolute;
   top: 0;
@@ -171,9 +172,13 @@
   padding: 20px;
 }
 
-.thumb:hover .overlay {
-  transform: translateY(0);
+/* Only on desktop/larger screens, open overlay on hover */
+@media (min-width: 601px) {
+  .thumb:hover .overlay {
+    transform: translateY(0);
+  }
 }
+
 
 .overlay h4,
 .overlay p {
