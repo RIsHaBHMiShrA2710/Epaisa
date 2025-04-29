@@ -4,7 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 require('dotenv').config();
 require('./middleware/GoogleAuth'); // Ensure Google Auth is loaded
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/AuthRoutes');
 const articleRoutes = require('./routes/articleRoutes');
 const commentRoutes = require('./routes/commentRoutes');
 const voteRoutes = require('./routes/voteRoutes');
