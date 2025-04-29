@@ -13,7 +13,7 @@ const userRoutes = require('./routes/UserRoutes');
 const UpdateUserRoutes = require('./routes/UpdateUserRoutes');
 const ContactRoutes = require('./routes/contactRoutes');
 const app = express();
-
+const PORT = process.env.PORT || 5000;
 // ✅ Use CORS only once
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -43,7 +43,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/users/update', UpdateUserRoutes);
 app.use('/api/contact', ContactRoutes);
 // ✅ Server start
-const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

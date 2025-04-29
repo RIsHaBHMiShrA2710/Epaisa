@@ -47,10 +47,10 @@ const Services = () => {
           <div className={styles.circle}></div>
           <div className={styles.cardContentRight}>
             <h2 className={styles.cardTitle}>
-              UI/UX <br /> creative design
+              Audit & Assurance
             </h2>
             <p className={styles.cardDescription}>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.
+            We provide comprehensive statutory and internal audit services tailored to ensure financial transparency and regulatory compliance. Our expert insights help you identify risks and optimize controls.
             </p>
           </div>
         </div>
@@ -59,10 +59,10 @@ const Services = () => {
           <div className={styles.circle}></div>
           <div className={styles.cardContentLeft}>
             <h2 className={styles.cardTitle}>
-              visual <br /> graphic design
+            GST <br /> Income Tax Filing
             </h2>
             <p className={styles.cardDescription}>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.
+            From accurate GST return filings to income tax compliance for individuals and businesses, we manage everything—so you never miss a deadline or face unnecessary penalties.
             </p>
           </div>
         </div>
@@ -71,10 +71,10 @@ const Services = () => {
           <div className={styles.circle}></div>
           <div className={styles.cardContentRight}>
             <h2 className={styles.cardTitle}>
-              strategy & <br /> digital marketing
+            Portfolio Management & <br />Bookkeeping
             </h2>
             <p className={styles.cardDescription}>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.
+            Whether you're an individual investor or a business, our team manages your financial portfolio and maintains error-free books—so you stay focused on growth.
             </p>
           </div>
         </div>
@@ -83,10 +83,10 @@ const Services = () => {
           <div className={styles.circle}></div>
           <div className={styles.cardContentLeft}>
             <h2 className={styles.cardTitle}>
-              effective<br /> business growth
+            Much More...
             </h2>
             <p className={styles.cardDescription}>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.
+            Payroll management, company registration, business advisory, ROC compliance, financial forecasting, TDS filings, and many more customized services- Call or contanct us now to explore what else we offer. 
             </p>
           </div>
         </div>

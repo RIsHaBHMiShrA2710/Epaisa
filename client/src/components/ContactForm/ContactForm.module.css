@@ -16,13 +16,14 @@
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 0;
   overflow: hidden;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
 .contactForm {
+  z-index: 0;
   background-color: #1abc9c;
   position: relative;
 }
@@ -304,9 +305,11 @@ textarea.input {
 @media (max-width: 850px) {
   .form {
     grid-template-columns: 1fr;
+    z-index: 0;
   }
   .contactForm{
     height: 500px;
+    z-index: 0;
   }
   .contactInfo:before {
     bottom: initial;
