@@ -12,9 +12,9 @@ const Homepage = () => {
     <>
       <PageLoader>
         <HeroPage />
-        <Services />
-        <TeamSection />
-        <ContactForm />
+        <section id="services"><Services /></section>
+        <section id="team"><TeamSection /></section>
+        <section id="contact"><ContactForm /></section>
         <Footer />
       </PageLoader>
 

@@ -8,6 +8,9 @@ import { useAuth } from '../../authContext';
 
 const links = [
   { link: '/', label: 'Home' },
+  { link: '/#services', label: 'Services' },
+  { link: '/#team', label: 'Team' },
+  { link: '/#contact', label: 'Contact' },
   { link: '/blog', label: 'Blogs' },
 ];
 
@@ -17,16 +20,17 @@ const Navbar = () => {
   const { user } = useAuth();
 
   // Generate navigation links dynamically
-  const items = links.map((link) => (
-    <Link
-      key={link.label}
-      to={link.link}
-      className={`${classes.link} ${location.pathname === link.link ? classes.active : ''}`}
+  const items = links.map((linkObj) => (
+    <a
+      key={linkObj.label}
+      href={linkObj.link}
+      className={`${classes.link} ${location.pathname + location.hash === linkObj.link ? classes.active : ''}`}
       onClick={() => setOpened(false)}
     >
-      {link.label}
-    </Link>
+      {linkObj.label}
+    </a>
   ));
+  
 
   return (
     <header className={`${classes.header} ${opened ? classes.open : ''}`}>

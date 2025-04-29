@@ -22,10 +22,10 @@ const teamMembers = [
     description: 'Expert in coordination and management',
   },
   {
-    name: 'Bob',
-    role: 'App Developer',
+    name: 'Shubham Mishra',
+    role: 'Chartared Accountant',
     image: 'https://i.ibb.co/JC4skS0/team-animate.jpg',
-    description: 'Building mobile and web apps',
+    description: 'CA (May 24) | B.Com(H) SAJC 21 | Options Strategist | Technical Analyst | Proprietor – Shubham Mishra & Co ',
   },
   {
     name: 'Charlie',

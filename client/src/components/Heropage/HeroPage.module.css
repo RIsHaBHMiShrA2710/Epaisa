@@ -21,7 +21,7 @@
 
 .title {
     color: var(--mantine-color-black);
-    font-size: 44px;
+    font-size: 38px;
     line-height: 1.2;
     font-weight: 900;
 }
@@ -113,6 +113,7 @@
 .contentListItem {
     display: flex;
     align-items: center;
+    text-align: left;
 }
 
 .contentListItem div {
@@ -120,7 +121,7 @@
 }
 
 .hpTypeEffect {
-    font-size: 1.4rem;
+    font-size: 1.4rem; 
     color: #000000;
     font-weight: 600;
     font-family: Poppins, sans-serif;
@@ -173,9 +174,9 @@
         display: none;
     }
     .hpTypeEffect {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         color: white;
         font-weight: 500;
-        
+        height: 60px;
     }
 }

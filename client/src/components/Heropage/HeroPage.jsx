@@ -13,7 +13,7 @@ const fadeUp = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 4, 
+      delay: i * 4,
       duration: 1,
       ease: 'easeOut',
     },
@@ -29,25 +29,27 @@ const HeroPage = () => (
       <div className={classes.content}>
         <FadeInLeft delay={0.2}>
           <Title className={classes.title}>
-            A <span className={classes.highlight}>modern</span> React <br /> components library
+            Simplifying <span className={classes.highlight}>Tax Filing</span><br /> for Individuals & Businesses
           </Title>
+
         </FadeInLeft>
 
         <Text c="dimmed" mt="md" >
           <TypeAnimation
             sequence={[
-              'Build tax-saving websites 🧾',
+              'Consult professionals online 💼',
               1000,
-              'Consult with experts 💼',
+              'Get help filing your ITR hassle-free 🧾',
               1000,
-              'File returns with confidence ✅',
-              1000
+              'Maximize deductions and savings ✅',
+              1000,
             ]}
             wrapper="span"
             speed={70}
             repeat={Infinity}
             className={classes.hpTypeEffect}
           />
+
 
         </Text>
 
@@ -71,23 +73,24 @@ const HeroPage = () => (
         >
           <StaggerContainer>
             <MotionListItem variants={fadeUp} className={classes.contentListItem}>
-              <b>TypeScript based</b> – build type-safe applications, all components and hooks export types
+              <b>Expert Guidance</b> – Chat with certified tax consultants for all your queries.
             </MotionListItem>
             <MotionListItem variants={fadeUp} className={classes.contentListItem}>
-              <b>Free and open source</b> – all packages have MIT license, you can use Mantine in any project
+              <b>Online Tax Filing</b> – File your income tax returns in minutes with confidence.
             </MotionListItem>
             <MotionListItem variants={fadeUp} className={classes.contentListItem}>
-              <b>No annoying focus ring</b> – focus ring will appear only when user navigates with keyboard
+              <b>Secure & Compliant</b> – Your data is protected with bank-grade security and compliant with all regulations.
             </MotionListItem>
+
           </StaggerContainer>
 
         </List>
         <Group mt={30}>
           <Button radius="xl" size="md" className={classes.control}>
-            Get started
+            Book Free Consultation
           </Button>
           <Button variant="default" radius="xl" size="md" className={classes.control}>
-            Source code
+            Learn More
           </Button>
         </Group>
       </div>

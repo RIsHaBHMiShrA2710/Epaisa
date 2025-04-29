@@ -71,9 +71,9 @@ export function ContactForm() {
           <h3 className={classes.title}>Let's get in touch</h3>
           <p className={classes.text}>Feel free to reach out anytime.</p>
           <div className={classes.info}>
-            <div className={classes.information}><IconMapPin /><p>Kolkata, India</p></div>
-            <div className={classes.information}><IconMail /><p>your@email.com</p></div>
-            <div className={classes.information}><IconDeviceMobile /><p>+91 9876543210</p></div>
+            <div className={classes.information}><IconMapPin /><p>7 MM Feeder Road, Kolkata, India</p></div>
+            <div className={classes.information}><IconMail /><p>1234mshubham@gmail.com</p></div>
+            <div className={classes.information}><IconDeviceMobile /><p>+91 9903373388</p></div>
           </div>
           <div className={classes.socialMedia}>
             <p>Connect with us :</p>
