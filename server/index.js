@@ -7,7 +7,7 @@ const passport = require('passport');
 require('dotenv').config();
 
 // load your DB Pool configured to use process.env.DATABASE_URL:
-const pool = require('./db');
+const pool = require('./config/db');
 
 // load passport strategies
 require('./middleware/GoogleAuth');
