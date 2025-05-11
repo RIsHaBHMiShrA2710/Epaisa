@@ -10,11 +10,14 @@ const AvatarDropdown = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const BACKEND = import.meta.env.MODE === 'development'
+  ? 'http://localhost:5000'
+  : import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchAvatar = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/users/me/dashboard', {
+        const res = await fetch(`${BACKEND}/api/users/me/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

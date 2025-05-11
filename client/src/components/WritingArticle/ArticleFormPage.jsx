@@ -55,7 +55,7 @@ const ArticleFormPage = () => {
     formData.append('content', content);
 
     try {
-      const res = await fetch('http://localhost:5000/api/articles', {
+      const res = await fetch('https://epaise-backend.onrender.com/api/articles', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

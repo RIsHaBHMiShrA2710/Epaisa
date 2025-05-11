@@ -17,11 +17,14 @@ const ArticleDetailPage = () => {
   const [upvotes, setUpvotes] = useState(0);
   const [downvotes, setDownvotes] = useState(0);
   const [loading, setLoading] = useState(true);
+  const BACKEND = import.meta.env.MODE === 'development'
+  ? 'http://localhost:5000'
+  : import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     async function fetchArticle() {
       try {
-        const res = await fetch(`http://localhost:5000/api/articles/${id}`, {
+        const res = await fetch(`${BACKEND}/api/articles/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {

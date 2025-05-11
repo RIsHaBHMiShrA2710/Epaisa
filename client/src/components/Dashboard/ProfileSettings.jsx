@@ -6,11 +6,14 @@ const ProfileSettings = ({ user, token }) => {
   const [avatarUrl, setAvatarUrl] = useState(user.avatar_url || '');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const BACKEND = import.meta.env.MODE === 'development'
+  ? 'http://localhost:5000'
+  : import.meta.env.VITE_BACKEND_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/users/me', {
+      const res = await fetch(`${BACKEND}/api/users/me`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

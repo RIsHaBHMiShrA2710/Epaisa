@@ -9,12 +9,16 @@ import StaggerContainer from '../../animations/StaggerContainer';
 import Breadcrumbs from '../BreadCrumbs/BreadCrumbs';
 // Optional: for overall page styling
 
+
 const ArticleListPage = () => {
   const [articles, setArticles] = useState([]);
   const [page, setPage] = useState(1); // current page number
   const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const BACKEND = import.meta.env.MODE === 'development'
+  ? 'http://localhost:5000'
+  : import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     fetchArticles();
@@ -29,7 +33,7 @@ const ArticleListPage = () => {
   };
   async function fetchArticles() {
     try {
-      const response = await fetch(`http://localhost:5000/api/articles?page=${page}&limit=5`);
+      const response = await fetch(`${BACKEND}/api/articles?page=${page}&limit=5`);
       const data = await response.json();
 
       if (data.length < 5) {

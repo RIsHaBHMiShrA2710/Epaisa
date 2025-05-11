@@ -17,6 +17,9 @@ export function ContactForm() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const BACKEND = import.meta.env.MODE === 'development'
+  ? 'http://localhost:5000'
+  : import.meta.env.VITE_BACKEND_URL;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,7 +56,7 @@ export function ContactForm() {
 
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/contact', formData);
+      await axios.post(`${BACKEND}/api/contact`, formData);
       setSuccess(true);
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {

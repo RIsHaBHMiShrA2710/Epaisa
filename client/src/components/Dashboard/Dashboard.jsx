@@ -23,13 +23,15 @@ const UserDashboard = () => {
   const [passwordLoading, setPasswordLoading] = useState(false);
   const DEFAULT_THUMBNAIL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/800px-Placeholder_view_vector.svg.png';
   const DEFAULT_AVATAR = 'https://whitedotpublishers.com/wp-content/uploads/2022/05/male-placeholder-image.jpeg';
-
+  const BACKEND = import.meta.env.MODE === 'development'
+  ? 'http://localhost:5000'
+  : import.meta.env.VITE_BACKEND_URL;
 
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/users/me/dashboard', {
+        const res = await fetch(`${BACKEND}/api/users/me/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -64,7 +66,7 @@ const UserDashboard = () => {
     if (newAvatar) formData.append('avatar', newAvatar);
 
     try {
-      const res = await fetch('http://localhost:5000/api/users/update/me', {
+      const res = await fetch(`${BACKEND}/api/users/update/me`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -94,7 +96,7 @@ const UserDashboard = () => {
 
     setPasswordLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/users/update/me/password', {
+      const res = await fetch(`${BACKEND}/api/users/update/me/password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

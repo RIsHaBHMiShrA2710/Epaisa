@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
       if (!token) return;
       try {
-        const { data } = await axios.get('http://localhost:5000/api/users/me/dashboard', {
+        const { data } = await axios.get('https://epaise-backend.onrender.com/api/users/me/dashboard', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(data.user); // only store user object
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const { data } = await axios.post('https://epaise-backend.onrender.com/api/auth/login', { email, password });
       setToken(data.token);
       setUser(data.user);
       localStorage.setItem('authToken', data.token);
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
+      await axios.post('https://epaise-backend.onrender.com/api/auth/register', { name, email, password });
       return await login(email, password);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to register');
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   // Google Sign-In: redirect to your backend's Google OAuth endpoint.
   const googleSignIn = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = 'https://epaise-backend.onrender.com/api/auth/google';
   };
 
   // Logout: clear token and user data.
