@@ -1,5 +1,5 @@
-const axios = require('axios');
-const { v4: uuidv4 } = require('uuid');
+// middleware/GoogleAuth.js
+
 const cloudinary = require('../config/cloudinaryConfig');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -22,46 +22,34 @@ passport.deserializeUser(async (id, done) => {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientID:     process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.SERVER_URL}/api/auth/google/callback`,
+      callbackURL:  `${process.env.SERVER_URL}/api/auth/google/callback`,
+      // disable sessions if you’re using JWT only:
+      // passReqToCallback: false,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails?.[0]?.value || `no-email-${profile.id}@example.com`;
-        const name = profile.displayName || 'Unknown User';
-        const avatar = profile.photos?.[0]?.value;
+        const email   = profile.emails?.[0]?.value || `no-email-${profile.id}@example.com`;
+        const name    = profile.displayName || 'Unknown User';
+        const avatar  = profile.photos?.[0]?.value;  // URL from Google
 
-        // Upload avatar to Cloudinary
+        // Upsert avatar via Cloudinary remote fetch
         let avatarUrl = null;
         if (avatar) {
-          const response = await axios.get(avatar, { responseType: 'arraybuffer' });
-          const stream = require('stream');
-          const bufferStream = new stream.PassThrough();
-          bufferStream.end(Buffer.from(response.data, 'binary'));
-        
-          const uploadPromise = new Promise((resolve, reject) => {
-            const upload = cloudinary.uploader.upload_stream(
-              { resource_type: 'image', public_id: `avatars/${uuidv4()}` },
-              (error, result) => {
-                if (error) return reject(error);
-                resolve(result);
-              }
-            );
-            bufferStream.pipe(upload);
+          const uploadResult = await cloudinary.uploader.upload(avatar, {
+            folder: 'Epaisa-Article-Thumbnails',
+            resource_type: 'image',
           });
-        
-          const result = await uploadPromise;
-          avatarUrl = result.secure_url;
-          
+          avatarUrl = uploadResult.secure_url;
         }
-        
 
-
+        // Find or create the user
         const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         let user = rows[0];
 
         if (user) {
+          // Update google_id or avatar_url if missing
           if (!user.google_id || !user.avatar_url) {
             await pool.query(
               'UPDATE users SET google_id = $1, avatar_url = $2 WHERE email = $3',
@@ -69,9 +57,12 @@ passport.use(
             );
           }
         } else {
+          // Insert new user
           const insertResult = await pool.query(
-            `INSERT INTO users (name, email, google_id, auth_provider, password, avatar_url)
-              VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, name, email, auth_provider`,
+            `INSERT INTO users
+               (name, email, google_id, auth_provider, password, avatar_url)
+             VALUES ($1, $2, $3, $4, $5, $6)
+             RETURNING id, name, email, auth_provider`,
             [name, email, profile.id, 'google', null, avatarUrl]
           );
           user = insertResult.rows[0];
