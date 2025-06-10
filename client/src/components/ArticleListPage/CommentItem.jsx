@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { createComment } from '../service/commentService';
 import { useAuth } from '../../AuthContext';
-import './CommentSection.css';
 
 function CommentItem({ comment, allComments, articleId, token, onReplyAdded }) {
   const { user } = useAuth();
@@ -42,7 +41,7 @@ function CommentItem({ comment, allComments, articleId, token, onReplyAdded }) {
         <span>{new Date(comment.created_at).toLocaleString()}</span>
       </div>
       <p>{comment.comment_text}</p>
-      <button onClick={() => setShowReplyForm(!showReplyForm)} className="reply-button">
+      <button onClick={() => setShowReplyForm(!showReplyForm)}>
         {showReplyForm ? 'Cancel' : 'Reply'}
       </button>
 
@@ -55,7 +54,7 @@ function CommentItem({ comment, allComments, articleId, token, onReplyAdded }) {
             onChange={(e) => setReplyText(e.target.value)}
             required
           />
-          <button type="submit" className="reply-button">Reply</button>
+          <button type="submit">Reply</button>
         </form>
       )}
 
