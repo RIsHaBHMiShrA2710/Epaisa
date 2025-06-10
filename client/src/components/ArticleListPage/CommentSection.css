@@ -116,6 +116,16 @@
   cursor: pointer;
 }
 
+.reply-button {
+  align-self: flex-end;
+  background-color: #15f5ba;
+  border: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #000;
+  cursor: pointer;
+}
+
 .nested-replies {
   margin-left: 16px;
   margin-top: 8px;
