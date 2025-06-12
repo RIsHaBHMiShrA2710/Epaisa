@@ -1,0 +1,16 @@
+.load-more-button{
+  align-self: center;
+  background-color: #15f5ba;
+  color: #000;
+  border: none;
+  padding: 10px 5px;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  min-width: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

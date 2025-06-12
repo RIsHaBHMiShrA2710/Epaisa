@@ -49,7 +49,23 @@ exports.createArticle = async (req, res) => {
 
 exports.getAllArticles = async (req, res) => {
   try {
-    const { rows } = await pool.query('SELECT articles.*, users.name AS author_name, users.avatar_url as author_avatar FROM articles LEFT JOIN users ON articles.user_id = users.id ORDER BY articles.created_at DESC;');
+    const page  = parseInt(req.query.page, 10)  || 1;
+    const limit = parseInt(req.query.limit, 10) || 5;
+    const offset = (page - 1) * limit;
+
+    const { rows } = await pool.query(
+      `SELECT 
+         articles.*, 
+         users.name   AS author_name, 
+         users.avatar_url AS author_avatar
+       FROM articles
+       LEFT JOIN users
+         ON articles.user_id = users.id
+       ORDER BY articles.created_at DESC
+       LIMIT $1 OFFSET $2;`,
+      [limit, offset]
+    );
+
     res.json(rows);
   } catch (error) {
     console.error('Error fetching articles:', error);
