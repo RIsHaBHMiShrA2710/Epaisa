@@ -1,77 +1,77 @@
 // ArticleListPage.jsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+
 import ArticleCard from './ArticleCard';
 import { CreateArticleButton } from '../WritingArticle/CreateArticleButton';
-import { useNavigate } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import FadeInUp from '../../animations/FadeInUp';
 import Breadcrumbs from '../BreadCrumbs/BreadCrumbs';
 import './ArticleListPage.css';
 
-const ArticleListPage = () => {
-  const [articles, setArticles] = useState([]);
-  const [page, setPage] = useState(1);                // current page number
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingInitial, setLoadingInitial] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
+const BACKEND =
+  import.meta.env.MODE === 'development'
+    ? 'http://localhost:5000'
+    : import.meta.env.VITE_BACKEND_URL;
+
+// 1. Fetch one page of articles
+async function fetchArticlesPage({ pageParam = 1 }) {
+  const res = await fetch(
+    `${BACKEND}/api/articles?page=${pageParam}&limit=5`
+  );
+  if (!res.ok) throw new Error('Failed to load articles');
+  return res.json(); // returns an array (≤5 items)
+}
+
+export default function ArticleListPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const BACKEND =
-    import.meta.env.MODE === 'development'
-      ? 'http://localhost:5000'
-      : import.meta.env.VITE_BACKEND_URL;
+  // 2. useInfiniteQuery in object form (v5+)
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['articles'],
+    queryFn: fetchArticlesPage,
+    //  ─── Don’t refetch for 5 minutes ───────────────────
+    staleTime: 1000 * 60 * 5,    // keep data “fresh” for 5m
+    cacheTime: 1000 * 60 * 10,   // keep it in memory for 10m
+    refetchOnMount: false,       // don’t kick off a fetch on remount
+    refetchOnWindowFocus: false, // don’t refetch if user switches tabs
+    getNextPageParam: (last, pages) =>
+      last.length === 5 ? pages.length + 1 : undefined,
+  });
 
-  useEffect(() => {
-    fetchArticles();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  // 3. Flatten pages into one array
+  const articles = data?.pages.flat() ?? [];
 
+  // 4. Update a single article's comment count in cache
   const handleUpdateCommentCount = (articleId, newCount) => {
-    setArticles(prev =>
-      prev.map(a =>
-        a.id === articleId ? { ...a, comments_count: newCount } : a
-      )
-    );
+    queryClient.setQueryData(['articles'], old => {
+      if (!old) return old;
+      return {
+        ...old,
+        pages: old.pages.map(page =>
+          page.map(a =>
+            a.id === articleId
+              ? { ...a, comments_count: newCount }
+              : a
+          )
+        ),
+      };
+    });
   };
 
-  async function fetchArticles() {
-    // distinguish initial vs pagination
-    if (page === 1) {
-      setLoadingInitial(true);
-    } else {
-      setLoadingMore(true);
-    }
-
-    try {
-      const response = await fetch(
-        `${BACKEND}/api/articles?page=${page}&limit=5`
-      );
-      const data = await response.json();
-
-      if (data.length < 5) {
-        setHasMore(false);
-      }
-
-      setArticles(prevArticles => {
-        const existingIds = new Set(prevArticles.map(a => a.id));
-        const newArticles = data.filter(a => !existingIds.has(a.id));
-        return [...prevArticles, ...newArticles];
-      });
-    } catch (err) {
-      console.error('Error fetching articles:', err);
-    } finally {
-      setLoadingInitial(false);
-      setLoadingMore(false);
-    }
-  }
-
-  const loadMore = () => setPage(prev => prev + 1);
-
-  // full‐screen loader on first load only
-  if (loadingInitial) {
-    return <Loader />;
-  }
+  // 5. Loading / error UI
+  if (isLoading) return <Loader />;
+  if (isError) return <div>Error loading articles</div>;
 
   return (
     <div className="article-list-container">
@@ -86,19 +86,17 @@ const ArticleListPage = () => {
         </FadeInUp>
       ))}
 
-      {hasMore && (
+      {hasNextPage && (
         <button
           className="load-more-button"
-          onClick={loadMore}
-          disabled={loadingMore}
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
         >
-          {loadingMore ? <LoadingSpinner /> : 'Load More'}
+          {isFetchingNextPage ? <LoadingSpinner /> : 'Load More'}
         </button>
       )}
 
       <CreateArticleButton onClick={() => navigate('/create-article')} />
     </div>
   );
-};
-
-export default ArticleListPage;
+}

@@ -1,5 +1,7 @@
+// src/components/Navbar/Navbar.jsx
 import { useState } from 'react';
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import AuthButton from '../Auth/AuthButton';
 import { Container, Group } from '@mantine/core';
 import classes from './Navbar.module.css';
@@ -7,66 +9,86 @@ import AvatarDropdown from '../Auth/AvatarDropdown';
 import { useAuth } from '../../authContext';
 
 const links = [
-  { link: '/', label: 'Home' },
-  { link: '/#services', label: 'Services' },
-  { link: '/#team', label: 'Team' },
-  { link: '/#contact', label: 'Contact' },
-  { link: '/blog', label: 'Blogs' },
+  { link: '/', label: 'Home', hash: false },
+  { link: '/#services', label: 'Services', hash: true },
+  { link: '/#team', label: 'Team', hash: true },
+  { link: '/#contact', label: 'Contact', hash: true },
+  { link: '/blog', label: 'Blogs', hash: false },
 ];
 
 const Navbar = () => {
   const [opened, setOpened] = useState(false);
-  const location = useLocation(); // Get current route
+  const location = useLocation();
   const { user } = useAuth();
 
-  // Generate navigation links dynamically
-  const items = links.map((linkObj) => (
-    <a
-      key={linkObj.label}
-      href={linkObj.link}
-      className={`${classes.link} ${location.pathname + location.hash === linkObj.link ? classes.active : ''}`}
-      onClick={() => setOpened(false)}
-    >
-      {linkObj.label}
-    </a>
-  ));
-  
+  const items = links.map(({ link, label, hash }) => {
+    const key = label;
+    const isActive =
+      hash
+        ? location.pathname + location.hash === link
+        : location.pathname === link;
+
+    const commonProps = {
+      className: `${classes.link} ${isActive ? classes.active : ''}`,
+      onClick: () => setOpened(false),
+    };
+
+    return hash ? (
+      <HashLink
+        key={key}
+        to={link}
+        scroll={el => el.scrollIntoView({ behavior: 'smooth' })}
+        {...commonProps}
+      >
+        {label}
+      </HashLink>
+    ) : (
+      <NavLink
+        key={key}
+        to={link}
+        end={link === '/'}
+        {...commonProps}
+      >
+        {label}
+      </NavLink>
+    );
+  });
 
   return (
     <header className={`${classes.header} ${opened ? classes.open : ''}`}>
       <Container size="lg" className={classes.inner}>
         <nav className={classes.navbar}>
           {/* Logo */}
-          <Link to="/" className={classes.logoLink} aria-label="Home">
+          <NavLink to="/" className={classes.logoLink} aria-label="Home">
             <img
               src="https://imgur.com/weEZnmD.jpg"
               className={classes.brandLogo}
               alt="Epaisa Logo"
             />
-          </Link>
+          </NavLink>
 
           {/* Desktop Links */}
           <Group className={classes.group}>{items}</Group>
 
-          {/* Authentication: Either user dropdown or login/register button */}
+          {/* Auth */}
           {user ? <AvatarDropdown /> : <AuthButton />}
 
-          {/* Burger Icon for Mobile Menu */}
+          {/* Burger for mobile */}
           <button
             className={`${classes.burger} ${opened ? classes.burgerOpen : ''}`}
-            onClick={() => setOpened((prev) => !prev)}
+            onClick={() => setOpened(prev => !prev)}
             aria-label="Toggle menu"
-            aria-expanded={opened ? "true" : "false"}
+            aria-expanded={opened}
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            <span />
+            <span />
+            <span />
           </button>
         </nav>
-      </Container>
 
-      {/* Mobile Menu */}
-      {opened && <div className={classes.mobileMenu}>{items}</div>}
+        {/* Mobile Menu */}
+        {opened && <div className={classes.mobileMenu}>{items}</div>}
+      </Container>
     </header>
   );
 };
