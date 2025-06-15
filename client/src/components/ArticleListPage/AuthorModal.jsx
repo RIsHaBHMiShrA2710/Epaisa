@@ -19,7 +19,6 @@ const AuthorModal = ({ opened, onClose, authorId, authorName, authorAvatar }) =>
           />
           <h2 className="modal-author-name">{authorName || 'Unknown Author'}</h2>
           <p className="modal-author-bio">
-            {/* Placeholder for author bio or additional info */}
             This is a placeholder for the author's bio and other details.
           </p>
         </div>
