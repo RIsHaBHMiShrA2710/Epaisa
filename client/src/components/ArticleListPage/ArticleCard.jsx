@@ -49,9 +49,11 @@ function ArticleCard({ article }) {
     navigate(`/blog/${article.id}`);
   };
 
-  const openAuthorModal = () => {
+  const openAuthorModal = (e) => {
+    e.stopPropagation(); // Prevent click from bubbling to the parent
     setShowModal(true);
   };
+  
 
   const closeAuthorModal = () => {
     setShowModal(false);
@@ -80,7 +82,7 @@ function ArticleCard({ article }) {
             <h2 className="article-card-header">{article.title}</h2>
             <p className="article-card-abstract">{article.abstract}</p>
 
-            <div className="article-card-author" onClick={openAuthorModal}>
+            <div className="article-card-author" onClick={(e) => openAuthorModal(e)}>
               <img
                 className="article-card-author-avatar"
                 src={authorAvatar}
