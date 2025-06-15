@@ -7,19 +7,20 @@ import './ArticlesDetailsPage.css';
 import DOMPurify from 'dompurify';
 import Loader from '../Loader/Loader';
 import Breadcrumbs from '../BreadCrumbs/BreadCrumbs';
-
+import AuthorModal from '../ArticleListPage/AuthorModal';
 
 const ArticleDetailPage = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const { user, token } = useAuth();
   const commentSectionRef = useRef(null);
   const [article, setArticle] = useState(null);
   const [upvotes, setUpvotes] = useState(0);
   const [downvotes, setDownvotes] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const BACKEND = import.meta.env.MODE === 'development'
-  ? 'http://localhost:5000'
-  : import.meta.env.VITE_BACKEND_URL;
+    ? 'http://localhost:5000'
+    : import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     async function fetchArticle() {
@@ -77,66 +78,86 @@ const ArticleDetailPage = () => {
     }
   };
 
-  if (!article) return <div><Loader/></div>;
+  if (!article) return <div><Loader /></div>;
 
   const sanitizedHTML = DOMPurify.sanitize(article.content);
-  if(loading){
+  if (loading) {
     return (
       <Loader />
     );
   }
+  const openAuthorModal = (e) => {
+    e.stopPropagation();
+    setShowModal(true);
+  };
+  const closeAuthorModal = () => {
+    setShowModal(false);
+  };
+  const authorAvatar = article.author_avatar?.trim() ? article.author_avatar : 'https://whitedotpublishers.com/wp-content/uploads/2022/05/male-placeholder-image.jpeg';
   return (
-    
-    <div className="adp-container">
-      <div className="adp-header">
-        <div className="adp-header-left">
-          <img
-            className="adp-author-avatar"
-            src={article.author_avatar || 'avatar_placeholder.jpg'}
-            alt={article.author_name || 'Author'}
-          />
-          <span className="adp-author-name">{article.author_name || 'Unknown Author'}</span>
-        </div>
-        <div className="adp-header-right">
-          <span className="adp-publish-date">
-            {new Date(article.published_at).toLocaleDateString()}
-          </span>
-          <div className="adp-vote-buttons">
-            <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote}>
-              ↑ {upvotes}
-            </button>
-            <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote}>
-              ↓ {downvotes}
+    <>
+
+      <div className="adp-container">
+        <div className="adp-header">
+          <div className="adp-header-left" onClick={(e)=> openAuthorModal(e)}>
+            <img
+              className="adp-author-avatar"
+              src={article.author_avatar || 'avatar_placeholder.jpg'}
+              alt={article.author_name || 'Author'}
+            />
+            <span className="adp-author-name">{article.author_name || 'Unknown Author'}</span>
+          </div>
+          <div className="adp-header-right">
+            <span className="adp-publish-date">
+              {new Date(article.published_at).toLocaleDateString()}
+            </span>
+            <div className="adp-vote-buttons">
+              <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote}>
+                ↑ {upvotes}
+              </button>
+              <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote}>
+                ↓ {downvotes}
+              </button>
+            </div>
+            <button className="adp-comment-icon" onClick={scrollToComments}>
+              💬 {article.comments_count || 0}
             </button>
           </div>
-          <button className="adp-comment-icon" onClick={scrollToComments}>
-            💬 {article.comments_count || 0}
+        </div>
+        <Breadcrumbs />
+        <div className="adp-content">
+          <h1 className="adp-title">{article.title}</h1>
+          {article.thumbnail_url && (
+            <img className="adp-thumbnail" src={article.thumbnail_url} alt={article.title} />
+          )}
+
+          <div className="adp-body" dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />
+        </div>
+
+        <div className="adp-footer-vote">
+          <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote}>
+            ↑ {upvotes}
+          </button>
+          <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote}>
+            ↓ {downvotes}
           </button>
         </div>
-      </div>
-      <Breadcrumbs/>
-      <div className="adp-content">
-        <h1 className="adp-title">{article.title}</h1>
-        {article.thumbnail_url && (
-          <img className="adp-thumbnail" src={article.thumbnail_url} alt={article.title} />
-        )}
-        
-        <div className="adp-body" dangerouslySetInnerHTML={{ __html: sanitizedHTML }}/>
-      </div>
 
-      <div className="adp-footer-vote">
-        <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote}>
-          ↑ {upvotes}
-        </button>
-        <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote}>
-          ↓ {downvotes}
-        </button>
-      </div>
+        <div className="adp-comment-section" ref={commentSectionRef}>
+          <CommentSection articleId={article.id} />
+        </div>
 
-      <div className="adp-comment-section" ref={commentSectionRef}>
-        <CommentSection articleId={article.id}/>
       </div>
-    </div>
+      {showModal && (
+        <AuthorModal
+          opened={showModal}
+          onClose={closeAuthorModal}
+          authorId={article.user_id}
+          authorName={article.authorName}
+          authorAvatar={authorAvatar}
+        />
+      )}
+    </>
   );
 
 };
