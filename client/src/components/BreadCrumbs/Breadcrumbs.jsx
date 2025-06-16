@@ -1,29 +1,28 @@
+// Breadcrumbs.jsx
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './Breadcrumbs.module.css';
 
-const Breadcrumbs = () => {
+const Breadcrumbs = ({ title }) => {
   const location = useLocation();
-
-  const pathnames = location.pathname.split('/').filter((x) => x);
+  const pathnames = location.pathname.split('/').filter(x => x);
 
   return (
     <nav className={styles.breadcrumbs}>
       <Link to="/" className={styles.link}>Home</Link>
-      {pathnames.map((name, index) => {
-        const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
-        const isLast = index === pathnames.length - 1;
+      {pathnames.map((seg, i) => {
+        const isLast = i === pathnames.length - 1;
+        const to = `/${pathnames.slice(0, i + 1).join('/')}`;
+        const display = isLast && title ? title : decodeURIComponent(seg);
 
         return isLast ? (
-          <span key={name} className={styles.current}>
-            {' > '}{decodeURIComponent(name)}
+          <span key={to} className={styles.current}>
+            {' > '}{display}
           </span>
         ) : (
-          <span key={name}>
+          <span key={to}>
             {' > '}
-            <Link to={routeTo} className={styles.link}>
-              {decodeURIComponent(name)}
-            </Link>
+            <Link to={to} className={styles.link}>{display}</Link>
           </span>
         );
       })}

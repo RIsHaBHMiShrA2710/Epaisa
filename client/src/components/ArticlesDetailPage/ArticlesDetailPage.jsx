@@ -124,7 +124,7 @@ const ArticleDetailPage = () => {
             </button>
           </div>
         </div>
-        <Breadcrumbs />
+        <Breadcrumbs title={article.title}/>
         <div className="adp-content">
           <h1 className="adp-title">{article.title}</h1>
           {article.thumbnail_url && (
