@@ -127,10 +127,21 @@
   .group {
     display: none;
   }
-  .inner, .navbar {
+  .navbar {
     justify-content: center;
   }
   .burger {
     display: block;
+  }
+  .inner {
+    flex-direction: column;
+    height: auto;
+  }
+  .navbar {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .mobileMenu {
+    width: 100%;
   }
 }
