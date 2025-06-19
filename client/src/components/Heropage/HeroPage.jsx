@@ -6,7 +6,7 @@ import StaggerContainer from '../../animations/StaggerContainer';
 import { TypeAnimation } from 'react-type-animation';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { motion } from 'framer-motion';
-
+import { Link } from 'react-router-dom';
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 0) => ({
@@ -25,7 +25,7 @@ const MotionListItem = motion(List.Item);
 const HeroPage = () => (
   <Container size="md" className={classes.hero_container}>
     <div className={classes.inner}>
-      <img src="https://imgur.com/hnpdsis.jpg" alt='Accounting' className={classes.backgroundImage}></img>
+      <img src="/images/heropage_background.jpg" alt='Accounting' className={classes.backgroundImage}></img>
       <div className={classes.content}>
         <FadeInLeft delay={0.2}>
           <Title className={classes.title}>
@@ -34,7 +34,7 @@ const HeroPage = () => (
 
         </FadeInLeft>
 
-        <Text c="dimmed" mt="md" >
+        <Text c="dimmed" mt="md" className={classes.typeEffectContainer}>
           <TypeAnimation
             sequence={[
               'Consult professionals online 💼',
@@ -79,23 +79,41 @@ const HeroPage = () => (
               <b>Online Tax Filing</b> – File your income tax returns in minutes with confidence.
             </MotionListItem>
             <MotionListItem variants={fadeUp} className={classes.contentListItem}>
-              <b>Secure & Compliant</b> – Your data is protected with bank-grade security and compliant with all regulations.
+              <b>Portfolio Management</b> –  Benefit from strategic portfolio management designed to maximize returns while rigorously managing risk.
             </MotionListItem>
 
           </StaggerContainer>
 
         </List>
-        <Group mt={30}>
-          <Button radius="xl" size="md" className={classes.control}>
+        <Group mt={30} spacing="md" display="flex" direction="column" position="center">
+          <Button
+            component="a"
+            href="https://calendly.com/1234mshubham"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="default"
+            radius="xl"
+            size="md"
+            className={classes.control}
+          >
             Book Free Consultation
           </Button>
-          <Button variant="default" radius="xl" size="md" className={classes.control}>
-            Learn More
+
+          <Button
+            component={Link}
+            to="/blog"
+            variant="default"
+            radius="xl"
+            size="md"
+            className={classes.control}
+          >
+            Read our blogs
           </Button>
         </Group>
+
       </div>
       <DotLottieReact
-        src="https://lottie.host/df1e4342-5e4b-4fba-8ac6-8be2bad91e7d/lJKP9KbzbX.lottie"
+        src="/images/heropage_animated.lottie"
         loop
         autoplay
         className={classes.hpLottie}

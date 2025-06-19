@@ -16,22 +16,22 @@ import {DotLottieReact} from '@lottiefiles/dotlottie-react';
 
 const teamMembers = [
   {
-    name: 'Alice',
-    role: 'Project Manager',
-    image: 'https://i.ibb.co/JC4skS0/team-animate.jpg',
-    description: 'Expert in coordination and management',
+    name: 'Rakesh Mishra',
+    role: 'Accountant',
+    image: '/images/team_left.jpg',
+    description: '25+ years of industry expertise in accounting and taxing',
   },
   {
-    name: 'Shubham Mishra',
+    name: 'CA Shubham Mishra',
     role: 'Chartared Accountant',
-    image: 'https://i.ibb.co/JC4skS0/team-animate.jpg',
+    image: '/images/team_middle.gif',
     description: 'CA (May 24) | B.Com(H) SAJC 21 | Options Strategist | Technical Analyst | Proprietor – Shubham Mishra & Co ',
   },
   {
-    name: 'Charlie',
-    role: 'Web Designer',
-    image: 'https://i.ibb.co/JC4skS0/team-animate.jpg',
-    description: 'Specializes in UI/UX and responsive designs',
+    name: 'Rishabh Mishra',
+    role: 'Tech Lead',
+    image: '/images/profile_placeholder.jpg',
+    description: 'Created Epaisa Consultancy site and responsible for technical issues',
   },
 ];
 
@@ -86,10 +86,10 @@ const TeamMemberCard = ({ member, isMobile }) => {
               autoplay
               style={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
+                top: '40%',
+                left: '25%',
+                width: '50%',
+                height: '50%',
                 zIndex: 50,
                 pointerEvents: 'none',
               }}
@@ -109,7 +109,7 @@ const TeamMemberCard = ({ member, isMobile }) => {
             <p>{member.description}</p>
             <div className={classes.social}>
               <ul>
-                <li>
+                {/* <li>
                   <a href="#" aria-label="Twitter">
                     <IconBrandTwitter size={16} />
                   </a>
@@ -128,7 +128,7 @@ const TeamMemberCard = ({ member, isMobile }) => {
                   <a href="#" aria-label="Vimeo">
                     <IconBrandVimeo size={16} />
                   </a>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

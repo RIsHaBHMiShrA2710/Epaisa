@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className={styles.footerContainer}>
       <Container size="lg" className={styles.footerContent}>
         <Text size="sm" color="dimmed" className={styles.footerAbout}>
-          We are a customer-focused company dedicated to providing top-quality services and solutions. Your satisfaction is our priority.
+          Do not hesitate to contact us if you have any questions about us or require any advice from us ☺️
         </Text>
         
         <Group spacing="md" mt="md" className={styles.footerSocialIcons}>
@@ -23,9 +23,9 @@ export default function Footer() {
         </Group>
         
         <Group spacing="md" mt="md" className={styles.footerContactInfo}>
-          <Text size="sm" color="dimmed"><IconMapPin size={16} /> 123 Main St, City, Country</Text>
-          <Text size="sm" color="dimmed"><IconPhone size={16} /> +123 456 7890</Text>
-          <Text size="sm" color="dimmed"><IconMail size={16} /> info@yourcompany.com</Text>
+          <Text size="sm" color="dimmed"><IconMapPin size={16} /> 7 MM Feeder Road, Kolkata, West Bengal</Text>
+          <Text size="sm" color="dimmed"><IconPhone size={16} /> +91 9903373388</Text>
+          <Text size="sm" color="dimmed"><IconMail size={16} />  mshubham.work@gmail.com</Text>
         </Group>
         
         <Group spacing="md" mt="md" className={styles.footerLinks}>
@@ -35,7 +35,7 @@ export default function Footer() {
         </Group>
         
         <Text size="sm" color="dimmed" mt="md" className={styles.footerCopyright}>
-          © {new Date().getFullYear()} Your Company. All rights reserved.
+          © {new Date().getFullYear()} Epaisa Consultancy. All rights reserved.
         </Text>
       </Container>
     </footer>
