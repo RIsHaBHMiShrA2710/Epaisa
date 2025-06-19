@@ -37,11 +37,12 @@
     background: #15f5ba;
     border: none;
     color: black;
+    text-decoration: none;
     font-weight: 600;
     padding: 12px 28px;
     border-radius: 25px;
     box-shadow: 0 0 15px rgba(21, 245, 186, 0.5);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
   }
   
   .control:hover {
@@ -50,12 +51,11 @@
   }
   
 
-.control:active {
-    background-color: rgb(141, 134, 243);
-    /* Darker color when clicked */
-    transform: scale(1.1);
-    /* Slightly smaller scale for a pressed effect */
-}
+  .control:active {
+    transform: translateY(-3px) scale(0.95);
+    /* … */
+  }
+  
 
 .image {
     width: 500px;
@@ -136,7 +136,7 @@
         align-items: center;
         position: relative;
         justify-content: center;
-        background: url('https://imgur.com/hnpdsis.jpg') no-repeat center center/cover;
+        background: url('/images/heropage_background.jpg') no-repeat center center/cover;
         background-blend-mode: darken;
         height: unset;
     }
@@ -174,9 +174,11 @@
         display: none;
     }
     .hpTypeEffect {
-        font-size: 1.4rem;
         color: white;
         font-weight: 500;
+    }
+    .typeEffectContainer {
+        font-size: 25px;
         height: 60px;
     }
 }

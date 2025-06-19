@@ -93,7 +93,7 @@ const ArticleDetailPage = () => {
   const closeAuthorModal = () => {
     setShowModal(false);
   };
-  const authorAvatar = article.author_avatar?.trim() ? article.author_avatar : 'https://whitedotpublishers.com/wp-content/uploads/2022/05/male-placeholder-image.jpeg';
+  const authorAvatar = article.author_avatar?.trim() ? article.author_avatar : '/images/profile_placeholder.jpg';
   return (
     <>
 
