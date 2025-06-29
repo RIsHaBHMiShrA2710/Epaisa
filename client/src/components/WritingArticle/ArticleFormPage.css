@@ -125,6 +125,29 @@
   border-color: #15f5ba;
   box-shadow: 4px 4px 10px 4px rgba(21, 245, 186, 0.3);
 }
+.afp-tag-error {
+  color: #c00;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+.tag-chip {
+  padding:10px;
+  margin: 5px;
+  border-color: #15f5ba;
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px 4px rgba(21, 245, 186, 0.3);
+}
+.tag-cancel-button {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  font-size: medium;
+  font-weight: 750;
+  color: red;
+  border:none;
+  background-color:white;
+
+}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
