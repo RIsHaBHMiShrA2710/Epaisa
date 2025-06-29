@@ -16,7 +16,11 @@ const ArticleFormPage = () => {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [tags, setTags] = useState([]);
+  const [tagError, setTagError] = useState('');
 
+
+  const MAX_TAGS = 5;
   // Helper: count words
   const countWords = (text) =>
     text.trim().split(/\s+/).filter(Boolean).length;
@@ -43,7 +47,7 @@ const ArticleFormPage = () => {
       setError(`Content must be at least 200 words. Currently ${contentWordCount} words.`);
       return;
     }
-    
+
 
     setError('');
     setSubmitting(true);
@@ -53,6 +57,7 @@ const ArticleFormPage = () => {
     formData.append('abstract', abstractText);
     formData.append('thumbnail', thumbnail);
     formData.append('content', content);
+    formData.append('tags', JSON.stringify(tags));
 
     try {
       const res = await fetch('https://epaise-backend.onrender.com/api/articles', {
@@ -82,6 +87,33 @@ const ArticleFormPage = () => {
     } finally {
       setSubmitting(false);
     }
+  };
+
+
+  const addTag = name => {
+    // 1) Too many already?
+    if (tags.length >= MAX_TAGS) {
+      setTagError(`You can only add up to ${MAX_TAGS} tags.`);
+      return;
+    }
+    // 2) No spaces allowed
+    if (/\s/.test(name)) {
+      setTagError('Tags cannot contain spaces.');
+      return;
+    }
+    // 3) No duplicates (case-insensitive)
+    if (tags.some(t => t.toLowerCase() === name.toLowerCase())) {
+      setTagError('This tag is already added.');
+      return;
+    }
+    // 4) Good: add it
+    setTags([...tags, name]);
+    setTagError('');  // clear any old error
+  };
+
+  const removeTag = idx => {
+    setTags(tags.filter((_, i) => i !== idx));
+    setTagError('');
   };
 
   return (
@@ -118,9 +150,36 @@ const ArticleFormPage = () => {
             type="file"
             accept="image/*"
             onChange={handleThumbnailChange}
-           
+
           />
         </div>
+        <div className="afp-field">
+          <label>Tags (up to {MAX_TAGS})</label>
+          <div className="tag-input">
+            {tags.map((tag, i) => (
+              <span key={i} className="tag-chip">
+                {tag} <button type="button" className="tag-cancel-button" onClick={() => removeTag(i)}>×</button>
+              </span>
+            ))}
+            {tags.length < MAX_TAGS && (
+              <input
+                type="text"
+                placeholder="Type & press Enter"
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    const val = e.target.value.trim();
+                    e.preventDefault();
+                    if (val) addTag(val);
+                    e.target.value = '';
+                  }
+                }}
+              />
+            )}
+          </div>
+          {tagError && <div className="afp-tag-error">{tagError}</div>}
+        </div>
+
+
         <div className="afp-field">
           <label>Content (min 200 words)</label>
           <ReactQuill

@@ -26,10 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter> {/* Router should wrap everything */}
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <AuthProvider>
-
-          <Navbar />
           <App />
-          <Footer />
           <WhatsAppButton />
 
         </AuthProvider>

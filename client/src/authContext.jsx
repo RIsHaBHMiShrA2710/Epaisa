@@ -53,9 +53,9 @@ export const AuthProvider = ({ children }) => {
   }, [dashboardData, user]);
 
   // —————— 4) Expose login / register / logout ——————
-  const login = async (email, pass) => { /* …same as before… */ };
-  const register = async (n, e, p) => { /* … */ };
-  const googleSignIn = () => (window.location.href = 'https://…/auth/google');
+  const login = async (email, pass) => { 'https://epaise-backend.onrender.com/api/auth/login' };
+  const register = async (n, e, p) => { 'https://epaise-backend.onrender.com/api/auth/register' };
+  const googleSignIn = () => (window.location.href = 'https://epaise-backend.onrender.com/api/auth/google');
   const logout = () => {
     setToken(null);
     setUser(null);

@@ -2,15 +2,23 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  // Option A: use your full connection string
+  connectionString: process.env.POSTGRES_URI,
+  
+  // Option B: or build from individual vars—pick one approach, not both:
+  // host:     process.env.DB_HOST,
+  // port:     parseInt(process.env.DB_PORT, 10),
+  // user:     process.env.DB_USER,
+  // password: process.env.DB_PASSWORD,
+  // database: process.env.DB_NAME,
+  
+  ssl: process.env.DB_SSL === 'true'
+    ? { rejectUnauthorized: false }
+    : false,
 });
+
+module.exports = pool;
+
 
 (async () => {
   try {

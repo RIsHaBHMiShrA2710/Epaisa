@@ -53,7 +53,7 @@ function ArticleCard({ article }) {
     e.stopPropagation(); // Prevent click from bubbling to the parent
     setShowModal(true);
   };
-  
+
 
   const closeAuthorModal = () => {
     setShowModal(false);
@@ -90,7 +90,13 @@ function ArticleCard({ article }) {
               />
               <span className="article-card-author-name">
                 {article.author_name || 'Unknown Author'}
+                
               </span>
+              <div className="tag-list">
+                  {(article.tags || []).map(tag => (
+                    <span key={tag} className="tag-pill">{tag}</span>
+                  ))}
+              </div>
             </div>
           </div>
 
@@ -124,6 +130,7 @@ function ArticleCard({ article }) {
           <CommentSection articleId={article.id} />
         )}
       </div>
+
 
       {showModal && (
         <AuthorModal
