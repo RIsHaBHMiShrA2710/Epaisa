@@ -146,36 +146,150 @@ exports.getArticleById = async (req, res) => {
   }
 };
 
+// If you use Cloudinary, ensure env vars are set or CLOUDINARY_URL is present
+// cloudinary.config({ cloud_name: ..., api_key: ..., api_secret: ... });
+
 exports.updateArticle = async (req, res) => {
+  const client = await pool.connect();
   try {
     const { id } = req.params;
-    const { title, abstract, content, thumbnail_url } = req.body;
-    // Optionally check if req.user.id matches article's author
-    const query = `
-      UPDATE articles 
-      SET title = $1, abstract = $2, content = $3, thumbnail_url = $4, updated_at = NOW()
-      WHERE id = $5
-      RETURNING *;
-    `;
-    const values = [title, abstract, content, thumbnail_url, id];
-    const { rows } = await pool.query(query, values);
-    if (!rows.length) return res.status(404).json({ message: 'Article not found' });
-    res.json(rows[0]);
+
+    // 0) Load current row + ownership
+    const cur = await client.query(
+      'SELECT user_id, title, abstract, content, thumbnail_url FROM articles WHERE id=$1',
+      [id]
+    );
+    if (!cur.rows.length) return res.status(404).json({ message: 'Article not found' });
+    if (!req.user || cur.rows[0].user_id !== req.user.id) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    // 1) Extract basic fields
+    const { title, abstract, content } = req.body;
+
+    // 2) Thumbnail (optional)
+    let thumbnail_url = cur.rows[0].thumbnail_url;
+    if (req.file) {
+      if (process.env.CLOUDINARY_URL || process.env.CLOUDINARY_CLOUD_NAME) {
+        const uploadToCloudinary = (buffer, filename) =>
+          new Promise((resolve, reject) => {
+            const publicId =
+              (filename || `article_${id}`).replace(/\.[^.]+$/, '') + '_' + Date.now();
+            const stream = cloudinary.uploader.upload_stream(
+              { folder: 'articles', public_id: publicId, resource_type: 'image' },
+              (err, result) => (err ? reject(err) : resolve(result.secure_url))
+            );
+            stream.end(buffer);
+          });
+
+        if (req.file.buffer) {
+          thumbnail_url = await uploadToCloudinary(req.file.buffer, req.file.originalname);
+        } else if (req.file.path) {
+          const up = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'articles',
+            resource_type: 'image',
+          });
+          thumbnail_url = up.secure_url;
+        }
+      } else if (req.file.path) {
+        thumbnail_url = req.file.path; // disk path
+      }
+    }
+
+    // 3) Coalesce partial fields
+    const newTitle = typeof title === 'string' ? title : cur.rows[0].title;
+    const newAbstract = typeof abstract === 'string' ? abstract : cur.rows[0].abstract;
+    const newContent = typeof content === 'string' ? content : cur.rows[0].content;
+
+    await client.query('BEGIN');
+
+    // 4) Update article main fields
+    const { rows: updatedRows } = await client.query(
+      `UPDATE articles
+         SET title=$1,
+             abstract=$2,
+             content=$3,
+             thumbnail_url=$4,
+             updated_at=NOW()
+       WHERE id=$5
+       RETURNING *;`,
+      [newTitle, newAbstract, newContent, thumbnail_url, id]
+    );
+    const updatedArticle = updatedRows[0];
+
+    // 5) Tags: only update if client sent "tags" (keep existing otherwise)
+    if (typeof req.body.tags !== 'undefined') {
+      // Parse and normalize
+      let incoming = [];
+      try { incoming = JSON.parse(req.body.tags || '[]'); } catch { incoming = []; }
+      let finalTags = (incoming || [])
+        .map(t => String(t || '').trim())
+        .filter(Boolean)
+        .map(t => t.toLowerCase());
+
+      // force "edited" on any update
+      if (!finalTags.includes('edited')) finalTags.push('edited');
+
+      // unique
+      finalTags = Array.from(new Set(finalTags));
+
+      if (finalTags.length === 0) {
+        // If empty list explicitly sent → clear relations
+        await client.query('DELETE FROM article_tags WHERE article_id = $1', [id]);
+      } else {
+        // Upsert tag names into `tags`, collect ids
+        const tagIds = [];
+        for (const name of finalTags) {
+          const { rows: tagRow } = await client.query(
+            `INSERT INTO tags (name)
+               VALUES ($1)
+               ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+             RETURNING id;`,
+            [name]
+          );
+          tagIds.push(tagRow[0].id);
+        }
+
+        // Rewire relations: simplest is delete & bulk insert
+        await client.query('DELETE FROM article_tags WHERE article_id = $1', [id]);
+
+        // Bulk insert relations
+        // Build VALUES ($1,$2),($1,$3),...
+        const values = [];
+        const params = [id];
+        tagIds.forEach((tid, i) => {
+          params.push(tid);
+          values.push(`($1, $${i + 2})`);
+        });
+        const relSQL = `INSERT INTO article_tags (article_id, tag_id) VALUES ${values.join(',')}
+                        ON CONFLICT DO NOTHING;`;
+        await client.query(relSQL, params);
+      }
+    }
+
+    await client.query('COMMIT');
+    return res.json(updatedArticle);
   } catch (error) {
-    console.error('Error updating article:', error);
-    res.status(500).json({ message: 'Server error' });
+    try { await pool.query('ROLLBACK'); } catch { }
+    console.error('Error updating article:', error, { body: req.body, file: !!req.file });
+    return res.status(500).json({ message: 'Server error' });
+  } finally {
+    client.release();
   }
 };
+
 
 exports.deleteArticle = async (req, res) => {
   try {
     const { id } = req.params;
-    // Optionally check ownership before deletion
-    const { rowCount } = await pool.query('DELETE FROM articles WHERE id = $1;', [id]);
-    if (rowCount === 0) return res.status(404).json({ message: 'Article not found' });
+    const art = await pool.query('SELECT user_id FROM articles WHERE id=$1', [id]);
+    if (!art.rows.length) return res.status(404).json({ message: 'Article not found' });
+    if (art.rows[0].user_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' });
+
+    await pool.query('DELETE FROM articles WHERE id=$1', [id]);
     res.json({ message: 'Article deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting article:', error);
+  } catch (err) {
+    console.error('deleteArticle error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };

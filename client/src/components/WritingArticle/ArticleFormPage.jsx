@@ -1,176 +1,212 @@
-// ArticleFormPage.jsx
-import React, { useState } from 'react';
+// src/components/WritingArticle/ArticleFormPage.jsx
+import React, { useEffect, useState, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useAuth } from '../../AuthContext';
-import './ArticleFormPage.css';
+import { useAuth } from '../../authContext'; // keep as-is per your setup
 import { modules, formats } from './modulesConfig';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import './ArticleFormPage.css';
 
-const ArticleFormPage = () => {
+const API =
+  import.meta.env.MODE === 'development'
+    ? 'http://localhost:5000'
+    : import.meta.env.VITE_BACKEND_URL;
+
+export default function ArticleFormPage() {
+  const { id } = useParams();                 // if present → edit mode
+  const isEdit = Boolean(id);
   const { user, token } = useAuth();
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState('');
   const [abstractText, setAbstractText] = useState('');
-  const [thumbnail, setThumbnail] = useState(null);
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState([]);       // array in UI
+  const [thumbFile, setThumbFile] = useState(null);
+  const [thumbPreview, setThumbPreview] = useState(''); // existing URL
   const [error, setError] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [submissionSuccess, setSubmissionSuccess] = useState(false);
-  const [tags, setTags] = useState([]);
   const [tagError, setTagError] = useState('');
-
+  const [loading, setLoading] = useState(isEdit);
+  const [submitting, setSubmitting] = useState(false);
 
   const MAX_TAGS = 5;
-  // Helper: count words
-  const countWords = (text) =>
-    text.trim().split(/\s+/).filter(Boolean).length;
 
-  const handleThumbnailChange = (e) => {
-    setThumbnail(e.target.files[0]);
+  // Prefill on edit – wait until token AND user are available to avoid 401
+  useEffect(() => {
+    if (!isEdit || !token || !user?.id) return;
+
+    const ac = new AbortController();
+    setLoading(true);
+
+    (async () => {
+      try {
+        const { data } = await axios.get(`${API}/api/articles/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: ac.signal,
+        });
+
+        // Soft client-side guard (hard check must be on backend)
+        if (data.user_id !== user.id) {
+          alert('You can only edit your own article.');
+          navigate('/dashboard');
+          return;
+        }
+
+        setTitle(data.title || '');
+        setAbstractText(data.abstract || '');
+        setContent(data.content || '');
+
+        // Robust tag parsing (supports array, JSON string, null)
+        const parsedTags = Array.isArray(data.tags)
+          ? data.tags
+          : typeof data.tags === 'string'
+            ? (() => { try { return JSON.parse(data.tags || '[]'); } catch { return []; } })()
+            : [];
+        setTags(parsedTags);
+
+        setThumbPreview(data.thumbnail_url || '');
+      } catch (e) {
+        if (axios.isCancel(e)) return;
+        const status = e?.response?.status;
+        if (status === 401) setError('Unauthorized');
+        else if (status === 404) setError('Not found');
+        else setError('Request failed');
+        navigate('/dashboard');
+      } finally {
+        setLoading(false);
+      }
+    })();
+
+    return () => ac.abort();
+  }, [isEdit, id, token, user?.id, navigate]);
+
+  const countWords = (t) => t.trim().split(/\s+/).filter(Boolean).length;
+  const contentWordCount = useMemo(
+    () => countWords(content.replace(/<[^>]+>/g, '')),
+    [content]
+  );
+
+  const onFile = (e) => setThumbFile(e.target.files?.[0] || null);
+
+  const addTag = (name) => {
+    const val = name.trim();
+    if (!val) return;
+    if (tags.length >= MAX_TAGS) return setTagError(`Max ${MAX_TAGS} tags`);
+    if (/\s/.test(val)) return setTagError('No spaces in tags');
+    if (tags.some((t) => t.toLowerCase() === val.toLowerCase()))
+      return setTagError('Duplicate tag');
+    setTags([...tags, val]);
+    setTagError('');
   };
 
-  const handleSubmit = async (e) => {
+  const removeTag = (i) => setTags(tags.filter((_, idx) => idx !== i));
+
+  const submit = async (e) => {
     e.preventDefault();
-    if (!user) {
-      alert('You must be logged in to submit an article.');
-      return;
-    }
+    if (!user) return alert('Login required.');
 
-    // Validate abstract and content
-    const abstractWordCount = countWords(abstractText);
-    if (abstractWordCount > 70) {
-      setError(`Abstract must be 70 words or fewer. Currently ${abstractWordCount} words.`);
-      return;
-    }
-    const contentWordCount = countWords(content.replace(/<[^>]+>/g, ''));
-    if (contentWordCount < 200) {
-      setError(`Content must be at least 200 words. Currently ${contentWordCount} words.`);
-      return;
-    }
-
-
+    // Validation
+    if (countWords(abstractText) > 70) return setError('Abstract ≤ 70 words.');
+    if (contentWordCount < 200) return setError('Content ≥ 200 words.');
     setError('');
     setSubmitting(true);
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('abstract', abstractText);
-    formData.append('thumbnail', thumbnail);
-    formData.append('content', content);
-    formData.append('tags', JSON.stringify(tags));
+    // On edit, ensure an "edited" tag exists
+    const finalTags =
+      isEdit && !tags.some((t) => t.toLowerCase() === 'edited')
+        ? [...tags, 'edited']
+        : tags;
+
+    const form = new FormData();
+    form.append('title', title);
+    form.append('abstract', abstractText);
+    form.append('content', content);
+    form.append('tags', JSON.stringify(finalTags)); // backend reads JSON
+    if (thumbFile) form.append('thumbnail', thumbFile);
+
+    const url = isEdit ? `${API}/api/articles/${id}` : `${API}/api/articles`;
+    const method = isEdit ? 'put' : 'post';
 
     try {
-      const res = await fetch('https://epaise-backend.onrender.com/api/articles', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
+      const { data } = await axios({
+        url,
+        method,
+        headers: { Authorization: `Bearer ${token}` },
+        data: form, // axios will set proper multipart boundary
       });
-      if (!res.ok) {
-        throw new Error('Failed to create article');
-      }
-      const data = await res.json();
-      console.log('Article created successfully:', data);
-      setSubmissionSuccess(true);
-      // Clear form fields after a brief delay
-      setTimeout(() => {
-        setTitle('');
-        setAbstractText('');
-        setThumbnail(null);
-        setContent('');
-        setSubmissionSuccess(false);
-      }, 2000);
-    } catch (err) {
-      console.error(err);
-      setError('Error creating article. Please try again.');
+      navigate(`/blog/${data.id}`);
+    } catch (e) {
+      const msg =
+        e?.response?.data?.message ||
+        e?.response?.statusText ||
+        e?.message ||
+        'Submit failed. Try again.';
+      setError(msg);
+      console.error(e);
     } finally {
       setSubmitting(false);
     }
   };
 
-
-  const addTag = name => {
-    // 1) Too many already?
-    if (tags.length >= MAX_TAGS) {
-      setTagError(`You can only add up to ${MAX_TAGS} tags.`);
-      return;
-    }
-    // 2) No spaces allowed
-    if (/\s/.test(name)) {
-      setTagError('Tags cannot contain spaces.');
-      return;
-    }
-    // 3) No duplicates (case-insensitive)
-    if (tags.some(t => t.toLowerCase() === name.toLowerCase())) {
-      setTagError('This tag is already added.');
-      return;
-    }
-    // 4) Good: add it
-    setTags([...tags, name]);
-    setTagError('');  // clear any old error
-  };
-
-  const removeTag = idx => {
-    setTags(tags.filter((_, i) => i !== idx));
-    setTagError('');
-  };
+  if (loading) return <div className="afp-container"><LoadingSpinner /></div>;
 
   return (
     <div className="afp-container">
-      <h1 className="afp-heading">Create Article</h1>
+      <h1 className="afp-heading">{isEdit ? 'Edit Article' : 'Create Article'}</h1>
       {error && <div className="afp-error">{error}</div>}
-      {submissionSuccess && <div className="afp-success">✓ Article created successfully!</div>}
-      <form onSubmit={handleSubmit} className="afp-form">
+
+      <form onSubmit={submit} className="afp-form">
         <div className="afp-field">
-          <label htmlFor="afp-title">Title</label>
-          <input
-            id="afp-title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            placeholder="Enter the article title"
-          />
+          <label>Title</label>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} required />
         </div>
+
         <div className="afp-field">
-          <label htmlFor="afp-abstract">Abstract (max 70 words)</label>
+          <label>Abstract (max 70 words)</label>
           <textarea
-            id="afp-abstract"
             value={abstractText}
             onChange={(e) => setAbstractText(e.target.value)}
             required
-            placeholder="Enter a brief abstract..."
           />
         </div>
-        <div className="afp-field">
-          <label htmlFor="afp-thumbnail">Thumbnail (Image)</label>
-          <input
-            id="afp-thumbnail"
-            type="file"
-            accept="image/*"
-            onChange={handleThumbnailChange}
 
-          />
-        </div>
         <div className="afp-field">
-          <label>Tags (up to {MAX_TAGS})</label>
+          <label>Thumbnail</label>
+          {thumbPreview && !thumbFile && (
+            <img
+              src={thumbPreview}
+              className="afp-thumb-preview"
+              alt="current thumbnail"
+            />
+          )}
+          <input type="file" accept="image/*" onChange={onFile} />
+        </div>
+
+        <div className="afp-field">
+          <label>Tags (up to 5)</label>
           <div className="tag-input">
-            {tags.map((tag, i) => (
-              <span key={i} className="tag-chip">
-                {tag} <button type="button" className="tag-cancel-button" onClick={() => removeTag(i)}>×</button>
+            {tags.map((t, i) => (
+              <span className="tag-chip" key={i}>
+                {t}{' '}
+                <button
+                  type="button"
+                  onClick={() => removeTag(i)}
+                  className="tag-cancel-button"
+                >
+                  ×
+                </button>
               </span>
             ))}
             {tags.length < MAX_TAGS && (
               <input
-                type="text"
-                placeholder="Type & press Enter"
-                onKeyDown={e => {
+                placeholder="Type & Enter"
+                onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    const val = e.target.value.trim();
                     e.preventDefault();
-                    if (val) addTag(val);
-                    e.target.value = '';
+                    addTag(e.currentTarget.value);
+                    e.currentTarget.value = '';
                   }
                 }}
               />
@@ -179,26 +215,20 @@ const ArticleFormPage = () => {
           {tagError && <div className="afp-tag-error">{tagError}</div>}
         </div>
 
-
         <div className="afp-field">
           <label>Content (min 200 words)</label>
           <ReactQuill
-            theme="snow"
             value={content}
             onChange={setContent}
             modules={modules}
             formats={formats}
-            placeholder="Write your article here..."
-            className="afp-editor"
-            tabIndex="0"
           />
         </div>
-        <button type="submit" className="afp-submit" disabled={submitting}>
-          {submitting ? <LoadingSpinner /> : submissionSuccess ? '✓' : 'Submit Article'}
+
+        <button className="afp-submit" disabled={submitting}>
+          {submitting ? <LoadingSpinner /> : isEdit ? 'Update Article' : 'Submit Article'}
         </button>
       </form>
     </div>
   );
-};
-
-export default ArticleFormPage;
+}
