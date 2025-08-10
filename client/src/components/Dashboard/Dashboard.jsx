@@ -5,6 +5,7 @@ import { useAuth } from '../../authContext';
 import { ToastContainer, toast } from 'react-toastify';
 import Loader from '../Loader/Loader';
 import 'react-toastify/dist/ReactToastify.css';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
 
 const UserDashboard = () => {
   const { user, token } = useAuth();
@@ -261,6 +262,31 @@ const UserDashboard = () => {
                 className={styles.ud_card}
                 onClick={() => navigate(`/blog/${article.id}`)}
               >
+                <div className={styles.ud_card_actions}>
+                  <button
+                    className={styles.ud_actionBtn}
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleEditArticle(article.id);
+                    }}
+                    aria-label="Edit article"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'blue' }}
+                  >
+                    <IconEdit size={20} />
+                  </button>
+
+                  <button
+                    className={styles.ud_actionBtnDanger}
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleDeleteArticle(article.id);
+                    }}
+                    aria-label="Delete article"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'red' }}
+                  >
+                    <IconTrash size={20} />
+                  </button>
+                </div>
                 <img
                   src={article.thumbnail_url || DEFAULT_THUMBNAIL}
                   alt={article.title}
@@ -270,22 +296,7 @@ const UserDashboard = () => {
                   <h3>{article.title}</h3>
                   <p>{article.abstract}</p>
 
-                  <div className={styles.ud_card_actions}>
-                    <button
-                      className={styles.ud_actionBtn}
-                      onClick={e => { e.stopPropagation(); handleEditArticle(article.id); }}
-                      aria-label="Edit article"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className={styles.ud_actionBtnDanger}
-                      onClick={e => { e.stopPropagation(); handleDeleteArticle(article.id); }}
-                      aria-label="Delete article"
-                    >
-                      Delete
-                    </button>
-                  </div>
+
                 </div>
               </div>
             ))
@@ -317,49 +328,6 @@ const UserDashboard = () => {
             ))
           )}
         </section>
-
-        <section className={styles.ud_section}>
-          <h2>Your Articles</h2>
-          {articles.length === 0 ? (
-            <p>No articles published yet.</p>
-          ) : (
-            articles.map(article => (
-              <div
-                key={article.id}
-                className={styles.ud_card}
-                onClick={() => navigate(`/blog/${article.id}`)}
-              >
-                <img
-                  src={article.thumbnail_url || DEFAULT_THUMBNAIL}
-                  alt={article.title}
-                  className={styles.ud_card_thumb}
-                />
-                <div className={styles.ud_card_info}>
-                  <h3>{article.title}</h3>
-                  <p>{article.abstract}</p>
-
-                  <div className={styles.ud_card_actions}>
-                    <button
-                      className={styles.ud_actionBtn}
-                      onClick={e => { e.stopPropagation(); handleEditArticle(article.id); }}
-                      aria-label="Edit article"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className={styles.ud_actionBtnDanger}
-                      onClick={e => { e.stopPropagation(); handleDeleteArticle(article.id); }}
-                      aria-label="Delete article"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </section>
-
       </main>
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
