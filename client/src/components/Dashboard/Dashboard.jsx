@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import styles from './Dashboard.module.css';
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../authContext';
 import { ToastContainer, toast } from 'react-toastify';
 import Loader from '../Loader/Loader';
 import 'react-toastify/dist/ReactToastify.css';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
 
 const UserDashboard = () => {
   const { user, token } = useAuth();
@@ -24,41 +25,67 @@ const UserDashboard = () => {
   const DEFAULT_THUMBNAIL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/800px-Placeholder_view_vector.svg.png';
   const DEFAULT_AVATAR = 'https://whitedotpublishers.com/wp-content/uploads/2022/05/male-placeholder-image.jpeg';
   const BACKEND = import.meta.env.MODE === 'development'
-  ? 'http://localhost:5000'
-  : import.meta.env.VITE_BACKEND_URL;
+    ? 'http://localhost:5000'
+    : import.meta.env.VITE_BACKEND_URL;
 
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    const ac = new AbortController();
+
+    (async () => {
       try {
         const res = await fetch(`${BACKEND}/api/users/me/dashboard`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
+          signal: ac.signal,
         });
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            toast.error('Session expired. Please log in again.');
+            setDashboardData(null);
+            return;
+          }
+          throw new Error('Failed to load dashboard');
+        }
+
         const data = await res.json();
         setDashboardData(data);
-        setNewName(data.user.name);
+        if (data?.user?.name) setNewName(data.user.name);
       } catch (err) {
-        console.error('Error fetching dashboard:', err);
+        if (err.name !== 'AbortError') {
+          console.error('Error fetching dashboard:', err);
+          toast.error('Could not load dashboard.');
+          setDashboardData(null);
+        }
       } finally {
         setLoading(false);
       }
-    };
+    })();
 
-    if (token) fetchDashboardData();
-  }, [token]);
+    return () => ac.abort();
+  }, [token, BACKEND]);
 
-  
-  if (loading) return (<div><Loader/></div>);
+
+
+
+  if (loading) return (<div><Loader /></div>);
   if (!dashboardData) return <div className={styles.ud_error}>Failed to load dashboard.</div>;
+  const userInfo = dashboardData?.user || {};
+  const articles = dashboardData?.articles || [];
+  const upvotedArticles = dashboardData?.upvotedArticles || [];
+  const downvotedArticles = dashboardData?.downvotedArticles || [];
 
-  const { user: userInfo, articles, upvotedArticles, downvotedArticles } = dashboardData;
   const handleProfileUpdate = async () => {
     if (newName === userInfo.name && !newAvatar) {
       toast.info("No changes made to profile.");
       return;
     }
+
 
     setProfileLoading(true);
     const formData = new FormData();
@@ -84,6 +111,26 @@ const UserDashboard = () => {
       toast.error("Failed to update profile.");
     } finally {
       setProfileLoading(false);
+    }
+  };
+  const handleEditArticle = (id) => navigate(`/blog/${id}/edit`);
+
+  const handleDeleteArticle = async (id) => {
+    if (!window.confirm('Delete this article?')) return;
+    try {
+      const res = await fetch(`${BACKEND}/api/articles/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error(await res.text() || 'Delete failed');
+
+      setDashboardData(prev => prev
+        ? { ...prev, articles: (prev.articles || []).filter(a => a.id !== id) }
+        : prev
+      );
+      toast.success('Article deleted');
+    } catch (e) {
+      toast.error(e.message || 'Could not delete');
     }
   };
 
@@ -122,7 +169,7 @@ const UserDashboard = () => {
       setPasswordLoading(false);
     }
   };
-  
+
 
   return (
 
@@ -132,7 +179,7 @@ const UserDashboard = () => {
         <div className={styles.ud_avatar}>
           <img
 
-src={userInfo.avatar_url?.trim() ? userInfo.avatar_url : DEFAULT_AVATAR}
+            src={userInfo.avatar_url?.trim() ? userInfo.avatar_url : DEFAULT_AVATAR}
 
             alt={userInfo.name}
             className={styles.ud_avatar_image}
@@ -209,12 +256,37 @@ src={userInfo.avatar_url?.trim() ? userInfo.avatar_url : DEFAULT_AVATAR}
           {articles.length === 0 ? (
             <p>No articles published yet.</p>
           ) : (
-            articles.map((article) => (
+            articles.map(article => (
               <div
                 key={article.id}
                 className={styles.ud_card}
                 onClick={() => navigate(`/blog/${article.id}`)}
               >
+                <div className={styles.ud_card_actions}>
+                  <button
+                    className={styles.ud_actionBtn}
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleEditArticle(article.id);
+                    }}
+                    aria-label="Edit article"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'blue' }}
+                  >
+                    <IconEdit size={20} />
+                  </button>
+
+                  <button
+                    className={styles.ud_actionBtnDanger}
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleDeleteArticle(article.id);
+                    }}
+                    aria-label="Delete article"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'red' }}
+                  >
+                    <IconTrash size={20} />
+                  </button>
+                </div>
                 <img
                   src={article.thumbnail_url || DEFAULT_THUMBNAIL}
                   alt={article.title}
@@ -223,12 +295,14 @@ src={userInfo.avatar_url?.trim() ? userInfo.avatar_url : DEFAULT_AVATAR}
                 <div className={styles.ud_card_info}>
                   <h3>{article.title}</h3>
                   <p>{article.abstract}</p>
+
+
                 </div>
               </div>
             ))
-
           )}
         </section>
+
 
         <section className={styles.ud_section}>
           <h2>Upvoted Articles</h2>
@@ -236,31 +310,6 @@ src={userInfo.avatar_url?.trim() ? userInfo.avatar_url : DEFAULT_AVATAR}
             <p>No upvoted articles.</p>
           ) : (
             upvotedArticles.map((article) => (
-              <div
-                key={article.id}
-                className={styles.ud_card}
-                onClick={() => navigate(`/blog/${article.id}`)}
-              >
-                <img
-                  src={article.thumbnail_url || DEFAULT_THUMBNAIL}
-                  alt={article.title}
-                  className={styles.ud_card_thumb}
-                />
-                <div className={styles.ud_card_info}>
-                  <h3>{article.title}</h3>
-                  <p>{article.abstract}</p>
-                </div>
-              </div>
-            ))
-          )}
-        </section>
-
-        <section className={styles.ud_section}>
-          <h2>Downvoted Articles</h2>
-          {downvotedArticles.length === 0 ? (
-            <p>No downvoted articles.</p>
-          ) : (
-            downvotedArticles.map((article) => (
               <div
                 key={article.id}
                 className={styles.ud_card}

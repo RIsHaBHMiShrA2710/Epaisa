@@ -1,18 +1,28 @@
-
 const express = require('express');
 const router = express.Router();
 const ArticleController = require('../controllers/ArticleController');
-const authMiddleware = require('../middleware/authMiddleware'); // ensure routes are protected
+const auth = require('../middleware/authMiddleware');
 const upload = require('../config/multerConfig');
-// Create a new article
-router.post('/', authMiddleware,upload.single('thumbnail'), ArticleController.createArticle);
-// Get list of all articles
+const authOptional = require('../middleware/authOptional')
+// Validate numeric :id
+router.param('id', (req, res, next, id) => {
+  if (!/^\d+$/.test(id)) return res.status(400).json({ message: 'Invalid id' });
+  next();
+});
+
+// Create (multipart)
+router.post('/', auth, upload.single('thumbnail'), ArticleController.createArticle);
+
+// List (public)
 router.get('/', ArticleController.getAllArticles);
-// Get a specific article by id
+
+// Get one (public, but controller should hide drafts unless owner)
 router.get('/:id', ArticleController.getArticleById);
-// Update an article
-router.put('/:id', authMiddleware, ArticleController.updateArticle);
-// Delete an article
-router.delete('/:id', authMiddleware, ArticleController.deleteArticle);
+
+// Update (owner-only in controller; allow new thumbnail)
+router.put('/:id', auth, upload.single('thumbnail'), ArticleController.updateArticle);
+
+// Delete (owner-only in controller)
+router.delete('/:id', auth, ArticleController.deleteArticle);
 
 module.exports = router;

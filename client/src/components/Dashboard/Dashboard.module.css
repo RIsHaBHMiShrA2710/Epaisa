@@ -8,71 +8,6 @@
   margin: auto;
   font-family: 'Segoe UI', sans-serif;
 }
-.ud_card {
-  display: flex;
-  align-items: flex-start;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 1rem;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 3px 6px rgba(21, 245, 186, 0.15);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.ud_input {
-  width: 100%;
-  padding: 0.5rem;
-  margin: 0.5rem 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.ud_cancelBtn {
-  margin: 0.5rem;
-  background: #f44336;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.ud_pwdBox {
-  margin: 1rem;
-  background-color: #fefefe;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-}
-  
-.ud_card:hover {
-  transform: translateY(-3px);
-}
-
-.ud_card_thumb {
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0;
-  border: 2px solid #15f5ba;
-}
-
-.ud_card_info {
-  flex: 1;
-}
-
-.ud_card_info h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #111;
-}
-
-.ud_card_info p {
-  margin: 0.4rem 0 0;
-  color: #444;
-  font-size: 0.9rem;
-}
 
 /* Sidebar */
 .ud_sidebar {
@@ -93,32 +28,32 @@
   border-radius: 50%;
   margin-bottom: 1rem;
   border: 2px solid #15f5ba;
-  box-shadow:4px 4px 10px rgba(21, 245, 185, 0.314);
+  box-shadow: 4px 4px 10px rgba(21, 245, 185, 0.314);
 }
-.ud_avatar_image{
+.ud_avatar_image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .ud_name {
   font-size: 1.3rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
   color: #222;
 }
-
 .ud_email {
   font-size: 0.95rem;
   color: #666;
   margin-bottom: 0.5rem;
 }
-
 .ud_bio {
   font-size: 0.95rem;
   color: #444;
   margin-bottom: 1rem;
 }
 
+/* Buttons / Inputs in sidebar */
 .ud_editBtn {
   margin: 1rem;
   padding: 0.6rem 1.2rem;
@@ -130,9 +65,32 @@
   cursor: pointer;
   transition: background 0.3s;
 }
+.ud_editBtn:hover { background-color: #13e0a7; }
 
-.ud_editBtn:hover {
-  background-color: #13e0a7;
+.ud_input {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.ud_cancelBtn {
+  margin: 0.5rem;
+  background: #f44336;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.ud_pwdBox {
+  margin: 1rem;
+  background-color: #fefefe;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
 }
 
 /* Main content */
@@ -151,7 +109,6 @@
   overflow-y: auto;
   max-height: 300px;
 }
-
 .ud_section h2 {
   font-size: 1.3rem;
   font-weight: 600;
@@ -160,22 +117,90 @@
 }
 
 /* Article card */
+.ud_card {
+  position: relative;                 /* for absolute-positioned action icons */
+  display: flex;
+  align-items: flex-start;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 1rem 3rem 1rem 1rem;       /* extra right padding so text doesn't go under icons */
+  gap: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 6px rgba(21, 245, 186, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.ud_card:hover { transform: translateY(-3px); }
 
-.ud_card:last-child {
-  border-bottom: none;
+.ud_card_thumb {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 2px solid #15f5ba;
 }
 
+.ud_card_info { flex: 1; }
+.ud_card_info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #111;
+}
+.ud_card_info p {
+  margin: 0.4rem 0 0;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+.ud_card:last-child { border-bottom: none; }
 .ud_card h3 {
   margin: 0;
   font-size: 1.1rem;
   color: #222;
   font-weight: 600;
 }
-
 .ud_card p {
   margin: 0.3rem 0 0;
   color: #666;
   font-size: 0.9rem;
+}
+
+/* Floating action icons (top-right, desktop & mobile) */
+.ud_card_actions {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.ud_actionBtn,
+.ud_actionBtnDanger {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;            /* controls Tabler icon size if not set via prop */
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  outline: none;
+}
+.ud_actionBtn { color: #0d6efd; }        /* blue edit */
+.ud_actionBtnDanger { color: #f44336; }  /* red delete */
+
+.ud_actionBtn:hover,
+.ud_actionBtnDanger:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+.ud_actionBtn:focus-visible,
+.ud_actionBtnDanger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(21, 245, 186, 0.35); /* theme green focus ring */
+  border-radius: 6px;
 }
 
 /* Feedback messages */
@@ -188,17 +213,57 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .ud_container {
-    flex-direction: column;
-    padding: 1rem;
+/* Mobile layout: stack thumb, text, tags, then actions */
+@media (max-width: 600px) {
+  .ud_card {
+    display: grid;                 /* stack sections vertically */
+    grid-template-columns: 1fr;
+    padding: 0.75rem;              /* remove extra right padding used for floating icons */
   }
 
-  .ud_main {
-    max-width: 100%;
+  .ud_card_thumb {
+    width: 100%;
+    height: 160px;                 /* nice mobile aspect */
+    border-radius: 10px;
   }
 
-  .ud_section {
-    max-height: none;
+  .ud_card_info {
+    margin-top: 0.6rem;
+  }
+
+  /* If you render tags, give them spacing too */
+  .ud_card_tags {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Move action icons out of absolute top-right and into their own row */
+  .ud_card_actions {
+    position: static;              /* no absolute overlap */
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;     /* align to right edge */
+    gap: 10px;
+  }
+
+  .ud_actionBtn,
+  .ud_actionBtnDanger {
+    font-size: 1.05rem;            /* slightly smaller icons on mobile */
+    padding: 4px;
+  }
+  .ud_card_info h3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;         /* 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .ud_card_info p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;         /* 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
+

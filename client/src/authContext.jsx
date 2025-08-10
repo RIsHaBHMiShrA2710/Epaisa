@@ -1,66 +1,98 @@
 // AuthContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+const BACKEND =
+  import.meta.env.VITE_BACKEND_URL ||
+  (import.meta.env.MODE === 'development' ? 'http://localhost:5000' : '');
 
 const AuthContext = createContext();
 
+axios.defaults.baseURL = BACKEND;
+
 export const AuthProvider = ({ children }) => {
-  // —————— Local state for token + user ——————
+  const qc = useQueryClient();
+
+  // Token & user from localStorage
   const [token, setToken] = useState(localStorage.getItem('authToken'));
   const [user, setUser] = useState(() => {
     const raw = localStorage.getItem('user');
     return raw ? JSON.parse(raw) : null;
   });
 
-  // —————— 1) Grab token from URL once ——————
+  // If token present, attach to axios
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      localStorage.setItem('authToken', token);
+    } else {
+      delete axios.defaults.headers.common.Authorization;
+      localStorage.removeItem('authToken');
+    }
+  }, [token]);
+
+  // 1) Accept ?token=... one-time
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const t = params.get('token');
     if (t) {
       setToken(t);
-      localStorage.setItem('authToken', t);
       window.history.replaceState({}, '', window.location.pathname);
     }
   }, []);
 
-  // —————— 2) Fetch dashboard via React Query ——————
-  // Build headers only when token exists
-  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-
+  // 2) Dashboard (requires token)
   const {
     data: dashboardData,
     isLoading: dashboardLoading,
     error: dashboardError,
   } = useQuery({
     queryKey: ['dashboard', token],
-    queryFn: () =>
-      axios
-        .get('https://epaise-backend.onrender.com/api/users/me/dashboard', { headers })
-        .then(res => res.data),
-    enabled: !!token,             // only run when token is non-null
-    staleTime: 1000 * 60 * 5,     // cache fresh for 5 minutes
-    refetchOnMount: false,        // don’t refetch on remount
-    refetchOnWindowFocus: false,  // don’t refetch on tab focus
+    queryFn: async () => {
+      const { data } = await axios.get('/api/users/me/dashboard');
+      return data;
+    },
+    enabled: !!token,
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
-  // —————— 3) When dashboard comes in, seed “user” if not set ——————
+  // 3) Keep user in sync with dashboard (always update)
   useEffect(() => {
-    if (dashboardData?.user && !user) {
+    if (dashboardData?.user) {
       setUser(dashboardData.user);
       localStorage.setItem('user', JSON.stringify(dashboardData.user));
     }
-  }, [dashboardData, user]);
+  }, [dashboardData]);
 
-  // —————— 4) Expose login / register / logout ——————
-  const login = async (email, pass) => { 'https://epaise-backend.onrender.com/api/auth/login' };
-  const register = async (n, e, p) => { 'https://epaise-backend.onrender.com/api/auth/register' };
-  const googleSignIn = () => (window.location.href = 'https://epaise-backend.onrender.com/api/auth/google');
-  const logout = () => {
+  // 4) Auth actions
+  const login = async (email, password) => {
+    const { data } = await axios.post('/api/auth/login', { email, password });
+    setToken(data.token);
+    setUser(data.user);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    await qc.invalidateQueries({ queryKey: ['dashboard'] });
+  };
+
+  const register = async (name, email, password) => {
+    const { data } = await axios.post('/api/auth/register', { name, email, password });
+    setToken(data.token);
+    setUser(data.user);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    await qc.invalidateQueries({ queryKey: ['dashboard'] });
+  };
+
+  const googleSignIn = () => {
+    // server should redirect back with ?token=...
+    window.location.href = `${BACKEND}/api/auth/google`;
+  };
+
+  const logout = async () => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem('authToken');
     localStorage.removeItem('user');
+    await qc.resetQueries(); // clear cached data
   };
 
   return (

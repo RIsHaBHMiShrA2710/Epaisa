@@ -48,9 +48,9 @@
     background-color: #f0f0f0;
   }
   @media (max-width: 720px){
-    .dropdownWrapper{
+    /* .dropdownWrapper{
       position: absolute;
-    }
+    } */
     .dropdownMenu{
       right:unset;
     }
