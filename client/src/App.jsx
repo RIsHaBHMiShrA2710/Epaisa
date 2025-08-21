@@ -8,7 +8,6 @@ import ArticleListPage from './components/ArticleListPage/ArticleListPage';
 import ArticleDetailPage from './components/ArticlesDetailPage/ArticlesDetailPage';
 import ArticleFormPage from './components/WritingArticle/ArticleFormPage';
 import ProtectedRoute from './components/protectedRoute'; // add this
-
 export default function App() {
   return (
     <Routes>

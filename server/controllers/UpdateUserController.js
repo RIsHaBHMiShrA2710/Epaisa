@@ -6,7 +6,7 @@ const multer = require('multer');
 const bcrypt = require('bcrypt');
 exports.UpdateUserProfile = async (req, res) => {
   const userId = req.user.id;
-  const { name } = req.body;
+  const { name, bio } = req.body;
   let avatarUrl = null;
 
   try {
@@ -31,12 +31,12 @@ exports.UpdateUserProfile = async (req, res) => {
 
     // Update name and avatar URL in DB
     await pool.query(
-      `UPDATE users SET name = $1, avatar_url = COALESCE($2, avatar_url) WHERE id = $3`,
-      [name, avatarUrl, userId]
+      `UPDATE users SET name = $1, bio = $2, avatar_url = COALESCE($3, avatar_url) WHERE id = $4`,
+      [name, bio, avatarUrl, userId]
     );
 
     const updated = await pool.query(
-      'SELECT id, name, email, avatar_url FROM users WHERE id = $1',
+      'SELECT id, name, bio, email, avatar_url FROM users WHERE id = $1',
       [userId]
     );
 
