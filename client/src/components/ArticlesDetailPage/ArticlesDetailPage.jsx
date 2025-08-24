@@ -160,10 +160,10 @@ const ArticleDetailPage = () => {
                 {new Date(article.published_at).toLocaleDateString()}
               </span>
               <div className="adp-vote-buttons">
-                <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote}>
+                <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote} disabled={voteLoading}>
                   ↑ {upvotes}
                 </button>
-                <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote}>
+                <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote} disabled={voteLoading}>
                   ↓ {downvotes}
                 </button>
               </div>
@@ -182,6 +182,20 @@ const ArticleDetailPage = () => {
         
         <div className="adp-content">
           <h1 className="adp-title">{article.title}</h1>
+          
+          {/* Tags Section */}
+          {article.tags && article.tags.length > 0 && (
+            <div className="adp-tags-section">
+              <div className="adp-tags-container">
+                {article.tags.map((tag, index) => (
+                  <span key={index} className="adp-tag">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          
           {article.thumbnail_url && (
             <img className="adp-thumbnail" src={article.thumbnail_url} alt={article.title} />
           )}
@@ -191,10 +205,10 @@ const ArticleDetailPage = () => {
 
         <div className="adp-footer-vote">
           <div className="adp-footer-vote-content">
-            <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote}>
+            <button className="adp-vote-btn adp-upvote-btn" onClick={handleUpvote} disabled={voteLoading}>
               ↑ {upvotes}
             </button>
-            <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote}>
+            <button className="adp-vote-btn adp-downvote-btn" onClick={handleDownvote} disabled={voteLoading}>
               ↓ {downvotes}
             </button>
           </div>
