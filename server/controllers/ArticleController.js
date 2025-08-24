@@ -137,8 +137,36 @@ exports.getAllArticles = async (req, res) => {
 exports.getArticleById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { rows } = await pool.query('SELECT articles.*, users.name AS author_name, users.avatar_url as author_avatar FROM articles LEFT JOIN users ON articles.user_id = users.id WHERE articles.id = $1;', [id]);
-    if (!rows.length) return res.status(404).json({ message: 'Article not found' });
+    const { rows } = await pool.query(
+      `
+      SELECT
+        a.*,
+        u.name AS author_name,
+        u.avatar_url AS author_avatar,
+        COALESCE(t.tags, ARRAY[]::text[]) AS tags
+      FROM articles a
+      LEFT JOIN users u
+        ON a.user_id = u.id
+      /* sub-query that gathers all tag names for the article_id */
+      LEFT JOIN (
+        SELECT
+          at.article_id,
+          array_agg(t.name ORDER BY t.name) AS tags
+        FROM article_tags at
+        JOIN tags t
+          ON at.tag_id = t.id
+        GROUP BY at.article_id
+      ) t
+        ON t.article_id = a.id
+      WHERE a.id = $1;
+      `,
+      [id]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+
     res.json(rows[0]);
   } catch (error) {
     console.error('Error fetching article:', error);

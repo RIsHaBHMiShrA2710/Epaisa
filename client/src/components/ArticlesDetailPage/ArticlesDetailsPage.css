@@ -254,6 +254,106 @@
   text-shadow: none;
 }
 
+/* Tags Section Styles */
+.adp-tags-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+  animation: fadeInUp 0.6s ease-out;
+  animation-delay: 0.15s;
+  animation-fill-mode: both;
+}
+
+.adp-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+
+.adp-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, 
+    rgba(21, 245, 186, 0.15) 0%, 
+    rgba(131, 111, 255, 0.15) 100%);
+  border: 1px solid rgba(21, 245, 186, 0.3);
+  border-radius: 20px;
+  color: var(--accent-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: lowercase;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.adp-tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(21, 245, 186, 0.1), 
+    transparent);
+  transition: left 0.5s;
+}
+
+.adp-tag:hover {
+  background: linear-gradient(135deg, 
+    rgba(21, 245, 186, 0.25) 0%, 
+    rgba(131, 111, 255, 0.25) 100%);
+  border-color: rgba(21, 245, 186, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(21, 245, 186, 0.2);
+}
+
+.adp-tag:hover::before {
+  left: 100%;
+}
+
+/* Alternate tag colors for variety */
+.adp-tag:nth-child(2n) {
+  background: linear-gradient(135deg, 
+    rgba(131, 111, 255, 0.15) 0%, 
+    rgba(21, 245, 186, 0.15) 100%);
+  border-color: rgba(131, 111, 255, 0.3);
+  color: var(--accent-secondary);
+}
+
+.adp-tag:nth-child(2n):hover {
+  background: linear-gradient(135deg, 
+    rgba(131, 111, 255, 0.25) 0%, 
+    rgba(21, 245, 186, 0.25) 100%);
+  border-color: rgba(131, 111, 255, 0.5);
+  box-shadow: 0 4px 15px rgba(131, 111, 255, 0.2);
+}
+
+.adp-tag:nth-child(3n) {
+  background: linear-gradient(135deg, 
+    rgba(72, 187, 120, 0.15) 0%, 
+    rgba(21, 245, 186, 0.15) 100%);
+  border-color: rgba(72, 187, 120, 0.3);
+  color: var(--success);
+}
+
+.adp-tag:nth-child(3n):hover {
+  background: linear-gradient(135deg, 
+    rgba(72, 187, 120, 0.25) 0%, 
+    rgba(21, 245, 186, 0.25) 100%);
+  border-color: rgba(72, 187, 120, 0.5);
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.2);
+}
+
 .adp-thumbnail {
   width: 100%;
   max-height: 500px;
@@ -503,6 +603,58 @@
   box-shadow: 0 8px 30px rgba(21, 245, 186, 0.5);
 }
 
+/* Vote button states */
+.adp-vote-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.adp-vote-btn.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.adp-vote-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Upvote specific active state */
+.adp-upvote-btn.active {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+/* Downvote specific active state */
+.adp-downvote-btn.active {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+/* Spinning animation for loading icon */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Smooth transitions */
+.adp-vote-btn {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover effects (only when not disabled) */
+.adp-vote-btn:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .adp-content,
@@ -519,6 +671,15 @@
 
   .adp-body {
     font-size: 1.1rem;
+  }
+
+  .adp-tags-container {
+    gap: 10px;
+  }
+
+  .adp-tag {
+    font-size: 0.8rem;
+    padding: 6px 14px;
   }
 }
 
@@ -585,6 +746,19 @@
   .adp-title {
     font-size: 2rem;
     margin-bottom: 32px;
+  }
+
+  .adp-tags-section {
+    margin-bottom: 24px;
+  }
+
+  .adp-tags-container {
+    gap: 8px;
+  }
+
+  .adp-tag {
+    font-size: 0.75rem;
+    padding: 6px 12px;
   }
 
   .adp-thumbnail {
@@ -656,6 +830,11 @@
   .adp-thumbnail:hover {
     transform: none;
   }
+
+  .adp-tag:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 @media (max-width: 480px) {
@@ -676,6 +855,19 @@
     font-size: 1.6rem;
     line-height: 1.3;
     margin-bottom: 24px;
+  }
+
+  .adp-tags-section {
+    margin-bottom: 20px;
+  }
+
+  .adp-tags-container {
+    gap: 6px;
+  }
+
+  .adp-tag {
+    font-size: 0.7rem;
+    padding: 5px 10px;
   }
 
   .adp-body {
@@ -746,6 +938,7 @@
 }
 
 .adp-title { animation-delay: 0.1s; }
+.adp-tags-section { animation-delay: 0.15s; }
 .adp-thumbnail { animation-delay: 0.2s; }
 .adp-body { animation-delay: 0.3s; }
 
@@ -758,58 +951,9 @@
   outline-offset: 3px;
 }
 
-/* Add these styles to your ArticleCard.css and ArticlesDetailsPage.css */
-
-/* Vote button states */
-.adp-vote-btn.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
-.adp-vote-btn.loading {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.adp-vote-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Upvote specific active state */
-.adp-upvote-btn.active {
-  background-color: #28a745;
-  border-color: #28a745;
-  color: white;
-}
-
-/* Downvote specific active state */
-.adp-downvote-btn.active {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  color: white;
-}
-
-/* Spinning animation for loading icon */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-/* Smooth transitions */
-.adp-vote-btn {
-  transition: all 0.2s ease-in-out;
-}
-
-/* Hover effects (only when not disabled) */
-.adp-vote-btn:not(:disabled):hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.adp-tag:focus {
+  outline: 2px solid rgba(21, 245, 186, 0.6);
+  outline-offset: 2px;
 }
 
 /* High contrast mode support */
@@ -825,6 +969,10 @@
   .adp-header {
     border-bottom-width: 3px;
   }
+
+  .adp-tag {
+    border-width: 2px;
+  }
 }
 
 /* Reduced motion support */
@@ -834,7 +982,8 @@
   .adp-vote-btn,
   .adp-header-left,
   .adp-thumbnail,
-  .adp-scroll-top {
+  .adp-scroll-top,
+  .adp-tag {
     animation: none;
     transition: none;
   }
@@ -863,9 +1012,19 @@
 
   .adp-title,
   .adp-body,
-  .adp-body * {
+  .adp-body *,
+  .adp-tag {
     color: black !important;
     background: none !important;
     -webkit-text-fill-color: black !important;
+  }
+
+  .adp-tags-section {
+    margin-bottom: 20px;
+  }
+
+  .adp-tag {
+    border: 1px solid #666 !important;
+    background: #f5f5f5 !important;
   }
 }
