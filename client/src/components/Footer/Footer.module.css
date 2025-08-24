@@ -1,63 +1,558 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* CSS Variables */
+:root {
+    --footer-bg-primary: #0f1419;
+    --footer-bg-secondary: #1a202c;
+    --footer-bg-tertiary: #2d3748;
+    --footer-text-primary: #e2e8f0;
+    --footer-text-secondary: #a0aec0;
+    --footer-text-muted: #718096;
+    --footer-accent-primary: #15F5BA;
+    --footer-accent-secondary: #836FFF;
+    --footer-border-color: rgba(131, 111, 255, 0.2);
+    --footer-shadow-light: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --footer-shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
 .footerContainer {
     width: 100%;
-    padding: 20px 0;
-    background-color: #000000;
-    border-top: 1px solid #000000;
+    background: linear-gradient(135deg, var(--footer-bg-primary) 0%, var(--footer-bg-secondary) 100%);
     margin-top: auto;
-    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Top gradient accent */
+.footerAccent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+            var(--footer-accent-primary) 0%,
+            var(--footer-accent-secondary) 50%,
+            var(--footer-accent-primary) 100%);
+    z-index: 2;
+}
+
+/* Decorative background elements */
+.footerContainer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(21, 245, 186, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.footerContainer::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    left: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(131, 111, 255, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 .footerContent {
+    position: relative;
+    z-index: 1;
+    padding: 60px 2rem 32px;
+}
+
+/* Grid Layout */
+.footerGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 48px;
+    margin-bottom: 48px;
+}
+
+.footerSection {
     display: flex;
     flex-direction: column;
+    gap: 24px;
+}
+
+/* Logo Section */
+.logoSection {
+    display: flex;
     align-items: center;
-    text-align: center;
+    gap: 16px;
+    margin-bottom: 8px;
 }
 
-.footerAbout {
-    max-width: 500px;
-    color: #6c757d;
+.footerLogo {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid var(--footer-accent-primary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(21, 245, 186, 0.2);
 }
 
-.footerSocialIcons {
-    margin-top: 10px;
+.footerLogo:hover {
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(21, 245, 186, 0.4);
 }
 
-.footerSocialIcons a {
-    color: #6c757d;
-    transition: color 0.2s ease-in-out;
+.companyName {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--footer-text-primary);
+    margin: 0;
+    background: linear-gradient(135deg, var(--footer-accent-primary) 0%, var(--footer-accent-secondary) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.footerSocialIcons a:hover {
-    color: #007bff;
+.footerDescription {
+    color: var(--footer-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 300px;
+    font-family: 'Poppins', sans-serif;
 }
 
-.footerContactInfo {
-    margin-top: 10px;
-    color: #6c757d;
+/* Social Icons */
+.socialIcons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.socialIcon {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    justify-content: center;
+    align-items: center;
+    color: var(--footer-text-secondary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.socialIcon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.socialIcon:hover::before {
+    left: 100%;
+}
+
+.socialIcon:hover {
+    background: linear-gradient(135deg, var(--footer-accent-primary) 0%, var(--footer-accent-secondary) 100%);
+    color: #1a202c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(21, 245, 186, 0.3);
+    border-color: transparent;
+}
+
+/* Section Titles */
+.sectionTitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--footer-text-primary);
+    margin: 0 0 16px 0;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.sectionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--footer-accent-primary), var(--footer-accent-secondary));
+    border-radius: 2px;
+}
+
+/* Links */
+.linksList {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 12px;
 }
 
-.footerLinks {
-    margin-top: 10px;
-    display: flex;
-    gap: 15px;
-}
-
-.footerLinks a {
-    color: #6c757d;
+.footerLink {
+    color: var(--footer-text-secondary);
     text-decoration: none;
-    transition: color 0.2s ease-in-out;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 8px 0;
+    border-bottom: 1px solid transparent;
+    position: relative;
+    display: inline-block;
 }
 
-.footerLinks a:hover {
-    color: #007bff;
+.footerLink::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--footer-accent-primary), var(--footer-accent-secondary));
+    transition: width 0.3s ease;
 }
 
-.footerCopyright {
-    margin-top: 15px;
-    color: #6c757d;
-    font-size: 0.875rem;
+.footerLink:hover {
+    color: var(--footer-accent-primary);
+    transform: translateX(4px);
+}
+
+.footerLink:hover::before {
+    width: 100%;
+}
+
+/* Contact Info */
+.contactInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contactItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.contactItem:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(21, 245, 186, 0.2);
+    transform: translateY(-1px);
+}
+
+.contactIcon {
+    color: var(--footer-accent-primary);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.contactText {
+    color: var(--footer-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.contactLink {
+    color: var(--footer-text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contactLink:hover {
+    color: var(--footer-accent-primary);
+}
+
+/* Footer Divider */
+.footerDivider {
+    border-color: var(--footer-border-color);
+    margin: 0;
+    opacity: 0.6;
+}
+
+/* Bottom Section */
+.footerBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.copyright {
+    color: var(--footer-text-muted);
+    font-size: 0.85rem;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+.madeWith {
+    color: var(--footer-text-muted);
+    font-size: 0.85rem;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.heartIcon {
+    color: #e53e3e;
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+
+    0%,
+    50%,
+    100% {
+        transform: scale(1);
+    }
+
+    25%,
+    75% {
+        transform: scale(1.1);
+    }
+}
+
+/* Scroll to Top Button */
+.scrollToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, var(--footer-accent-primary) 0%, var(--footer-accent-secondary) 100%);
+    border: none;
+    border-radius: 50%;
+    color: #1a202c;
+    cursor: pointer;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 20px rgba(21, 245, 186, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(100px) scale(0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scrollToTop.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.scrollToTop:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 30px rgba(21, 245, 186, 0.5);
+    background: linear-gradient(135deg, var(--footer-accent-secondary) 0%, var(--footer-accent-primary) 100%);
+}
+
+.scrollToTop:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .footerContent {
+        padding: 48px 1.5rem 24px;
+    }
+
+    .footerGrid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 36px;
+        margin-bottom: 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footerContent {
+        padding: 40px 1rem 20px;
+    }
+
+    .footerGrid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin-bottom: 32px;
+        text-align: center;
+    }
+
+    .logoSection {
+        justify-content: center;
+    }
+
+    .socialIcons {
+        justify-content: center;
+    }
+
+    .contactInfo {
+        align-items: center;
+    }
+
+    .contactItem {
+        justify-content: center;
+        text-align: left;
+        max-width: 300px;
+    }
+
+    .footerBottom {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 24px;
+    }
+
+    .scrollToTop {
+        bottom: 20px;
+        right: 20px;
+        width: 48px;
+        height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footerContent {
+        padding: 32px 0.75rem 16px;
+    }
+
+    .footerGrid {
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .logoSection {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .companyName {
+        font-size: 1.2rem;
+    }
+
+    .footerDescription {
+        text-align: center;
+        max-width: none;
+    }
+
+    .sectionTitle {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .sectionTitle::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .linksList {
+        align-items: center;
+    }
+
+    .contactItem {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .socialIcons {
+        gap: 8px;
+    }
+
+    .socialIcon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .scrollToTop {
+        width: 44px;
+        height: 44px;
+        bottom: 16px;
+        right: 16px;
+    }
+}
+
+/* Accessibility Features */
+.footerLink:focus,
+.socialIcon:focus,
+.scrollToTop:focus,
+.contactLink:focus {
+    outline: 2px solid var(--footer-accent-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+
+    .socialIcon,
+    .contactItem,
+    .scrollToTop {
+        border-width: 2px;
+    }
+
+    .footerAccent {
+        height: 4px;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .footerLogo,
+    .socialIcon,
+    .footerLink,
+    .contactItem,
+    .scrollToTop,
+    .heartIcon {
+        transition: none;
+        animation: none;
+    }
+
+    .socialIcon::before {
+        display: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+
+    .scrollToTop,
+    .socialIcons {
+        display: none !important;
+    }
+
+    .footerContainer {
+        background: white !important;
+        color: black !important;
+    }
+
+    .footerContainer * {
+        color: black !important;
+        background: none !important;
+        -webkit-text-fill-color: black !important;
+    }
+
+    .footerAccent {
+        display: none;
+    }
 }

@@ -1,5 +1,5 @@
 // src/components/Navbar/Navbar.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import AuthButton from '../Auth/AuthButton';
@@ -18,8 +18,45 @@ const links = [
 
 const Navbar = () => {
   const [opened, setOpened] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { user } = useAuth();
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (opened && !event.target.closest(`.${classes.header}`)) {
+        setOpened(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [opened]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (opened) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [opened]);
 
   const items = links.map(({ link, label, hash }) => {
     const key = label;
@@ -40,7 +77,8 @@ const Navbar = () => {
         scroll={el => el.scrollIntoView({ behavior: 'smooth' })}
         {...commonProps}
       >
-        {label}
+        <span className={classes.linkText}>{label}</span>
+        <span className={classes.linkGlow}></span>
       </HashLink>
     ) : (
       <NavLink
@@ -49,47 +87,80 @@ const Navbar = () => {
         end={link === '/'}
         {...commonProps}
       >
-        {label}
+        <span className={classes.linkText}>{label}</span>
+        <span className={classes.linkGlow}></span>
       </NavLink>
     );
   });
 
   return (
-    <header className={`${classes.header} ${opened ? classes.open : ''}`}>
-      <Container size="lg" className={classes.inner}>
-        <nav className={classes.navbar}>
-          {/* Logo */}
-          <NavLink to="/" className={classes.logoLink} aria-label="Home">
-            <img
-              src="https://imgur.com/weEZnmD.jpg"
-              className={classes.brandLogo}
-              alt="Epaisa Logo"
-            />
-          </NavLink>
+    <>
+      <header className={`${classes.header} ${scrolled ? classes.scrolled : ''} ${opened ? classes.open : ''}`}>
+        <Container size="lg" className={classes.inner}>
+          <nav className={classes.navbar}>
+            {/* Logo */}
+            <NavLink to="/" className={classes.logoLink} aria-label="Home">
+              <div className={classes.logoContainer}>
+                <img
+                  src="https://imgur.com/weEZnmD.jpg"
+                  className={classes.brandLogo}
+                  alt="Epaisa Logo"
+                />
+                <div className={classes.logoGlow}></div>
+              </div>
+            </NavLink>
 
-          {/* Desktop Links */}
-          <Group className={classes.group}>{items}</Group>
+            {/* Desktop Links */}
+            <Group className={classes.group}>{items}</Group>
 
-          {/* Auth */}
-          {user ? <AvatarDropdown /> : <AuthButton />}
+            {/* Auth */}
+            <div className={classes.authContainer}>
+              {user ? <AvatarDropdown /> : <AuthButton />}
+            </div>
 
-          {/* Burger for mobile */}
-          <button
-            className={`${classes.burger} ${opened ? classes.burgerOpen : ''}`}
-            onClick={() => setOpened(prev => !prev)}
-            aria-label="Toggle menu"
-            aria-expanded={opened}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </nav>
+            {/* Burger for mobile */}
+            <button
+              className={`${classes.burger} ${opened ? classes.burgerOpen : ''}`}
+              onClick={() => setOpened(prev => !prev)}
+              aria-label="Toggle menu"
+              aria-expanded={opened}
+            >
+              <span className={classes.burgerLine}></span>
+              <span className={classes.burgerLine}></span>
+              <span className={classes.burgerLine}></span>
+            </button>
+          </nav>
+        </Container>
 
         {/* Mobile Menu */}
-        {opened && <div className={classes.mobileMenu}>{items}</div>}
-      </Container>
-    </header>
+        {opened && (
+          <div className={classes.mobileMenu}>
+            <div className={classes.mobileMenuContent}>
+              <div className={classes.mobileMenuHeader}>
+                <h3 className={classes.mobileMenuTitle}>Navigation</h3>
+                <button 
+                  className={classes.mobileMenuClose}
+                  onClick={() => setOpened(false)}
+                  aria-label="Close menu"
+                >
+                  ×
+                </button>
+              </div>
+              <div className={classes.mobileMenuAuth}>
+                {user ? <AvatarDropdown /> : <AuthButton />}
+              </div>
+              <div className={classes.mobileMenuItems}>
+                {items}
+              </div>
+             
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Mobile Menu Backdrop */}
+      {opened && <div className={classes.backdrop} onClick={() => setOpened(false)}></div>}
+    </>
   );
 };
 
