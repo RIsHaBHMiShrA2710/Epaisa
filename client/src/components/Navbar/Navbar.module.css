@@ -94,7 +94,6 @@
 .brandLogo {
   height: 45px;
   width: auto;
-  border-radius: 12px;
   transition: all 0.3s ease;
   position: relative;
   z-index: 2;
@@ -209,7 +208,7 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
-  z-index: 1001;
+  z-index: 10002;
 }
 
 .burger:hover {
@@ -232,9 +231,17 @@
   transform: translateX(-50%);
 }
 
-.burgerLine:nth-child(1) { top: 14px; }
-.burgerLine:nth-child(2) { top: 23px; }
-.burgerLine:nth-child(3) { top: 32px; }
+.burgerLine:nth-child(1) {
+  top: 14px;
+}
+
+.burgerLine:nth-child(2) {
+  top: 23px;
+}
+
+.burgerLine:nth-child(3) {
+  top: 32px;
+}
 
 .burgerOpen {
   background: linear-gradient(135deg, var(--nav-accent-primary) 0%, var(--nav-accent-secondary) 100%);
@@ -260,19 +267,29 @@
   top: 23px;
 }
 
-/* Mobile Menu */
+/* FIXED Mobile Menu - Proper Side Panel */
 .mobileMenu {
   position: fixed;
   top: 0;
   right: 0;
   width: 320px;
   height: 100vh;
+  max-height: 100vh;
   background: linear-gradient(135deg, rgba(26, 32, 44, 0.98) 0%, rgba(45, 55, 72, 0.98) 100%);
-  backdrop-filter: blur(20px);
   border-left: 1px solid var(--nav-border-color);
-  z-index: 999;
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+  z-index: 10002;
+  /* Higher than backdrop */
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
   animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  /* Prevent scrolling issues on mobile */
+  overscroll-behavior: contain;
+  /* Remove backdrop-filter from menu to prevent blur conflicts */
+}
+
+/* Prevent body scroll when menu is open */
+body.menu-open {
+  overflow: hidden;
 }
 
 @keyframes slideInRight {
@@ -280,6 +297,7 @@
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -287,20 +305,24 @@
 }
 
 .mobileMenuContent {
-  height: 100%;
+  height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 0;
   position: relative;
+  overflow: hidden;
 }
 
 .mobileMenuHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 24px 0;
+  padding: 24px 24px 20px;
   border-bottom: 1px solid var(--nav-border-color);
-  margin-bottom: 24px;
+  flex-shrink: 0;
+  background: rgba(26, 32, 44, 0.8);
+  backdrop-filter: blur(10px);
 }
 
 .mobileMenuTitle {
@@ -335,12 +357,105 @@
   transform: rotate(90deg);
 }
 
+/* Mobile User Section */
+.mobileUserSection {
+  border-bottom: 1px solid var(--nav-border-color);
+  padding: 24px;
+  flex-shrink: 0;
+  background: rgba(26, 32, 44, 0.6);
+}
+
+.mobileUserInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.mobileUserAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--nav-accent-primary);
+  transition: transform 0.3s ease;
+}
+
+.mobileUserDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobileUserName {
+  color: var(--nav-text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.mobileUserStatus {
+  color: var(--nav-text-secondary);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+}
+
+.mobileUserActions {
+  display: flex;
+  gap: 8px;
+}
+
+.mobileActionBtn {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nav-text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobileActionBtn:hover {
+  background: linear-gradient(135deg, var(--nav-accent-secondary) 0%, #6b63ff 100%);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(131, 111, 255, 0.4);
+  border-color: transparent;
+}
+
+.mobileLogoutBtn:hover {
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+  box-shadow: 0 4px 15px rgba(245, 101, 101, 0.4);
+}
+
 .mobileMenuItems {
   flex: 1;
-  padding: 0 24px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.mobileMenuItems::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mobileMenuItems::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.mobileMenuItems::-webkit-scrollbar-thumb {
+  background: var(--nav-accent-primary);
+  border-radius: 3px;
 }
 
 .mobileMenuItems .link {
@@ -355,6 +470,7 @@
   color: var(--nav-text-primary);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .mobileMenuItems .link:hover {
@@ -375,25 +491,35 @@
 .mobileMenuAuth {
   padding: 24px;
   border-top: 1px solid var(--nav-border-color);
-  margin-top: auto;
+  flex-shrink: 0;
+  background: rgba(26, 32, 44, 0.8);
 }
 
-/* Backdrop */
+/* FIXED Backdrop - Improved */
 .backdrop {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  right: 320px;
+  /* Leave space for side panel */
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(4px);
-  z-index: 998;
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 5001;
+  /* Below mobile menu */
   animation: fadeIn 0.3s ease;
+  overscroll-behavior: contain;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* Responsive Design */
@@ -401,11 +527,11 @@
   .inner {
     padding: 0 1.5rem;
   }
-  
+
   .group {
     gap: 8px;
   }
-  
+
   .link {
     padding: 10px 16px;
     font-size: 0.9rem;
@@ -416,38 +542,34 @@
   .group {
     display: none;
   }
-  
+
   .burger {
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  
+
   .inner {
     height: 64px;
     padding: 0 1rem;
   }
-  
+
   .brandLogo {
     height: 40px;
   }
-  
+
   .authContainer {
     display: none;
   }
-  
+
   .mobileMenu {
-    width: 100vw;
+    width: 320px;
+    /* Fixed width for side panel */
   }
-  
-  .mobileMenuContent {
-    padding: 0;
-    max-width: 320px;
-    margin-left: auto;
-    background: linear-gradient(135deg, rgba(26, 32, 44, 0.98) 0%, rgba(45, 55, 72, 0.98) 100%);
-    backdrop-filter: blur(20px);
-    border-left: 1px solid var(--nav-border-color);
-    height: 100%;
+
+  .backdrop {
+    right: 320px;
+    /* Match menu width */
   }
 }
 
@@ -455,31 +577,63 @@
   .inner {
     padding: 0 0.75rem;
   }
-  
+
   .logoContainer {
     padding: 6px;
   }
-  
+
   .brandLogo {
     height: 36px;
   }
-  
+
   .burger {
     width: 44px;
     height: 44px;
   }
-  
+
   .burgerLine {
     width: 18px;
   }
-  
+
   .mobileMenuItems .link {
     padding: 14px 18px;
+  }
+
+  .mobileMenu {
+    width: min(320px, 85vw);
+    /* Responsive but still side panel */
+  }
+
+  .backdrop {
+    right: min(320px, 85vw);
+    /* Match menu width */
+  }
+}
+
+/* Extra small screens - make menu wider but still side panel */
+@media (max-width: 360px) {
+  .mobileMenu {
+    width: min(280px, 90vw);
+  }
+
+  .backdrop {
+    right: min(280px, 90vw);
+  }
+}
+
+/* Fix for iOS Safari viewport units */
+@supports (-webkit-touch-callout: none) {
+
+  .mobileMenu,
+  .mobileMenuContent {
+    height: -webkit-fill-available;
+    height: 100vh;
   }
 }
 
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
+
   .header,
   .link,
   .burger,
@@ -488,12 +642,22 @@
     transition: none;
     animation: none;
   }
+
+  .mobileMenu {
+    animation: none;
+  }
+
+  .backdrop {
+    animation: none;
+  }
 }
 
 /* Focus styles */
 .link:focus,
 .burger:focus,
-.logoLink:focus {
+.logoLink:focus,
+.mobileMenuClose:focus,
+.mobileActionBtn:focus {
   outline: 3px solid rgba(21, 245, 186, 0.6);
   outline-offset: 2px;
 }
@@ -503,9 +667,42 @@
   .header {
     border-bottom-width: 2px;
   }
-  
+
   .link,
   .burger {
     border-width: 2px;
   }
+
+  .mobileMenu {
+    border-left-width: 2px;
+  }
+}
+
+/* Additional fixes for scroll behavior */
+.mobileMenuItems {
+  /* Fix for momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent overscroll bounce */
+  overscroll-behavior-y: contain;
+}
+
+/* Ensure proper stacking */
+.header {
+  position: sticky;
+  z-index: 1000;
+}
+
+.burger {
+  z-index: 10003;
+  /* Highest - always accessible */
+}
+
+.backdrop {
+  z-index: 5001;
+  /* Middle */
+}
+
+.mobileMenu {
+  z-index: 10002;
+  /* Above backdrop, below burger */
 }

@@ -1,197 +1,556 @@
-/* Modal overlay (background) */
+/* Auth Button */
+.authButton {
+  position: relative;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #15F5BA 0%, #13e0a6 100%);
+  color: #000;
+  font-weight: 700;
+  padding: 12px 24px;
+  margin: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(21, 245, 186, 0.3);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.authButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.authButton:hover::before {
+  left: 100%;
+}
+
+.authButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(21, 245, 186, 0.4);
+  background: linear-gradient(135deg, #13e0a6 0%, #15F5BA 100%);
+}
+
+.authButton:active {
+  transform: translateY(0);
+}
+
+/* User Container */
+.userContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.avatarContainer {
+  position: relative;
+  cursor: pointer;
+}
+
+.userAvatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #15F5BA;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userAvatar:hover {
+  transform: scale(1.05);
+  border-color: #13e0a6;
+  box-shadow: 0 4px 15px rgba(21, 245, 186, 0.3);
+}
+
+.onlineIndicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #4ade80;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown Menu */
+.dropdownMenu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 12px 0;
+  min-width: 200px;
+  z-index: 1000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  animation: dropdownSlideIn 0.2s ease-out;
+}
+
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.userInfo {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 8px;
+}
+
+.userName {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 14px;
+  display: block;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #f0f0f0;
+  margin: 8px 0;
+}
+
+.dropdownItem {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  text-align: left;
+  width: 100%;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #374151;
+}
+
+.dropdownItem:hover {
+  background-color: #f9fafb;
+}
+
+.dropdownItem:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+}
+
+/* Modal Overlay */
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* Dim background */
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
   display: flex;
-  /* Center modal using flexbox */
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 10000;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* Modal container */
+/* Modal Container */
 .modal {
-  background-color: white;
-  width: 90%;
-  /* Responsive width */
-  max-width: 400px;
-  /* Set maximum width */
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   position: relative;
-  animation: slideIn 0.3s ease;
-  display: flex;
-  /* Ensure children are contained */
-  flex-direction: column;
-  /* Stack children vertically */
-  gap: 1rem;
-  /* Add space between children */
-  z-index: 9999;
+  animation: modalSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Close button styling */
+@keyframes modalSlideIn {
+  from {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Close Button */
 .closeButton {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
+  top: 20px;
+  right: 20px;
+  background: #f3f4f6;
   border: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #999;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeButton svg {
+  width: 20px;
+  height: 20px;
+  color: #6b7280;
 }
 
 .closeButton:hover {
-  color: black;
+  background: #e5e7eb;
+  transform: scale(1.05);
 }
 
-/* Form group styling */
-.formGroup {
-  margin-bottom: 1rem;
-  width: 100%;
-  /* Ensure inputs fill the modal width */
-}
-
-.mainForm {
-  position: relative;
-}
-
-.formGroup label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: 600;
-  font-size: 0.9rem;
+/* Modal Header */
+.modalHeader {
+  text-align: center;
+  margin-bottom: 32px;
 }
 
 .formHeading {
-  text-align: center;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #111827 0%, #374151 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.formGroup input {
+.formSubheading {
+  color: #6b7280;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Form Styling */
+.mainForm {
+  margin-bottom: 24px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.input {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.input:focus {
   outline: none;
+  border-color: #15F5BA;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(21, 245, 186, 0.1);
 }
 
-.formGroup input:focus {
-  border-color: #15f5ba;
+.input::placeholder {
+  color: #9ca3af;
 }
 
-/* Modal actions (buttons) */
-.modalActions {
+/* Password Container */
+.passwordContainer {
+  position: relative;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.passwordToggle svg {
+  width: 20px;
+  height: 20px;
+  color: #6b7280;
+}
+
+.passwordToggle:hover {
+  background-color: #f3f4f6;
+}
+
+/* Error Message */
+.errorMessage {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 20px;
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1rem;
+  align-items: center;
+  gap: 8px;
+}
+
+.errorIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #15F5BA 0%, #13e0a6 100%);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(21, 245, 186, 0.3);
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(21, 245, 186, 0.4);
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top: 2px solid #000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Divider */
+.dividerContainer {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.dividerText {
+  margin: 0 16px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Google Sign In */
+.googleSignIn {
+  width: 100%;
+  padding: 14px;
+  background: white;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.googleSignIn:hover:not(:disabled) {
+  border-color: #d1d5db;
+  background: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.googleSignIn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Switch Container */
+.switchContainer {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.switchText {
+  color: #6b7280;
+  font-size: 14px;
 }
 
 .switchButton {
   background: none;
   border: none;
-  color: #15f5ba;
+  color: #15F5BA;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
 .switchButton:hover {
-  text-decoration: underline;
+  background: rgba(21, 245, 186, 0.1);
+  color: #13e0a6;
 }
 
-.submitButton {
-  padding: 0.5rem 1rem;
-  background-color: #15f5ba;
-  color: black;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.authButton, .googleSignIn {
-  border-radius: 20px;
-  background-color: #15F5BA;
-  color: rgb(0, 0, 0);
-  font-weight: 700;
-  padding: 10px;
-  margin: 10px;
-  transition: all 0.3s;
-}
-
-.authButton:hover {
-  transform: scale(1.1);
-  color: white;
-  background-color: rgb(21, 0, 255);
-}
-.googleSignIn:hover {
-  transform: scale(1.1);
-  color: white;
-  background-color: rgb(21, 0, 255);
-}
-
-.submitButton:hover {
-  background-color: #13e0a6;
-}
-
-/* Modal animation */
-@keyframes slideIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-.user_avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  
-}
+/* Responsive Design */
 @media (max-width: 480px) {
   .modal {
-    width: 95%;
-    /* Increase modal width for smaller screens */
+    margin: 10px;
+    padding: 24px 20px;
     max-width: none;
-    /* Remove max width constraint */
-    padding: 1.5rem;
-    z-index: 1000;
-    /* Reduce padding to fit smaller screens */
+    width: calc(100vw - 20px);
+    border-radius: 16px;
   }
 
   .formHeading {
-    font-size: 1.2rem;
-    /* Smaller heading size */
+    font-size: 24px;
   }
 
-  .formGroup input {
-    font-size: 0.9rem;
-    /* Smaller input font size */
-    padding: 0.4rem;
-    /* Reduce padding inside inputs */
+  .formSubheading {
+    font-size: 14px;
   }
 
-  .submitButton {
-    font-size: 0.9rem;
-    /* Adjust button text size */
-    padding: 0.4rem 0.8rem;
-    /* Smaller button padding */
+  .input {
+    padding: 14px 16px;
+    font-size: 16px; /* Prevents zoom on iOS */
   }
 
-  .switchButton {
-    font-size: 0.85rem;
-    /* Reduce font size */
+  .submitButton, .googleSignIn {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  .closeButton {
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .closeButton svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .dropdownMenu {
+    right: -10px;
+    min-width: 180px;
+    top: unset;
+  }
+
+  .authButton {
+    padding: 10px 20px;
+    font-size: 13px;
+    margin: 8px;
+  }
+
+  .userAvatar {
+    width: 40px;
+    height: 40px;
+    border-width: 2px;
+  }
+
+  .onlineIndicator {
+    width: 10px;
+    height: 10px;
+    bottom: 1px;
+    right: 1px;
+  }
+
+  .modalHeader {
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 360px) {
+  .modal {
+    padding: 20px 16px;
+  }
+
+  .switchContainer {
+    flex-direction: column;
+    gap: 4px;
   }
 }

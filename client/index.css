@@ -30,3 +30,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
+body{
+  margin: unset;
+}
