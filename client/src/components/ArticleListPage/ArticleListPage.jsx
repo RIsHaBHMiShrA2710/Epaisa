@@ -153,11 +153,15 @@ export default function ArticleListPage() {
       {/* Hero Section */}
       <div className="article-list-hero">
         <div className="article-list-hero-content">
+          {/* Breadcrumbs */}
+          <div className="article-list-breadcrumbs">
+            <Breadcrumbs />
+          </div>
           <h1 className="article-list-title">Discover Amazing Articles</h1>
           <p className="article-list-subtitle">
             Explore insightful stories, tutorials, and thoughts from our community of writers
           </p>
-          
+
           {/* Stats Section */}
           <div className="article-list-stats">
             <div className="stat-item">
@@ -180,10 +184,7 @@ export default function ArticleListPage() {
         </div>
       </div>
 
-      {/* Breadcrumbs */}
-      <div className="article-list-breadcrumbs">
-        <Breadcrumbs />
-      </div>
+
 
       {/* Content Area */}
       <div className="article-list-content">
@@ -196,7 +197,7 @@ export default function ArticleListPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          
+
           {filterButtons.map(({ key, label, icon }) => (
             <button
               key={key}
@@ -217,13 +218,13 @@ export default function ArticleListPage() {
               {searchTerm ? 'No articles found' : 'No articles yet'}
             </h2>
             <p className="article-list-empty-subtitle">
-              {searchTerm 
+              {searchTerm
                 ? `No articles match "${searchTerm}". Try different keywords.`
                 : 'Be the first to share your thoughts with the community!'
               }
             </p>
             {!searchTerm && (
-              <button 
+              <button
                 className="article-list-empty-cta"
                 onClick={() => navigate('/create-article')}
               >
@@ -264,9 +265,9 @@ export default function ArticleListPage() {
 
             {/* End of results message */}
             {!hasNextPage && filteredArticles.length >= 5 && (
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '40px 0', 
+              <div style={{
+                textAlign: 'center',
+                padding: '40px 0',
                 color: 'var(--text-secondary)',
                 fontSize: '1rem'
               }}>
@@ -278,7 +279,7 @@ export default function ArticleListPage() {
       </div>
 
       {/* Floating Create Article Button */}
-      <CreateArticleButton 
+      <CreateArticleButton
         className="create-article-button"
         onClick={() => navigate('/create-article')}
         style={{
