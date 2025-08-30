@@ -1,262 +1,766 @@
-/* Overall Team Section */
-.teamArea {
+/* ===== TEAM SECTION STYLES ===== */
+
+.teamSection {
   font-family: 'Poppins', sans-serif;
-  background: #ffffff;
-}
-
-/* Heading styles */
-.siteHeading {
-  margin-bottom: 40px;
-  text-align: center;
-}
-
-.siteHeading h2 {
-  font-weight: 700;
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-}
-
-.siteHeading p {
-  font-size: 1rem;
-}
-
-.span {
-  color: #15f5ba;
-}
-.item {
-  position: relative;
-  padding: 30px;
-}
-/* Desktop team grid */
-.teamItems {
-  display: grid;
-  padding: 20px;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-}
-
-@media (max-width: 992px) {
-  .teamItems {
-    padding: unset;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .item {
-    padding: unset;
-  }
-}
-
-@media (max-width: 600px) {
-  .teamItems {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-}
-
-/* Carousel wrapper for mobile */
-.carouselWrapper {
-  padding: 0 10px;
-  position: relative;
-  /* allow space for arrows */
-  overflow: visible;
-}
-
-/* Make sure the carousel is relatively positioned and can show arrows */
-.carousel {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-  overflow: visible; /* ensures the controls are visible */
-}
-
-.slide {
-  height: auto;
-  padding: 10px 0;
-  text-align: center;
-}
-
-/* Remove any rule that hides an arrow if 'inactive' */
-/* .carouselControl[data-inactive] { 
-  opacity: 0; 
-  pointer-events: none; 
-} */
-
-/* Carousel control (arrow) styling */
-.carouselControl {
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #15f5ba;
-  color: black;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-/* Position the next and previous arrows */
-.carouselControl[data-direction="next"] {
-  left: 10px; /* or 10px, adjust to taste */
-}
-
-.carouselControl[data-direction="prev"] {
-  right: 10px; /* or 10px, adjust to taste */
-}
-
-/* Carousel indicators */
-.carouselIndicator {
-  position: relative;
-  width: 8px;
-  height: 8px;
-  background-color: rgba(21, 245, 186, 0.3);
-  border-radius: 50%;
-  gap: 4px;
-  transition: all 0.3s ease;
-}
-.carouselIndicatorsWrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-  
-}
-
-.carouselIndicator[data-active] {
-  position: relative;
-  background-color: #15f5ba;
-  width: 12px;
-  height: 12px;
-}
-
-/* Team member card styles */
-.singleItem {
-  margin-bottom: 30px;
-  padding: 20px;
-}
-
-
-
-/* Image container */
-.thumb {
+  background: linear-gradient(135deg, #f8fffe 0%, #ffffff 50%, #f0fdf9 100%);
+  padding: 80px 0;
   position: relative;
   overflow: hidden;
-  border-radius: 5px;
+  z-index: 1;
 }
 
-.imgFluid {
-  width: 100%;
-  height: auto;
-}
-
-/* Overlay on image hover */
-/* Existing overlay default state (always hidden) */
-.overlay {
+.teamSection::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  transform: translateY(100%);
-  transition: all 0.35s ease-in-out;
-  padding: 20px;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(21, 245, 186, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(15, 180, 136, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
-/* Only on desktop/larger screens, open overlay on hover */
-@media (min-width: 601px) {
-  .thumb:hover .overlay {
-    transform: translateY(0);
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== SECTION HEADER ===== */
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.sectionTitle {
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 20px;
+  color: #1a202c;
+  line-height: 1.2;
+}
+
+.titleAccent {
+  background: linear-gradient(135deg, #15f5ba 0%, #0fb488 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sectionSubtitle {
+  font-size: 1.125rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+}
+
+.titleUnderline {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #15f5ba, #0fb488);
+  margin: 0 auto;
+  border-radius: 2px;
+  position: relative;
+}
+
+.titleUnderline::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 8px;
+  background: #15f5ba;
+  border-radius: 50%;
+}
+
+/* ===== GRID LAYOUT ===== */
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+  padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
   }
 }
 
-
-.overlay h4,
-.overlay p {
-  color: #fff;
-  margin: 0;
+@media (max-width: 768px) {
+  .teamGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
-/* Social icons */
-.social ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 15px;
-  justify-content: center;
+/* ===== CARD CONTAINER ===== */
+
+.cardContainer {
+  perspective: 1000px;
+  height: 500px;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
 }
 
-.social ul li a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  color: #ffffff;
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+/* ===== CARD FACES ===== */
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(21, 245, 186, 0.1);
+  background: #ffffff;
+  overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.social ul li a:hover {
-  background: #15f5ba;
-  color: black;
+.cardBack {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #15f5ba 0%, #0fb488 100%);
+  color: white;
 }
 
-/* Team member info */
-.info {
-  padding: 20px;
+.cardFront:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 15px 50px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(21, 245, 186, 0.2);
+}
+
+/* ===== FRONT CARD CONTENT ===== */
+
+.imageContainer {
   position: relative;
-  text-align: center;
-  border-radius: 5px;
-  background: #ffffff;
-  margin-top: -30px;
-  transition: all 0.35s ease-in-out;
-  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+  height: 280px;
+  overflow: hidden;
 }
 
-.info .message {
+.memberImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.imageOverlay {
   position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    transparent 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 30px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.info .message a {
-  display: inline-flex;
+.cardFront:hover .imageOverlay {
+  opacity: 1;
+}
+
+.cardFront:hover .memberImage {
+  transform: scale(1.05);
+}
+
+.flipButton {
+  background: linear-gradient(135deg, #15f5ba, #0fb488) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 12px 20px !important;
+  box-shadow: 0 5px 20px rgba(21, 245, 186, 0.3) !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.flipButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.flipButton:hover::before {
+  left: 100%;
+}
+
+.flipButton:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 30px rgba(21, 245, 186, 0.5) !important;
+}
+
+.cardContent {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 220px;
+}
+
+.memberInfo {
+  text-align: center;
+  flex: 1;
+}
+
+.memberName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #1a202c;
+}
+
+.memberRole {
+  font-size: 0.9rem;
+  color: #15f5ba;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 15px 0;
+}
+
+.memberDescription {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contactButton {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.emailButton {
+  font-weight: 600;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.emailButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(21, 245, 186, 0.3);
+}
+
+/* ===== BACK CARD CONTENT ===== */
+
+.backContent {
+  padding: 25px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.backHeader {
+  margin-bottom: 20px;
+}
+
+.backTitle {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  color: white;
+}
+
+.backRole {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.backDescription {
+  margin-bottom: 25px;
+  flex: 1;
+}
+
+.backDescription p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+}
+
+.expertise {
+  margin-bottom: 25px;
+}
+
+.expertise h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  color: white;
+}
+
+.expertiseTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.expertiseTag {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.expertiseTag:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.socialLinks {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.socialLink {
+  display: flex;
   align-items: center;
   justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.socialLink:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.backButton {
+  background: transparent !important;
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+  color: white !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  padding: 8px 20px !important;
+  transition: all 0.3s ease !important;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: white !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ===== TOUCH ANIMATION ===== */
+
+.touchAnimation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.ripple {
   width: 60px;
   height: 60px;
-  background: #15f5ba;
   border-radius: 50%;
-  color: black;
+  background: radial-gradient(circle, rgba(21, 245, 186, 0.6) 0%, transparent 70%);
+  animation: rippleEffect 0.6s ease-out;
+}
+
+@keyframes rippleEffect {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* ===== CAROUSEL STYLES ===== */
+
+.carouselWrapper {
+  padding: 0 20px;
+  position: relative;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.carousel {
+  position: relative;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+.slide {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.carouselControl {
+  position: relative;
+  top: -275px;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #15f5ba, #0fb488) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 5px 20px rgba(21, 245, 186, 0.3);
   transition: all 0.3s ease;
 }
 
-.info .message a:hover {
-  background: #0fb488;
+.carouselControl:hover {
+  transform: translateY(-50%) scale(1.1) !important;
+  box-shadow: 0 8px 30px rgba(21, 245, 186, 0.4);
 }
 
-.info h4 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 5px;
+.carouselControl[data-direction="prev"] {
+  left: -35px;
 }
 
-.info span {
-  color: #666666;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  font-weight: 500;
+.carouselControl[data-direction="next"] {
+  right: -35px;
+}
+
+.carouselIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 30px;
+  position: relative;
+  z-index: 5;
+}
+
+.carouselIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(21, 245, 186, 0.3) !important;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.carouselIndicator[data-active] {
+  background: #15f5ba !important;
+  transform: scale(1.2);
+  box-shadow: 0 3px 10px rgba(21, 245, 186, 0.4);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 1024px) {
+  .teamSection {
+    padding: 60px 0;
+  }
+  
+  .cardContainer {
+    height: 480px;
+  }
+  
+  .cardContent {
+    height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .teamSection {
+    padding: 50px 0;
+  }
+  
+  .sectionHeader {
+    margin-bottom: 40px;
+  }
+  
+  .cardContainer {
+    height: 460px;
+    max-width: 340px;
+  }
+  
+  .carouselWrapper {
+    padding: 0 30px;
+    max-width: 400px;
+  }
+  
+  .carouselControl {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .carouselControl[data-direction="prev"] {
+    left: -25px;
+  }
+  
+  .carouselControl[data-direction="next"] {
+    right: -25px;
+  }
+  
+  .cardContent {
+    padding: 20px;
+    height: 180px;
+  }
+  
+  .memberName {
+    font-size: 1.125rem;
+  }
+  
+  .memberDescription {
+    -webkit-line-clamp: 2;
+    font-size: 0.8rem;
+  }
+  
+  .backContent {
+    padding: 20px;
+  }
+  
+  .backTitle {
+    font-size: 1.25rem;
+  }
+  
+  .backDescription p {
+    font-size: 0.8rem;
+  }
+  
+  .socialLink {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .expertiseTag {
+    font-size: 0.7rem;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .teamSection {
+    padding: 40px 0;
+  }
+  
+  .carouselWrapper {
+    padding: 0 25px;
+    max-width: 350px;
+  }
+  
+  .cardContainer {
+    height: 440px;
+    max-width: 300px;
+  }
+  
+  .imageContainer {
+    height: 240px;
+  }
+  
+  .cardContent {
+    height: 200px;
+    padding: 18px;
+  }
+  
+  .memberName {
+    font-size: 1rem;
+  }
+  
+  .memberDescription {
+    font-size: 1rem;
+    -webkit-line-clamp: 2;
+  }
+  
+  .backContent {
+    padding: 18px;
+    gap: 15px;
+  }
+  
+  .backDescription {
+    margin-bottom: 20px;
+  }
+  
+  .expertise {
+    margin-bottom: 20px;
+  }
+  
+  .socialLinks {
+    margin-bottom: 15px;
+    gap: 10px;
+  }
+  
+  .carouselControl {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .carouselControl[data-direction="prev"] {
+    left: -20px;
+  }
+  
+  .carouselControl[data-direction="next"] {
+    right: -20px;
+  }
+}
+
+/* ===== CONTENT OVERFLOW FIXES ===== */
+
+.backContent {
+  box-sizing: border-box;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.backDescription {
+  flex-shrink: 0;
+}
+
+.expertise {
+  flex-shrink: 0;
+}
+
+.socialLinks {
+  flex-shrink: 0;
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .memberImage,
+  .carouselControl,
+  .ripple {
+    transition: none;
+    animation: none;
+  }
+  
+  .card.flipped {
+    transform: none;
+  }
+}
+
+.card:focus-within {
+  outline: 3px solid #15f5ba;
+  outline-offset: 2px;
+}
+
+.socialLink:focus,
+.emailButton:focus,
+.flipButton:focus {
+  outline: 2px solid #15f5ba;
+  outline-offset: 2px;
+}
+
+/* ===== HIGH CONTRAST SUPPORT ===== */
+
+@media (prefers-contrast: high) {
+  .titleAccent {
+    color: #0fb488;
+    -webkit-text-fill-color: #0fb488;
+  }
+  
+  .cardFront,
+  .cardBack {
+    border: 2px solid #1a202c;
+  }
+  
+  .memberDescription {
+    color: #1a202c;
+  }
+}
+
+/* ===== Z-INDEX MANAGEMENT ===== */
+
+.teamSection {
+  z-index: 1;
+}
+
+.container {
+  z-index: 2;
+}
+
+.cardContainer {
+  z-index: 3;
+}
+
+.touchAnimation {
+  z-index: 15;
+}
+
+.carouselControl {
+  z-index: 20;
+}
+
+.imageOverlay {
+  z-index: 5;
 }

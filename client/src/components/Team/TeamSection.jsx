@@ -1,157 +1,228 @@
 import { useState, useEffect, useRef } from 'react';
-import { Container, Title, Text, Box, Image } from '@mantine/core';
+import { Container, Title, Text, Box, Image, Button } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import '@mantine/carousel/styles.css';
 import { useMediaQuery } from '@mantine/hooks';
 import Autoplay from 'embla-carousel-autoplay';
 import {
   IconBrandTwitter,
-  IconBrandPinterest,
+  IconBrandLinkedin,
   IconBrandInstagram,
-  IconBrandVimeo,
+  IconBrandGithub,
   IconMail,
+  IconPhone,
+  IconMapPin,
+  IconChevronLeft,
+  IconChevronRight,
 } from '@tabler/icons-react';
 import classes from './TeamSection.module.css';
-import {DotLottieReact} from '@lottiefiles/dotlottie-react';
 
 const teamMembers = [
   {
+    id: 1,
     name: 'Rakesh Mishra',
-    role: 'Accountant',
+    role: 'Senior Accountant',
     image: '/images/team_left.jpg',
-    description: '25+ years of industry expertise in accounting and taxing',
+    description: '25+ years of industry expertise in accounting and taxation. Specializes in corporate finance and regulatory compliance.',
+    email: 'rakesh@epaisaconsultancy.com',
+    phone: '+91 98765 43210',
+    location: 'Kolkata, WB',
+    expertise: ['Corporate Taxation', 'Financial Planning', 'Compliance'],
+    social: {
+      linkedin: '#',
+      twitter: '#',
+      instagram: '#',
+    }
   },
   {
+    id: 2,
     name: 'CA Shubham Mishra',
-    role: 'Chartared Accountant',
+    role: 'Chartered Accountant',
     image: '/images/team_middle.gif',
-    description: 'CA (May 24) | B.Com(H) SAJC 21 | Options Strategist | Technical Analyst | Proprietor – Shubham Mishra & Co ',
+    description: 'CA (May 24) | B.Com(H) SAJC 21 | Options Strategist | Technical Analyst | Proprietor â€" Shubham Mishra & Co',
+    email: 'shubham@epaisaconsultancy.com',
+    phone: '+91 98765 43211',
+    location: 'Kolkata, WB',
+    expertise: ['Options Trading', 'Technical Analysis', 'Investment Advisory'],
+    social: {
+      linkedin: '#',
+      twitter: '#',
+      github: '#',
+    }
   },
   {
+    id: 3,
     name: 'Rishabh Mishra',
-    role: 'Tech Lead',
+    role: 'Technology Lead',
     image: '/images/profile_placeholder.jpg',
-    description: 'Created Epaisa Consultancy site and responsible for technical issues',
+    description: 'Full-stack developer and tech architect. Created Epaisa Consultancy platform and manages all technical operations.',
+    email: 'rishabh@epaisaconsultancy.com',
+    phone: '+91 98765 43212',
+    location: 'Kolkata, WB',
+    expertise: ['React Development', 'System Architecture', 'DevOps'],
+    social: {
+      github: '#',
+      linkedin: '#',
+      twitter: '#',
+    }
   },
 ];
 
-const TeamMemberCard = ({ member, isMobile }) => {
-  // For mobile: control whether the overlay is visible
-  const [overlayVisible, setOverlayVisible] = useState(false);
-  // For mobile: show the Lottie touch animation briefly when touched
-  const [showAnimation, setShowAnimation] = useState(true);
+const TeamMemberCard = ({ member, isMobile, isTablet }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
 
-  const handleTouch = (e) => {
-    // Prevent the event from bubbling up (if needed)
+  const handleCardInteraction = (e) => {
     e.stopPropagation();
-
-    // Only handle click toggling on mobile
-    if (isMobile) {
-      // Toggle overlay state when clicked
-      setOverlayVisible((prev) => !prev);
-      // Play Lottie animation for feedback (800ms duration)
+    
+    // Allow flipping on all devices, not just mobile/tablet
+    setIsFlipped(prev => !prev);
+    
+    // Only show ripple animation on mobile/tablet
+    if (isMobile || isTablet) {
       setShowAnimation(true);
-      setTimeout(() => {
-        setShowAnimation(false);
-      }, 800);
+      setTimeout(() => setShowAnimation(false), 600);
     }
   };
 
-  // Optional: close the overlay if a click happens outside the card
-  // (You can modify this logic as needed)
+  const handleFlipButtonClick = (e) => {
+    e.stopPropagation();
+    handleCardInteraction(e);
+  };
+
   useEffect(() => {
-    if (!isMobile || !overlayVisible) return;
+    if (!isMobile && !isTablet) return;
 
     const handleClickOutside = (event) => {
-      // If clicking anywhere on the document (outside the card), close the overlay
-      // (You might want to improve this by checking if the click is truly outside)
-      setOverlayVisible(false);
+      if (isFlipped) {
+        setIsFlipped(false);
+      }
     };
 
     document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [overlayVisible, isMobile]);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isFlipped, isMobile, isTablet]);
 
   return (
-    <div className={classes.singleItem}>
-      <div className={classes.item}>
-        <div className={classes.thumb} onClick={handleTouch}>
-          {/* On mobile, show Lottie animation when touched */}
-          {isMobile && showAnimation && (
-            <DotLottieReact
-              src="https://lottie.host/e1dc2017-2da0-4b4d-a85a-6ba71a2abf4c/4K740tlKIU.lottie"
-              loop
-              autoplay
-              style={{
-                position: 'absolute',
-                top: '40%',
-                left: '25%',
-                width: '50%',
-                height: '50%',
-                zIndex: 50,
-                pointerEvents: 'none',
-              }}
+    <div className={classes.cardContainer}>
+      <div 
+        className={`${classes.card} ${isFlipped ? classes.flipped : ''}`}
+        onClick={isMobile || isTablet ? handleCardInteraction : undefined}
+      >
+        {/* Touch Animation */}
+        {(isMobile || isTablet) && showAnimation && (
+          <div className={classes.touchAnimation}>
+            <div className={classes.ripple}></div>
+          </div>
+        )}
+
+        {/* Front of Card */}
+        <div className={classes.cardFront}>
+          <div className={classes.imageContainer}>
+            <Image
+              src={member.image}
+              alt={member.name}
+              className={classes.memberImage}
+              fallbackSrc="/images/profile_placeholder.jpg"
             />
-          )}
-          <Image
-            src={member.image}
-            alt={member.name}
-            className={classes.imgFluid}
-          />
-          <div
-            className={classes.overlay}
-            /* For mobile, force the overlay open/closed based on state */
-            style={isMobile ? { transform: overlayVisible ? 'translateY(0)' : 'translateY(100%)' } : {}}
-          >
-            <h4>{member.name}</h4>
-            <p>{member.description}</p>
-            <div className={classes.social}>
-              <ul>
-                {/* <li>
-                  <a href="#" aria-label="Twitter">
-                    <IconBrandTwitter size={16} />
-                  </a>
-                </li>
-                <li>
-                  <a href="#" aria-label="Pinterest">
-                    <IconBrandPinterest size={16} />
-                  </a>
-                </li>
-                <li>
-                  <a href="#" aria-label="Instagram">
-                    <IconBrandInstagram size={16} />
-                  </a>
-                </li>
-                <li>
-                  <a href="#" aria-label="Vimeo">
-                    <IconBrandVimeo size={16} />
-                  </a>
-                </li> */}
-              </ul>
+            <div className={classes.imageOverlay}>
+              <Button 
+                variant="light" 
+                size="sm" 
+                className={classes.flipButton}
+                onClick={handleFlipButtonClick}
+              >
+                View Details
+              </Button>
+            </div>
+          </div>
+          
+          <div className={classes.cardContent}>
+            <div className={classes.memberInfo}>
+              <h3 className={classes.memberName}>{member.name}</h3>
+              <p className={classes.memberRole}>{member.role}</p>
+              <p className={classes.memberDescription}>{member.description}</p>
             </div>
           </div>
         </div>
-        <div className={classes.info}>
-          <span className={classes.message}>
-            <a href="#" aria-label="Send message">
-              <IconMail size={16} />
-            </a>
-          </span>
-          <h4>{member.name}</h4>
-          <span>{member.role}</span>
+
+        {/* Back of Card */}
+        <div className={classes.cardBack}>
+          <div className={classes.backContent}>
+            <h3 className={classes.backTitle}>{member.name}</h3>
+            <p className={classes.backRole}>{member.role}</p>
+            
+            <div className={classes.contactInfo}>
+              <div className={classes.contactItem}>
+                <IconMail size={16} />
+                <span>{member.email}</span>
+              </div>
+              <div className={classes.contactItem}>
+                <IconPhone size={16} />
+                <span>{member.phone}</span>
+              </div>
+              <div className={classes.contactItem}>
+                <IconMapPin size={16} />
+                <span>{member.location}</span>
+              </div>
+            </div>
+
+            <div className={classes.expertise}>
+              <h4>Expertise</h4>
+              <div className={classes.expertiseTags}>
+                {member.expertise.map((skill, index) => (
+                  <span key={index} className={classes.expertiseTag}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className={classes.socialLinks}>
+              {member.social.linkedin && (
+                <a href={member.social.linkedin} className={classes.socialLink}>
+                  <IconBrandLinkedin size={20} />
+                </a>
+              )}
+              {member.social.twitter && (
+                <a href={member.social.twitter} className={classes.socialLink}>
+                  <IconBrandTwitter size={20} />
+                </a>
+              )}
+              {member.social.instagram && (
+                <a href={member.social.instagram} className={classes.socialLink}>
+                  <IconBrandInstagram size={20} />
+                </a>
+              )}
+              {member.social.github && (
+                <a href={member.social.github} className={classes.socialLink}>
+                  <IconBrandGithub size={20} />
+                </a>
+              )}
+            </div>
+
+            {/* Add a button to flip back on desktop */}
+            {!isMobile && !isTablet && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className={classes.backButton}
+                onClick={handleFlipButtonClick}
+              >
+                Back to Profile
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-
-export function TeamSection() {
+function TeamSection() {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  // Auto-slide every 2 seconds for mobile carousel
-  const autoplay = useRef(Autoplay({ delay: 2000 }));
+  const isTablet = useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
+  const autoplay = useRef(Autoplay({ delay: 4000 }));
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -161,20 +232,23 @@ export function TeamSection() {
   if (!mounted) return null;
 
   return (
-    <Box component="section" id="team" className={classes.teamArea}>
-      <Container size="lg">
-        <div className={classes.siteHeading}>
-          <Title order={2}>
-            Our <Text span className={classes.span}>Team</Text>
+    <Box component="section" id="team" className={classes.teamSection}>
+      <Container size="xl" className={classes.container}>
+        <div className={classes.sectionHeader}>
+          <Title order={2} className={classes.sectionTitle}>
+            Meet Our <Text span className={classes.titleAccent}>Expert Team</Text>
           </Title>
-          <Text size="lg">Meet our awesome and expert team members</Text>
+          <Text size="lg" className={classes.sectionSubtitle}>
+            Dedicated professionals committed to your financial success
+          </Text>
+          <div className={classes.titleUnderline}></div>
         </div>
 
         {isMobile ? (
           <Box className={classes.carouselWrapper}>
             <Carousel
               slideSize="100%"
-              slideGap="sm"
+              slideGap="md"
               loop
               align="center"
               withControls
@@ -182,25 +256,36 @@ export function TeamSection() {
               plugins={[autoplay.current]}
               onMouseEnter={autoplay.current.stop}
               onMouseLeave={autoplay.current.reset}
+              nextControlIcon={<IconChevronRight size={20} />}
+              previousControlIcon={<IconChevronLeft size={20} />}
               classNames={{
                 root: classes.carousel,
                 slide: classes.slide,
                 control: classes.carouselControl,
                 indicator: classes.carouselIndicator,
-                indicators: classes.carouselIndicatorsWrapper,
+                indicators: classes.carouselIndicators,
               }}
             >
-              {teamMembers.map((member, index) => (
-                <Carousel.Slide key={index}>
-                  <TeamMemberCard member={member} isMobile={isMobile} />
+              {teamMembers.map((member) => (
+                <Carousel.Slide key={member.id}>
+                  <TeamMemberCard 
+                    member={member} 
+                    isMobile={isMobile} 
+                    isTablet={isTablet} 
+                  />
                 </Carousel.Slide>
               ))}
             </Carousel>
           </Box>
         ) : (
-          <div className={classes.teamItems}>
-            {teamMembers.map((member, index) => (
-              <TeamMemberCard key={index} member={member} isMobile={isMobile} />
+          <div className={classes.teamGrid}>
+            {teamMembers.map((member) => (
+              <TeamMemberCard 
+                key={member.id} 
+                member={member} 
+                isMobile={isMobile} 
+                isTablet={isTablet} 
+              />
             ))}
           </div>
         )}
@@ -208,5 +293,4 @@ export function TeamSection() {
     </Box>
   );
 }
-
 export default TeamSection;
