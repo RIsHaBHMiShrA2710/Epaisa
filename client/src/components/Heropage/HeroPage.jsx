@@ -1,125 +1,265 @@
-import { IconCheck } from '@tabler/icons-react';
-import { Button, Container, Flex, Group, Image, List, Text, ThemeIcon, Title } from '@mantine/core';
-import classes from "./HeroPage.module.css";
-import FadeInLeft from '../../animations/FadeInLeft';
-import StaggerContainer from '../../animations/StaggerContainer';
-import { TypeAnimation } from 'react-type-animation';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 4,
-      duration: 1,
-      ease: 'easeOut',
+import React, { useState, useEffect } from 'react';
+import { Check, Calendar, BookOpen, TrendingUp, Users, Shield } from 'lucide-react';
+import classes from './HeroPage.module.css';
+import { useNavigate } from 'react-router-dom';
+const HeroPage = () => {
+  const [currentText, setCurrentText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
+  const typeTexts = [
+    'Consult professionals online 💼',
+    'Get help filing your ITR hassle-free 🧾',
+    'Maximize deductions and savings ✅'
+  ];
+
+  useEffect(() => {
+    setIsVisible(true);
+    
+    const typewriter = () => {
+      const current = typeTexts[currentIndex];
+      
+      if (isDeleting) {
+        setCurrentText(current.substring(0, currentText.length - 1));
+        if (currentText === '') {
+          setIsDeleting(false);
+          setCurrentIndex((prev) => (prev + 1) % typeTexts.length);
+        }
+      } else {
+        setCurrentText(current.substring(0, currentText.length + 1));
+        if (currentText === current) {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      }
+    };
+
+    const timer = setTimeout(typewriter, isDeleting ? 50 : 100);
+    return () => clearTimeout(timer);
+  }, [currentText, currentIndex, isDeleting, typeTexts]);
+
+  const features = [
+    {
+      icon: <Users className={classes.featureIcon} />,
+      title: "Expert Guidance",
+      description: "Chat with certified tax consultants for all your queries"
     },
-  }),
-};
+    {
+      icon: <BookOpen className={classes.featureIcon} />,
+      title: "Online Tax Filing",
+      description: "File your income tax returns in minutes with confidence"
+    },
+    {
+      icon: <TrendingUp className={classes.featureIcon} />,
+      title: "Portfolio Management",
+      description: "Strategic portfolio management to maximize returns while managing risk"
+    }
+  ];
 
-const MotionListItem = motion(List.Item);
+  const stats = [
+    { number: "10,000+", label: "Returns Filed" },
+    { number: "₹2Cr+", label: "Tax Saved" },
+    { number: "98%", label: "Client Satisfaction" }
+  ];
 
-const HeroPage = () => (
-  <Container size="md" className={classes.hero_container}>
-    <div className={classes.inner}>
-      <img src="/images/heropage_background.jpg" alt='Accounting' className={classes.backgroundImage}></img>
-      <div className={classes.content}>
-        <FadeInLeft delay={0.2}>
-          <Title className={classes.title}>
-            Simplifying <span className={classes.highlight}>Tax Filing</span><br /> for Individuals & Businesses
-          </Title>
-
-        </FadeInLeft>
-
-        <Text c="dimmed" mt="md" className={classes.typeEffectContainer}>
-          <TypeAnimation
-            sequence={[
-              'Consult professionals online 💼',
-              1000,
-              'Get help filing your ITR hassle-free 🧾',
-              1000,
-              'Maximize deductions and savings ✅',
-              1000,
-            ]}
-            wrapper="span"
-            speed={70}
-            repeat={Infinity}
-            className={classes.hpTypeEffect}
-          />
-
-
-        </Text>
-
-        <List
-          mt={30}
-          spacing="md"
-          size="md"
-          icon={
-            <ThemeIcon size={24}
-              radius="xl"
-              color="teal"
-              className={classes.contentListIcon}
-            >
-              <IconCheck size={20} stroke={1.5} />
-
-            </ThemeIcon>
-
-          }
-
-          className={classes.contentList}
-        >
-          <StaggerContainer>
-            <MotionListItem variants={fadeUp} className={classes.contentListItem}>
-              <b>Expert Guidance</b> – Chat with certified tax consultants for all your queries.
-            </MotionListItem>
-            <MotionListItem variants={fadeUp} className={classes.contentListItem}>
-              <b>Online Tax Filing</b> – File your income tax returns in minutes with confidence.
-            </MotionListItem>
-            <MotionListItem variants={fadeUp} className={classes.contentListItem}>
-              <b>Portfolio Management</b> –  Benefit from strategic portfolio management designed to maximize returns while rigorously managing risk.
-            </MotionListItem>
-
-          </StaggerContainer>
-
-        </List>
-        <Group mt={30} spacing="md" display="flex" direction="column" position="center">
-          <Button
-            component="a"
-            href="https://calendly.com/1234mshubham"
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="default"
-            radius="xl"
-            size="md"
-            className={classes.control}
-          >
-            Book Free Consultation
-          </Button>
-
-          <Button
-            component={Link}
-            to="/blog"
-            variant="default"
-            radius="xl"
-            size="md"
-            className={classes.control}
-          >
-            Read our blogs
-          </Button>
-        </Group>
-
+  return (
+    <div className={classes.heroContainer}>
+      {/* Animated background elements */}
+      <div className={classes.backgroundElements}>
+        <div className={`${classes.floatingOrb} ${classes.orb1}`}></div>
+        <div className={`${classes.floatingOrb} ${classes.orb2}`}></div>
+        <div className={`${classes.floatingOrb} ${classes.orb3}`}></div>
       </div>
-      <DotLottieReact
-        src="/images/heropage_animated.lottie"
-        loop
-        autoplay
-        className={classes.hpLottie}
-      />
+
+      {/* Grid pattern overlay */}
+      <div className={classes.gridPattern}></div>
+
+      <div className={classes.container}>
+        <div className={classes.inner}>
+          
+          {/* Content Section */}
+          <div className={`${classes.content} ${isVisible ? classes.visible : ''}`}>
+            
+            {/* Main Title */}
+            <div className={classes.titleSection}>
+              <h1 className={classes.title}>
+                Simplifying{' '}
+                <span className={classes.highlightText}>
+                  Tax Filing
+                  <div className={classes.underline}></div>
+                </span>
+              </h1>
+              <p className={classes.subtitle}>
+                for Individuals & Businesses
+              </p>
+            </div>
+
+            {/* Typing Animation */}
+            <div className={classes.typeContainer}>
+              <div className={classes.typeText}>
+                {currentText}
+                <span className={classes.cursor}>|</span>
+              </div>
+            </div>
+
+            {/* Mobile Visual Section - Only visible on smaller screens */}
+            <div className={classes.mobileVisualSection}>
+              {/* Floating cards */}
+              <div className={`${classes.floatingCard} ${classes.card1}`}>
+                <div className={classes.cardContent}>
+                  <div className={classes.cardNumber}>₹50K+</div>
+                  <div className={classes.cardLabel}>Saved</div>
+                </div>
+              </div>
+              
+              <div className={`${classes.floatingCard} ${classes.card2}`}>
+                <div className={classes.cardContent}>
+                  <div className={classes.cardNumber}>5★</div>
+                  <div className={classes.cardLabel}>Rating</div>
+                </div>
+              </div>
+
+              {/* Central illustration */}
+              <div className={classes.centralIllustration}>
+                <div className={classes.illustrationGlow}></div>
+                <div className={classes.illustrationContainer}>
+                  {/* Tax document icon */}
+                  <div className={classes.documentIcon}>
+                    <div className={classes.docLine1}></div>
+                    <div className={classes.docLine2}></div>
+                    <div className={classes.docLine3}></div>
+                    <div className={classes.docSignature}></div>
+                  </div>
+                  <div className={classes.illustrationText}>
+                    <div className={classes.illustrationTitle}>Tax Made Simple</div>
+                    <div className={classes.illustrationSubtitle}>Professional • Fast • Secure</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom floating element */}
+              <div className={`${classes.floatingCard} ${classes.card3}`}>
+                <div className={classes.cardContent}>
+                  <div className={classes.cardNumber}>24/7</div>
+                  <div className={classes.cardLabel}>Support</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Features List */}
+            <div className={classes.featuresList}>
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className={`${classes.featureCard} ${isVisible ? classes.featureVisible : ''}`}
+                  style={{ transitionDelay: `${index * 200}ms` }}
+                >
+                  <div className={classes.featureIconContainer}>
+                    {feature.icon}
+                  </div>
+                  <div className={classes.featureContent}>
+                    <h3 className={classes.featureTitle}>{feature.title}</h3>
+                    <p className={classes.featureDescription}>{feature.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Buttons */}
+            <div className={classes.ctaContainer}>
+              <button
+                className={classes.primaryButton}
+                onClick={() => window.open('https://calendly.com/1234mshubham', '_blank')}
+              >
+                <Calendar className={classes.buttonIcon} />
+                Book Free Consultation
+                <div className={classes.buttonOverlay}></div>
+              </button>
+              
+              <button className={classes.secondaryButton} onClick={() => navigate("/blog")}>
+                <BookOpen className={classes.buttonIcon} />
+                Read Our Blogs
+              </button>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className={classes.trustIndicators}>
+              <div className={classes.trustItem}>
+                <Shield className={classes.trustIcon} />
+                <span>Certified Experts</span>
+              </div>
+              <div className={classes.trustItem}>
+                <Check className={classes.trustIcon} />
+                <span>100% Secure</span>
+              </div>
+              <div className={classes.trustItem}>
+                <TrendingUp className={classes.trustIcon} />
+                <span>Proven Results</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Visual Section */}
+          <div className={classes.visualSection}>
+            {/* Floating cards */}
+            <div className={`${classes.floatingCard} ${classes.card1}`}>
+              <div className={classes.cardContent}>
+                <div className={classes.cardNumber}>₹50K+</div>
+                <div className={classes.cardLabel}>Saved</div>
+              </div>
+            </div>
+            
+            <div className={`${classes.floatingCard} ${classes.card2}`}>
+              <div className={classes.cardContent}>
+                <div className={classes.cardNumber}>5★</div>
+                <div className={classes.cardLabel}>Rating</div>
+              </div>
+            </div>
+
+            {/* Central illustration */}
+            <div className={classes.centralIllustration}>
+              <div className={classes.illustrationGlow}></div>
+              <div className={classes.illustrationContainer}>
+                {/* Tax document icon */}
+                <div className={classes.documentIcon}>
+                  <div className={classes.docLine1}></div>
+                  <div className={classes.docLine2}></div>
+                  <div className={classes.docLine3}></div>
+                  <div className={classes.docSignature}></div>
+                </div>
+                <div className={classes.illustrationText}>
+                  <div className={classes.illustrationTitle}>Tax Made Simple</div>
+                  <div className={classes.illustrationSubtitle}>Professional • Fast • Secure</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom floating element */}
+            <div className={`${classes.floatingCard} ${classes.card3}`}>
+              <div className={classes.cardContent}>
+                <div className={classes.cardNumber}>24/7</div>
+                <div className={classes.cardLabel}>Support</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom stats section */}
+        <div className={classes.statsSection}>
+          {stats.map((stat, index) => (
+            <div
+              key={index}
+              className={`${classes.statCard} ${isVisible ? classes.statVisible : ''}`}
+              style={{ transitionDelay: `${index * 100 + 800}ms` }}
+            >
+              <div className={classes.statNumber}>{stat.number}</div>
+              <div className={classes.statLabel}>{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-  </Container>
-);
+  );
+};
 
 export default HeroPage;
