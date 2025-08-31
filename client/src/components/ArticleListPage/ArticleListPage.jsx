@@ -226,7 +226,7 @@ export default function ArticleListPage() {
             {!searchTerm && (
               <button
                 className="article-list-empty-cta"
-                onClick={() => navigate('/create-article')}
+                onClick={() => navigate('/blog/new')}
               >
                 Write Your First Article
               </button>
@@ -281,12 +281,12 @@ export default function ArticleListPage() {
       {/* Floating Create Article Button */}
       <CreateArticleButton
         className="create-article-button"
-        onClick={() => navigate('/create-article')}
+        onClick={() => navigate('/blog/new')}
         style={{
           position: 'fixed',
           bottom: '30px',
           right: '30px',
-          zIndex: 1000
+          zIndex: 10000
         }}
       />
     </div>

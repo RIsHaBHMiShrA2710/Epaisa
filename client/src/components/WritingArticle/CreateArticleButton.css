@@ -1,4 +1,4 @@
-.floating-button {
+/* .floating-button {
     position: fixed;
     bottom: 6rem;
     right: 20px;
@@ -13,7 +13,7 @@
     transition: transform 0.2s;
     box-shadow:2px 2px 5px #1a1919;
   }
-  
+   */
   .floating-button:hover {
     transform: scale(1.05);
   }
