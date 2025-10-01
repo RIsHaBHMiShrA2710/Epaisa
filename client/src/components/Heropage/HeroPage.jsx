@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Check, Calendar, BookOpen, TrendingUp, Users, Shield } from 'lucide-react';
+import { Check, Calendar, BookOpen, TrendingUp, Users, Shield, DollarSign, FileText, Clock, Star } from 'lucide-react';
 import classes from './HeroPage.module.css';
 import { useNavigate } from 'react-router-dom';
+
 const HeroPage = () => {
   const [currentText, setCurrentText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
+  
   const typeTexts = [
     'Consult professionals online 💼',
     'Get help filing your ITR hassle-free 🧾',
@@ -104,44 +106,88 @@ const HeroPage = () => {
 
             {/* Mobile Visual Section - Only visible on smaller screens */}
             <div className={classes.mobileVisualSection}>
-              {/* Floating cards */}
-              <div className={`${classes.floatingCard} ${classes.card1}`}>
-                <div className={classes.cardContent}>
-                  <div className={classes.cardNumber}>₹50K+</div>
-                  <div className={classes.cardLabel}>Saved</div>
-                </div>
-              </div>
-              
-              <div className={`${classes.floatingCard} ${classes.card2}`}>
-                <div className={classes.cardContent}>
-                  <div className={classes.cardNumber}>5★</div>
-                  <div className={classes.cardLabel}>Rating</div>
-                </div>
-              </div>
-
-              {/* Central illustration */}
-              <div className={classes.centralIllustration}>
-                <div className={classes.illustrationGlow}></div>
-                <div className={classes.illustrationContainer}>
-                  {/* Tax document icon */}
-                  <div className={classes.documentIcon}>
-                    <div className={classes.docLine1}></div>
-                    <div className={classes.docLine2}></div>
-                    <div className={classes.docLine3}></div>
-                    <div className={classes.docSignature}></div>
+              {/* Abstract Tax Flow Illustration */}
+              <div className={classes.abstractContainer}>
+                {/* Central Hub */}
+                <div className={classes.centralHub}>
+                  <div className={classes.hubGlow}></div>
+                  <div className={classes.hubCore}>
+                    <div className={classes.coreSymbol}>₹</div>
                   </div>
-                  <div className={classes.illustrationText}>
-                    <div className={classes.illustrationTitle}>Tax Made Simple</div>
-                    <div className={classes.illustrationSubtitle}>Professional • Fast • Secure</div>
+                  <div className={classes.hubRings}>
+                    <div className={classes.ring1}></div>
+                    <div className={classes.ring2}></div>
+                    <div className={classes.ring3}></div>
                   </div>
                 </div>
-              </div>
 
-              {/* Bottom floating element */}
-              <div className={`${classes.floatingCard} ${classes.card3}`}>
-                <div className={classes.cardContent}>
-                  <div className={classes.cardNumber}>24/7</div>
-                  <div className={classes.cardLabel}>Support</div>
+                {/* Floating Abstract Elements */}
+                <div className={`${classes.floatingElement} ${classes.element1}`}>
+                  <div className={classes.docShape}>
+                    <div className={classes.docLines}></div>
+                  </div>
+                </div>
+
+                <div className={`${classes.floatingElement} ${classes.element2}`}>
+                  <div className={classes.calculatorShape}>
+                    <div className={classes.calcDisplay}></div>
+                    <div className={classes.calcButtons}></div>
+                  </div>
+                </div>
+
+                <div className={`${classes.floatingElement} ${classes.element3}`}>
+                  <div className={classes.chartShape}>
+                    <div className={classes.chartBars}>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`${classes.floatingElement} ${classes.element4}`}>
+                  <div className={classes.shieldShape}>
+                    <div className={classes.shieldInner}>
+                      <div className={classes.checkmark}>✓</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`${classes.floatingElement} ${classes.element5}`}>
+                  <div className={classes.clockShape}>
+                    <div className={classes.clockFace}>
+                      <div className={classes.clockHand}></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`${classes.floatingElement} ${classes.element6}`}>
+                  <div className={classes.coinShape}>
+                    <div className={classes.coinInner}>₹</div>
+                  </div>
+                </div>
+
+                {/* Connection Lines */}
+                <div className={classes.connectionLines}>
+                  <div className={`${classes.line} ${classes.line1}`}></div>
+                  <div className={`${classes.line} ${classes.line2}`}></div>
+                  <div className={`${classes.line} ${classes.line3}`}></div>
+                  <div className={`${classes.line} ${classes.line4}`}></div>
+                  <div className={`${classes.line} ${classes.line5}`}></div>
+                  <div className={`${classes.line} ${classes.line6}`}></div>
+                </div>
+
+                {/* Particle Effects */}
+                <div className={classes.particles}>
+                  <div className={`${classes.particle} ${classes.particle1}`}></div>
+                  <div className={`${classes.particle} ${classes.particle2}`}></div>
+                  <div className={`${classes.particle} ${classes.particle3}`}></div>
+                  <div className={`${classes.particle} ${classes.particle4}`}></div>
+                  <div className={`${classes.particle} ${classes.particle5}`}></div>
+                  <div className={`${classes.particle} ${classes.particle6}`}></div>
+                  <div className={`${classes.particle} ${classes.particle7}`}></div>
+                  <div className={`${classes.particle} ${classes.particle8}`}></div>
                 </div>
               </div>
             </div>
@@ -199,46 +245,90 @@ const HeroPage = () => {
             </div>
           </div>
 
-          {/* Visual Section */}
+          {/* Visual Section - Desktop */}
           <div className={classes.visualSection}>
-            {/* Floating cards */}
-            <div className={`${classes.floatingCard} ${classes.card1}`}>
-              <div className={classes.cardContent}>
-                <div className={classes.cardNumber}>₹50K+</div>
-                <div className={classes.cardLabel}>Saved</div>
-              </div>
-            </div>
-            
-            <div className={`${classes.floatingCard} ${classes.card2}`}>
-              <div className={classes.cardContent}>
-                <div className={classes.cardNumber}>5★</div>
-                <div className={classes.cardLabel}>Rating</div>
-              </div>
-            </div>
-
-            {/* Central illustration */}
-            <div className={classes.centralIllustration}>
-              <div className={classes.illustrationGlow}></div>
-              <div className={classes.illustrationContainer}>
-                {/* Tax document icon */}
-                <div className={classes.documentIcon}>
-                  <div className={classes.docLine1}></div>
-                  <div className={classes.docLine2}></div>
-                  <div className={classes.docLine3}></div>
-                  <div className={classes.docSignature}></div>
+            {/* Abstract Tax Flow Illustration */}
+            <div className={classes.abstractContainer}>
+              {/* Central Hub */}
+              <div className={classes.centralHub}>
+                <div className={classes.hubGlow}></div>
+                <div className={classes.hubCore}>
+                  <div className={classes.coreSymbol}>₹</div>
                 </div>
-                <div className={classes.illustrationText}>
-                  <div className={classes.illustrationTitle}>Tax Made Simple</div>
-                  <div className={classes.illustrationSubtitle}>Professional • Fast • Secure</div>
+                <div className={classes.hubRings}>
+                  <div className={classes.ring1}></div>
+                  <div className={classes.ring2}></div>
+                  <div className={classes.ring3}></div>
                 </div>
               </div>
-            </div>
 
-            {/* Bottom floating element */}
-            <div className={`${classes.floatingCard} ${classes.card3}`}>
-              <div className={classes.cardContent}>
-                <div className={classes.cardNumber}>24/7</div>
-                <div className={classes.cardLabel}>Support</div>
+              {/* Floating Abstract Elements */}
+              <div className={`${classes.floatingElement} ${classes.element1}`}>
+                <div className={classes.docShape}>
+                  <div className={classes.docLines}></div>
+                </div>
+              </div>
+
+              <div className={`${classes.floatingElement} ${classes.element2}`}>
+                <div className={classes.calculatorShape}>
+                  <div className={classes.calcDisplay}></div>
+                  <div className={classes.calcButtons}></div>
+                </div>
+              </div>
+
+              <div className={`${classes.floatingElement} ${classes.element3}`}>
+                <div className={classes.chartShape}>
+                  <div className={classes.chartBars}>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={`${classes.floatingElement} ${classes.element4}`}>
+                <div className={classes.shieldShape}>
+                  <div className={classes.shieldInner}>
+                    <div className={classes.checkmark}>✓</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={`${classes.floatingElement} ${classes.element5}`}>
+                <div className={classes.clockShape}>
+                  <div className={classes.clockFace}>
+                    <div className={classes.clockHand}></div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={`${classes.floatingElement} ${classes.element6}`}>
+                <div className={classes.coinShape}>
+                  <div className={classes.coinInner}>₹</div>
+                </div>
+              </div>
+
+              {/* Connection Lines */}
+              <div className={classes.connectionLines}>
+                <div className={`${classes.line} ${classes.line1}`}></div>
+                <div className={`${classes.line} ${classes.line2}`}></div>
+                <div className={`${classes.line} ${classes.line3}`}></div>
+                <div className={`${classes.line} ${classes.line4}`}></div>
+                <div className={`${classes.line} ${classes.line5}`}></div>
+                <div className={`${classes.line} ${classes.line6}`}></div>
+              </div>
+
+              {/* Particle Effects */}
+              <div className={classes.particles}>
+                <div className={`${classes.particle} ${classes.particle1}`}></div>
+                <div className={`${classes.particle} ${classes.particle2}`}></div>
+                <div className={`${classes.particle} ${classes.particle3}`}></div>
+                <div className={`${classes.particle} ${classes.particle4}`}></div>
+                <div className={`${classes.particle} ${classes.particle5}`}></div>
+                <div className={`${classes.particle} ${classes.particle6}`}></div>
+                <div className={`${classes.particle} ${classes.particle7}`}></div>
+                <div className={`${classes.particle} ${classes.particle8}`}></div>
               </div>
             </div>
           </div>
