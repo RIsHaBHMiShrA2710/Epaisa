@@ -8,9 +8,8 @@ import { CreateArticleButton } from '../WritingArticle/CreateArticleButton';
 import Loader from '../Loader/Loader';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import FadeInUp from '../../animations/FadeInUp';
-import Breadcrumbs from '../BreadCrumbs/BreadCrumbs';
+import Breadcrumbs from '../BreadCrumbs/Breadcrumbs';
 import './ArticleListPage.css';
-
 const BACKEND =
   import.meta.env.MODE === 'development'
     ? 'http://localhost:5000'
