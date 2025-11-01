@@ -1,7 +1,7 @@
 // CommentItem.jsx
 import React, { useState } from 'react';
 import { createComment } from '../service/commentService';
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../authContext';
 import './CommentSection.css';
 
 function CommentItem({ comment, allComments, articleId, token, onReplyAdded }) {
