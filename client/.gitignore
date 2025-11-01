@@ -24,6 +24,6 @@ dist-ssr
 *.sln
 *.sw?
 # Dependency directories
-.env.development
-.env.production
-
+# Environment variables
+.env
+.env.*

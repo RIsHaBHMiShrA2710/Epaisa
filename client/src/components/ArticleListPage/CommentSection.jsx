@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCommentsByArticle, createComment } from '../service/commentService';
 import CommentItem from './CommentItem';
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../authContext';
 import './CommentSection.css';
 
 function CommentSection({ articleId, onCommentAdded, onClose }) {

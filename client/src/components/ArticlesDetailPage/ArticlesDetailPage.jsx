@@ -6,7 +6,7 @@ import { castVote } from '../service/voteService';
 import './ArticlesDetailsPage.css';
 import DOMPurify from 'dompurify';
 import Loader from '../Loader/Loader';
-import Breadcrumbs from '../BreadCrumbs/BreadCrumbs';
+import Breadcrumbs from '../BreadCrumbs/Breadcrumbs';
 import AuthorModal from '../ArticleListPage/AuthorModal';
 
 const ArticleDetailPage = () => {
