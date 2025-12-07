@@ -30,8 +30,7 @@ Epaisa empowers users to read and publish finance-focused blogs, share personal 
 
 ## Live Demo
 
-* **Frontend:** [https://epaisa.netlify.app](https://epaisa.netlify.app)
-* **Backend API:** [https://epaise-backend.onrender.com](https://epaise-backend.onrender.com)
+[https://epaisafinance.app](https://epaisafinance.com)
 
 ---
 
